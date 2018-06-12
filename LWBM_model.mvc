@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MokkaModelVisualConfiguration name="LWBM_model" version="1.0">
+    <MarkersList>
+        <Marker label="L_IAS" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_IPS" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_IPS" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_IAS" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="SNJ" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="SXS" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="TV8" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="CV7" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_SCAP" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_HDF" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_HDB" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_HDB" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_HDF" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_FTC" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_WAND1" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_FLE" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_FME" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_FAX" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_TTC" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_WAND2" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_FAL" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_TAM" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_FCC" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_FM1" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_FM5" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_FTC" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_WAND1" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_FLE" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_FME" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_FAX" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_TTC" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_WAND2" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_FAL" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_TAM" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_FCC" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_FM1" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_FM5" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_HM5" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_HM2" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_UHE" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_RSP" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_WAND4" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_HLE" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_HME" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_WAND3" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_HM5" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_HM2" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_UHE" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_RSP" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_WAND4" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_HLE" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_HME" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_WAND3" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="L_SAJ" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="R_SAJ" radius="8" colorR="0" colorG="0" colorB="0" visible="1" trajectory="0"/>
+        <Marker label="LJC" radius="15" colorR="0.333333" colorG="0.666667" colorB="1" visible="1" trajectory="0"/>
+        <Marker label="R_HJC" radius="15" colorR="0.333333" colorG="0.666667" colorB="1" visible="1" trajectory="0"/>
+        <Marker label="L_HJC" radius="15" colorR="0.333333" colorG="0.666667" colorB="1" visible="1" trajectory="0"/>
+        <Marker label="R_KJC" radius="15" colorR="0.333333" colorG="0.666667" colorB="1" visible="1" trajectory="0"/>
+        <Marker label="R_AJC" radius="15" colorR="0.333333" colorG="0.666667" colorB="1" visible="1" trajectory="0"/>
+        <Marker label="R_MJC" radius="15" colorR="0.333333" colorG="0.666667" colorB="1" visible="1" trajectory="0"/>
+        <Marker label="L_KJC" radius="15" colorR="0.333333" colorG="0.666667" colorB="1" visible="1" trajectory="0"/>
+        <Marker label="L_AJC" radius="15" colorR="0.333333" colorG="0.666667" colorB="1" visible="1" trajectory="0"/>
+        <Marker label="L_MJC" radius="15" colorR="0.333333" colorG="0.666667" colorB="1" visible="1" trajectory="0"/>
+        <Marker label="CoM_Pelvis" radius="25" colorR="0.666667" colorG="0.666667" colorB="0.666667" visible="1" trajectory="0"/>
+        <Marker label="CoM_R_Thigh" radius="25" colorR="0.666667" colorG="0.666667" colorB="0.666667" visible="1" trajectory="0"/>
+        <Marker label="CoM_R_Shank" radius="25" colorR="0.666667" colorG="0.666667" colorB="0.666667" visible="1" trajectory="0"/>
+        <Marker label="CoM_R_Foot" radius="25" colorR="0.666667" colorG="0.666667" colorB="0.666667" visible="1" trajectory="0"/>
+        <Marker label="CoM_L_Thigh" radius="25" colorR="0.666667" colorG="0.666667" colorB="0.666667" visible="1" trajectory="0"/>
+        <Marker label="CoM_L_Shank" radius="25" colorR="0.666667" colorG="0.666667" colorB="0.666667" visible="1" trajectory="0"/>
+        <Marker label="CoM_L_Foot" radius="25" colorR="0.666667" colorG="0.666667" colorB="0.666667" visible="1" trajectory="0"/>
+    </MarkersList>
+    <SegmentsList>
+        <Segment label="R_Thigh" colorR="0" colorG="0.666667" colorB="0" visible="1" surface="1" description="">
+            <Point label="R_FLE"/>
+            <Point label="R_FME"/>
+            <Point label="R_HJC"/>
+            <Point label="R_KJC"/>
+            <Link pt1="R_FLE" pt2="R_HJC"/>
+            <Link pt1="R_FLE" pt2="R_KJC"/>
+            <Link pt1="R_FME" pt2="R_HJC"/>
+            <Link pt1="R_FME" pt2="R_KJC"/>
+            <Link pt1="R_HJC" pt2="R_KJC"/>
+            <Face pt1="R_FLE" pt2="R_HJC" pt3="R_KJC"/>
+            <Face pt1="R_FME" pt2="R_HJC" pt3="R_KJC"/>
+        </Segment>
+        <Segment label="R_Shank" colorR="0" colorG="0.666667" colorB="0" visible="1" surface="1" description="">
+            <Point label="R_FAL"/>
+            <Point label="R_TAM"/>
+            <Point label="R_KJC"/>
+            <Point label="R_AJC"/>
+            <Link pt1="R_AJC" pt2="R_KJC"/>
+            <Link pt1="R_AJC" pt2="R_FAL"/>
+            <Link pt1="R_AJC" pt2="R_TAM"/>
+            <Link pt1="R_FAL" pt2="R_KJC"/>
+            <Link pt1="R_KJC" pt2="R_TAM"/>
+            <Face pt1="R_AJC" pt2="R_FAL" pt3="R_KJC"/>
+            <Face pt1="R_AJC" pt2="R_KJC" pt3="R_TAM"/>
+        </Segment>
+        <Segment label="R_Foot" colorR="0" colorG="0.666667" colorB="0" visible="1" surface="1" description="">
+            <Point label="R_FCC"/>
+            <Point label="R_FM1"/>
+            <Point label="R_FM5"/>
+            <Point label="R_MJC"/>
+            <Link pt1="R_FCC" pt2="R_MJC"/>
+            <Link pt1="R_FCC" pt2="R_FM5"/>
+            <Link pt1="R_FCC" pt2="R_FM1"/>
+            <Link pt1="R_FM1" pt2="R_MJC"/>
+            <Link pt1="R_FM5" pt2="R_MJC"/>
+            <Face pt1="R_FCC" pt2="R_FM5" pt3="R_MJC"/>
+            <Face pt1="R_FCC" pt2="R_FM1" pt3="R_MJC"/>
+        </Segment>
+        <Segment label="L_Thigh" colorR="1" colorG="0" colorB="0" visible="1" surface="1" description="">
+            <Point label="L_FLE"/>
+            <Point label="L_FME"/>
+            <Point label="L_HJC"/>
+            <Point label="L_KJC"/>
+            <Link pt1="L_FLE" pt2="L_HJC"/>
+            <Link pt1="L_FLE" pt2="L_KJC"/>
+            <Link pt1="L_FME" pt2="L_HJC"/>
+            <Link pt1="L_FME" pt2="L_KJC"/>
+            <Link pt1="L_HJC" pt2="L_KJC"/>
+            <Face pt1="L_FME" pt2="L_HJC" pt3="L_KJC"/>
+            <Face pt1="L_FLE" pt2="L_HJC" pt3="L_KJC"/>
+        </Segment>
+        <Segment label="L_Shank" colorR="1" colorG="0" colorB="0" visible="1" surface="1" description="">
+            <Point label="L_FAL"/>
+            <Point label="L_TAM"/>
+            <Point label="L_KJC"/>
+            <Point label="L_AJC"/>
+            <Link pt1="L_AJC" pt2="L_KJC"/>
+            <Link pt1="L_AJC" pt2="L_TAM"/>
+            <Link pt1="L_AJC" pt2="L_FAL"/>
+            <Link pt1="L_FAL" pt2="L_KJC"/>
+            <Link pt1="L_KJC" pt2="L_TAM"/>
+            <Face pt1="L_AJC" pt2="L_KJC" pt3="L_TAM"/>
+            <Face pt1="L_AJC" pt2="L_FAL" pt3="L_KJC"/>
+        </Segment>
+        <Segment label="L_Foot" colorR="1" colorG="0" colorB="0" visible="1" surface="1" description="">
+            <Point label="L_FCC"/>
+            <Point label="L_FM1"/>
+            <Point label="L_FM5"/>
+            <Point label="L_MJC"/>
+            <Link pt1="L_FCC" pt2="L_MJC"/>
+            <Link pt1="L_FCC" pt2="L_FM5"/>
+            <Link pt1="L_FCC" pt2="L_FM1"/>
+            <Link pt1="L_FM1" pt2="L_MJC"/>
+            <Link pt1="L_FM5" pt2="L_MJC"/>
+            <Face pt1="L_FCC" pt2="L_FM5" pt3="L_MJC"/>
+            <Face pt1="L_FCC" pt2="L_FM1" pt3="L_MJC"/>
+        </Segment>
+        <Segment label="Pelvis" colorR="0" colorG="0" colorB="1" visible="1" surface="1" description="">
+            <Point label="L_IAS"/>
+            <Point label="L_IPS"/>
+            <Point label="R_IPS"/>
+            <Point label="R_IAS"/>
+            <Point label="LJC"/>
+            <Link pt1="L_IAS" pt2="L_IPS"/>
+            <Link pt1="L_IAS" pt2="R_IAS"/>
+            <Link pt1="L_IPS" pt2="R_IPS"/>
+            <Link pt1="LJC" pt2="R_IAS"/>
+            <Link pt1="LJC" pt2="R_IPS"/>
+            <Link pt1="LJC" pt2="L_IPS"/>
+            <Link pt1="LJC" pt2="L_IAS"/>
+            <Link pt1="R_IAS" pt2="R_IPS"/>
+            <Face pt1="LJC" pt2="R_IAS" pt3="R_IPS"/>
+            <Face pt1="LJC" pt2="L_IPS" pt3="R_IPS"/>
+            <Face pt1="LJC" pt2="L_IAS" pt3="L_IPS"/>
+            <Face pt1="LJC" pt2="L_IAS" pt3="R_IAS"/>
+        </Segment>
+    </SegmentsList>
+</MokkaModelVisualConfiguration>
