@@ -60,7 +60,7 @@ btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Joint(103).Mj(1,:,:)/Session.w
     permute(Joint(103).Mj(2,:,:)/Session.weight,[3,2,1]) ...
     permute(-Joint(103).Mj(3,:,:)/Session.weight,[3,2,1])]);
 btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Knee_moment');
-btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Moment (Nm/kg): X-Axis: Ext(+)/Flex, Y-Axis: Ab(+)/Ad, Z-Axis: IR(+)/ER');
+btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Moment (Nm/kg): X-Axis: E(+)/F, Y-Axis: Ab(+)/Ad, Z-Axis: IR(+)/ER');
 % Left hip
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
 btkSetPointType(btk2,btkGetPointNumber(btk2),'moment');
