@@ -44,29 +44,12 @@ addpath(genpath([toolboxFolder,'\toolbox']));
 disp(' ');
 
 % =========================================================================
-% Set patient folder
+% Set c3d folder
 % =========================================================================
-c3dFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\routines\github\CGA_Rehazenter_Toolbox\example';
+c3dFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\publications\articles\1- en cours\Schreiber - Bdd\data\SS001';
 matFolder = c3dFolder;
-
-% =========================================================================
-% Active modules % 0: inactive | 1: active
-% =========================================================================
-% Kinematic chains
-Module.lowerLimb = 1;
-Module.upperLimb = 0;
-% Setting.posture_PLUGIN = 0;
-% Setting.emg_PLUGIN = 0;
-% Setting.foot_PLUGIN = 0;
-% Setting.baropodo_PLUGIN = 0;
-% Setting.statistics_PLUGIN = 0;
-% Setting.report_PLUGIN = 0;
-% Setting.database_PLUGIN = 0;
 
 % =========================================================================
 % Start Clinical Gait Analysis
 % =========================================================================
-startCGA(toolboxFolder,c3dFolder,matFolder,Module);
-% if Setting.report == 1
-%     report_PLUGIN();
-% end
+startCGA(toolboxFolder,c3dFolder);

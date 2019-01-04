@@ -146,9 +146,12 @@ for i = 1:length(Session.conditions)
             % Export processed files
             % -------------------------------------------------------------
             cd(c3dFolder);
+%             btkWriteAcquisition(btk2,[strrep(Session.Trial(j).filename,'.c3d',''),'_out.c3d']);  
             btkWriteAcquisition(trial,[Patient.lastname(3:end),'_',Condition(i).name,'_','0',num2str(k),'_raw','.c3d']);
             btkWriteAcquisition(btk2,[Patient.lastname(3:end),'_',Condition(i).name,'_','0',num2str(k),'_proc','.c3d']);
+            
             cd(toolboxFolder);
+            
             k = k+1;
         end
     end 
