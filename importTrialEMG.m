@@ -20,26 +20,29 @@ for j = 1:length(nAnalog)
     if strfind(nAnalog{j},'Right_')
         % Rebase (remove signal mean)
         Analog2.(nAnalog{j}) = Analog.(nAnalog{j}) - mean(Analog.(nAnalog{j}));
-        % Band-pass filter (Butterworth 2nd order, 30-300 Hz)
-        [B,A] = butter(2,[30/(fAnalog/2) 300/(fAnalog/2)],'bandpass');
+        % Band-pass filter (Butterworth 4nd order, 30-300 Hz)
+        [B,A] = butter(4,[30/(fAnalog/2) 300/(fAnalog/2)],'bandpass');
         Analog2.(nAnalog{j}) = filtfilt(B, A, Analog2.(nAnalog{j}));
-        % Interpolate to number of marker frames
-        x = 1:length(Analog2.(nAnalog{j}));
-        xx = linspace(1,length(Analog2.(nAnalog{j})),n);
-        temp = Analog2.(nAnalog{j});
-        Analog2.(nAnalog{j}) = [];
-        Analog2.(nAnalog{j}) = (interp1(x,temp,xx,'spline'))';
+%         % Interpolate to number of marker frames
+%         x = 1:length(Analog2.(nAnalog{j}));
+%         xx = linspace(1,length(Analog2.(nAnalog{j})),n);
+%         temp = Analog2.(nAnalog{j});
+%         Analog2.(nAnalog{j}) = [];
+%         Analog2.(nAnalog{j}) = (interp1(x,temp,xx,'spline'))';
         % Keep only cycle data (keep 5 frames before and after first and last
         % event)
         events = round(sort([Event.RHS,Event.RTO,Event.LHS,Event.LTO])*fMarker)-...
             n0+1;
         % Zeroing of low signals
+        temp = size(Analog2.(nAnalog{j})...
+                ((events(1))*fAnalog/fMarker:(events(end))*fAnalog/fMarker,:),1);
+        extra = (btkGetAnalogFrameNumber(btk2) - temp)/2;
         if max(Analog2.(nAnalog{j})) > 1e-6
             Analog2.(nAnalog{j}) = Analog2.(nAnalog{j})...
-                (events(1)-5:events(end)+5,:);
+                (events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
         else
             Analog2.(nAnalog{j}) = NaN(size(Analog2.(nAnalog{j})...
-                (events(1)-5:events(end)+5,:)));
+                (events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:)));
         end
     end
 end
@@ -51,7 +54,7 @@ for i = 1:length(nAnalog2)
 %         if strcmp(nAnalog2{i},['Right_',num2str(j)])
 %             if ~strcmp(Session.EMG{j},'none')
                 btkAppendAnalog(btk2,Session.EMG{i+8},...
-                    Analog2.(nAnalog2{i}),'EMG signal (mV)');
+                    Analog2.(nAnalog2{i}),'EMG signal (V)');
                 EMG.(Session.EMG{i+8}).signal = permute(Analog2.(nAnalog2{i}),[2,3,1]);
 %             end
 %         end

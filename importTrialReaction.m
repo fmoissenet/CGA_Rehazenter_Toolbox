@@ -10,7 +10,7 @@
 % Version: 1
 % =========================================================================
 
-function [Grf,tGrf] = importTrialReaction(Event,Forceplate,tGrf,Grf,n0,n,fMarker,fAnalog)
+function [Grf,tGrf] = importTrialReaction(Event,Forceplate,tGrf,Grf,btk2,n0,n,fMarker,fAnalog)
 
 for j = 1:size(Forceplate,1)
     % Replace NaN by zeros
@@ -40,10 +40,10 @@ for j = 1:size(Forceplate,1)
     Grf(j).M(:,1) = filtfilt(B,A,Grf(j).M(:,1));
     Grf(j).M(:,2) = filtfilt(B,A,Grf(j).M(:,2));
     Grf(j).M(:,3) = filtfilt(B,A,Grf(j).M(:,3));
-    % Apply a 10N threshold
-    threshold = 100;
+    % Apply a 5N threshold
+    threshold = 50;
     for k = 1:length(tGrf(j).F)
-        if tGrf(j).F(k,3) < threshold; % vertical tGrf threshold
+        if tGrf(j).F(k,3) < threshold  % vertical tGrf threshold
             tGrf(j).P(k,:) = zeros(1,3);
             tGrf(j).F(k,:) = zeros(1,3);
             tGrf(j).M(k,:) = zeros(1,3);
@@ -52,40 +52,42 @@ for j = 1:size(Forceplate,1)
             Grf(j).M(k,:) = zeros(1,3);
         end
     end
-    % Interpolate to number of marker frames
-    x = 1:length(Grf(j).F);
-    xx = linspace(1,length(Grf(j).F),n);
-    temp = tGrf(j).P;
-    tGrf(j).P = [];
-    tGrf(j).P = (interp1(x,temp,xx,'pchip'))';
-    temp = tGrf(j).F;
-    tGrf(j).F = [];
-    tGrf(j).F = (interp1(x,temp,xx,'pchip'))';
-    temp = tGrf(j).M;
-    tGrf(j).M = [];
-    tGrf(j).M = (interp1(x,temp,xx,'pchip'))';
-    temp = Grf(j).P;
-    Grf(j).P = [];
-    temp = medfilt1(temp); % remove spikes before interpolation
-    Grf(j).P = (interp1(x,temp,xx,'pchip'))';
-    temp = Grf(j).F;
-    Grf(j).F = [];
-    temp = medfilt1(temp); % remove spikes before interpolation
-    Grf(j).F = (interp1(x,temp,xx,'pchip'))';
-    temp = Grf(j).M;
-    Grf(j).M = [];
-    temp = medfilt1(temp); % remove spikes before interpolation
-    Grf(j).M = (interp1(x,temp,xx,'pchip'))';
+%     % Interpolate to number of marker frames
+%     x = 1:length(Grf(j).F);
+%     xx = linspace(1,length(Grf(j).F),n);
+%     temp = tGrf(j).P;
+%     tGrf(j).P = [];
+%     tGrf(j).P = (interp1(x,temp,xx,'pchip'))';
+%     temp = tGrf(j).F;
+%     tGrf(j).F = [];
+%     tGrf(j).F = (interp1(x,temp,xx,'pchip'))';
+%     temp = tGrf(j).M;
+%     tGrf(j).M = [];
+%     tGrf(j).M = (interp1(x,temp,xx,'pchip'))';
+%     temp = Grf(j).P;
+%     Grf(j).P = [];
+%     temp = medfilt1(temp); % remove spikes before interpolation
+%     Grf(j).P = (interp1(x,temp,xx,'pchip'))';
+%     temp = Grf(j).F;
+%     Grf(j).F = [];
+%     temp = medfilt1(temp); % remove spikes before interpolation
+%     Grf(j).F = (interp1(x,temp,xx,'pchip'))';
+%     temp = Grf(j).M;
+%     Grf(j).M = [];
+%     temp = medfilt1(temp); % remove spikes before interpolation
+%     Grf(j).M = (interp1(x,temp,xx,'pchip'))';
     % Keep only cycle data (keep 5 frames before and after first and last
     % event)
     events = round(sort([Event.RHS,Event.RTO,Event.LHS,Event.LTO])*fMarker)-...
         n0+1;
-    tGrf(j).F = tGrf(j).F(:,events(1)-5:events(end)+5)';
-    tGrf(j).M = tGrf(j).M(:,events(1)-5:events(end)+5)';
-    tGrf(j).P = tGrf(j).P(:,events(1)-5:events(end)+5)';
-    Grf(j).F = Grf(j).F(:,events(1)-5:events(end)+5)';
-    Grf(j).M = Grf(j).M(:,events(1)-5:events(end)+5)';
-    Grf(j).P = Grf(j).P(:,events(1)-5:events(end)+5)';
+    temp = size(tGrf(j).F(events(1)*fAnalog/fMarker:events(end)*fAnalog/fMarker,:),1);
+    extra = (btkGetAnalogFrameNumber(btk2) - temp)/2;
+    tGrf(j).F = tGrf(j).F(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
+    tGrf(j).M = tGrf(j).M(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
+    tGrf(j).P = tGrf(j).P(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
+    Grf(j).F = Grf(j).F(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
+    Grf(j).M = Grf(j).M(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
+    Grf(j).P = Grf(j).P(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
     % Additional treatments for Matlab process
     Grf(j).M = Grf(j).M*10^(-3); % Convert from Nmm to Nm
     Grf(j).P = Grf(j).P*10^(-3);

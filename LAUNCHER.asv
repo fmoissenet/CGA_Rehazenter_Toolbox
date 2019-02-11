@@ -46,7 +46,7 @@ disp(' ');
 % =========================================================================
 % Set c3d folder
 % =========================================================================
-c3dFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\publications\articles\1- en cours\Schreiber - Bdd\data\2014054';
+c3dFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\publications\articles\1- en cours\Schreiber - Bdd\data\2014014';
 matFolder = c3dFolder;
 
 % =========================================================================

@@ -90,7 +90,7 @@ for i = 1:length(Session.conditions)
             Marker = btkGetMarkers(static);
             fMarker = btkGetPointFrequency(static);
             % Set BTK parameters to export a new C3D file
-            btk2 = btkNewAcquisition(btkGetPointNumber(static));
+            btk2 = btkNewAcquisition(btkGetPointNumber(static)-4); % The 4 head markers are removed
             btkSetFrameNumber(btk2,1);
             btkSetFrequency(btk2,fMarker);          
             % Import mean markers 3D position
@@ -98,10 +98,11 @@ for i = 1:length(Session.conditions)
             % Compute leg length
             Session = setLegLength_lowerLimb(Session,Marker);
             % Export raw and processed files
-            cd(c3dFolder);
-            btkWriteAcquisition(static,[Patient.lastname(3:end),'_',Condition(i).name,'_','ST','_raw','.c3d']);
-            btkWriteAcquisition(btk2,[Patient.lastname(3:end),'_',Condition(i).name,'_','ST','_proc','.c3d']);
-            cd(toolboxFolder);
+            if j == 1
+                cd(c3dFolder);
+                btkWriteAcquisition(btk2,[Patient.lastname(3:end),'_','ST','.c3d']);
+                cd(toolboxFolder);
+            end
         end
     end
     
@@ -127,9 +128,9 @@ for i = 1:length(Session.conditions)
             n0 = btkGetFirstFrame(trial);
             n = btkGetLastFrame(trial)-btkGetFirstFrame(trial)+1;
             % Import markers 3D trajectories
-            [Marker,btk2] = importTrialMarker(Marker,Event,n0,fMarker);
+            [Marker,btk2] = importTrialMarker(Marker,Event,n0,fMarker,fAnalog);
             % Import reaction forces
-            [Grf,tGrf] = importTrialReaction(Event,Forceplate,tGrf,Grf,n0,n,fMarker,fAnalog);
+            [Grf,tGrf] = importTrialReaction(Event,Forceplate,tGrf,Grf,btk2,n0,n,fMarker,fAnalog);
             % Import EMG signals
             MaxEMG = [];
             [EMG,btk2] = importTrialEMG(Session,Analog,Event,MaxEMG,btk2,n0,n,fMarker,fAnalog);
@@ -146,8 +147,7 @@ for i = 1:length(Session.conditions)
             % Export processed files
             % -------------------------------------------------------------
             cd(c3dFolder);
-            btkWriteAcquisition(trial,[Patient.lastname(3:end),'_',Condition(i).name,'_','0',num2str(k),'_raw','.c3d']);
-            btkWriteAcquisition(btk2,[Patient.lastname(3:end),'_',Condition(i).name,'_','0',num2str(k),'_proc','.c3d']);
+            btkWriteAcquisition(btk2,[Patient.lastname(3:end),'_',Condition(i).name,'_','0',num2str(k),'.c3d']);
             cd(toolboxFolder);
             k = k+1;
         end
