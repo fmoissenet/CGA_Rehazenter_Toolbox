@@ -49,6 +49,15 @@ disp(['  > Session: ',Session.date]);
 disp(' ');
 
 % =========================================================================
+% Import clinical examination
+% =========================================================================
+disp('>> Import clinical examination ...');
+Examination = importClinicalExamination(Examination,c3dFolder);
+disp(['  > Patient: ',Patient.lastname,' ',Patient.firstname,' ',Patient.birthdate]);
+disp(['  > Session: ',Session.date]);
+disp(' ');
+
+% =========================================================================
 % Load session files
 % -------------------------------------------------------------------------
 % The .c3d files names must be formatted to respect the names given by the
