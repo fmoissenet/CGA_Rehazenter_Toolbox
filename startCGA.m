@@ -166,7 +166,7 @@ for i = 1:length(Session.conditions)
             % Import markers 3D trajectories
             [Marker,btk2] = importTrialMarker(Marker,Event,n0,fMarker);
             % Import reaction forces
-            [Grf,tGrf] = importTrialReaction(Event,Forceplate,tGrf,Grf,n0,n,fMarker,fAnalog);
+            [Grf,tGrf] = importTrialReaction(Event,Forceplate,tGrf,Grf,btk2,n0,n,fMarker,fAnalog);
             % Import EMG signals
             [EMG,btk2] = importTrialEMG(Session,Analog,Event,MaxEMG,btk2,n0,n,fMarker,fAnalog);
             % Update and export events
@@ -223,9 +223,8 @@ for i = 1:length(Session.conditions)
         end
     end 
     cd(c3dFolder);
-    filename = [Patient.lastname,'_',Patient.firstname,'_',regexprep(Patient.birthdate,'/',''),'_',Condition.name,'_',regexprep(Session.date,'/',''),'.c3d'];
-    system(['ren temp.c3d ',filename]);
+    filename = [Patient.lastname,'_',Patient.firstname,'_',regexprep(Patient.birthdate,'/',''),'_',Condition.name,'_',regexprep(Session.date,'/','')];
+    system(['ren temp.c3d ',filename,'.c3d']);
     save([filename,'.mat']);
-    system(['C:\ProgramData\Mokka\Mokka.exe -c ',toolboxFolder,'\LWBM_model.mvc -p ',filename]);
     cd(toolboxFolder);
 end
