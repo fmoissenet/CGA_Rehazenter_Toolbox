@@ -79,13 +79,19 @@ for j = 1:size(Forceplate,1)
     % Keep only cycle data (keep 5 frames before and after first and last
     % event)
     events = round(sort([Event.RHS,Event.RTO,Event.LHS,Event.LTO])*fMarker)-...
-        n0+1;    
-    tGrf(j).F = tGrf(j).F(events(1)-5:events(end)+5,:);
-    tGrf(j).M = tGrf(j).M(events(1)-5:events(end)+5,:);
-    tGrf(j).P = tGrf(j).P(events(1)-5:events(end)+5,:);
-    Grf(j).F = Grf(j).F(events(1)-5:events(end)+5,:);
-    Grf(j).M = Grf(j).M(events(1)-5:events(end)+5,:);
-    Grf(j).P = Grf(j).P(events(1)-5:events(end)+5,:);
+        n0+1;
+    Marker.(nMarker{j}) = Marker.(nMarker{j})(events(1)-5:events(end)+5,:);
+    
+    events = round(sort([Event.RHS,Event.RTO,Event.LHS,Event.LTO])*fMarker)-...
+        n0+1;
+    temp = size(tGrf(j).F(events(1)*fAnalog/fMarker:events(end)*fAnalog/fMarker,:),1);
+    extra = (btkGetAnalogFrameNumber(btk2) - temp)/2;
+    tGrf(j).F = tGrf(j).F(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
+    tGrf(j).M = tGrf(j).M(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
+    tGrf(j).P = tGrf(j).P(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
+    Grf(j).F = Grf(j).F(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
+    Grf(j).M = Grf(j).M(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
+    Grf(j).P = Grf(j).P(events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
     % Additional treatments for Matlab process
     Grf(j).M = Grf(j).M*10^(-3); % Convert from Nmm to Nm
     Grf(j).P = Grf(j).P*10^(-3);
