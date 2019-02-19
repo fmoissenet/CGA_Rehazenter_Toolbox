@@ -455,8 +455,8 @@ if ~isnan(F101(1,1,1))
     temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
     Joint(101).M = permute(temp2,[2,3,1]);
 else
-    Joint(101).F = NaN(3,1,length(Marker.R_FCC));
-    Joint(101).M = NaN(3,1,length(Marker.R_FCC));
+    Joint(1).F = NaN(3,1,length(Marker.R_FCC));
+    Joint(1).M = NaN(3,1,length(Marker.R_FCC));
 end
 
 % =========================================================================

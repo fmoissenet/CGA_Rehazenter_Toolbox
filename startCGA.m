@@ -74,7 +74,7 @@ disp(' ');
 % Data treatment of each trial of each condition
 % =========================================================================
 disp(['>> ',num2str(length(Session.conditions)),' condition(s) detected ...']);  
-for i = 1%:length(Session.conditions)
+for i = 1:length(Session.conditions)
     disp(['  > Condition ',Session.conditions{i}]);
     cd(toolboxFolder);
     
@@ -192,7 +192,7 @@ for i = 1%:length(Session.conditions)
                 [Segment,Joint,btk2] = computeJointKinetics_lowerLimb(Session,Segment,Joint,fMarker,btk2);
                 % Store data in Condition (keep only intra cycle data)
                 Condition(i).Trial(k).LowerLimb = ...
-                    exportCondition_lowerLimb(Condition(i).Trial(k).LowerLimb,Segment,Joint,Marker,Vmarker,EMG,Event,Spatiotemporal,fMarker);        
+                    exportCondition_lowerLimb(Condition(i).Trial(k).LowerLimb,Segment,Joint,Marker,Vmarker,EMG,Event,Spatiotemporal,fMarker,fAnalog);        
             end
             
             % Upper limb kinematic chain
@@ -216,25 +216,25 @@ for i = 1%:length(Session.conditions)
 
     % Export data per condition (augmented with mean and std values)
     % ---------------------------------------------------------------------
-    % Spatiotemporal parameters
-    nfield1 = fieldnames(Condition(1).Trial(1).LowerLimb.Spatiotemporal);
-    for nf1 = 1:length(nfield1)
-        ndata = [];
-        for ntrial = 1:size(Condition(i).Trial,2)
-            if ~isnan(Condition(i).Trial(ntrial).LowerLimb.Spatiotemporal.(nfield1{nf1}))
-                if ~isempty(Condition(i).Trial(ntrial).LowerLimb.Spatiotemporal.(nfield1{nf1}))
-                    ndata = [ndata Condition(i).Trial(ntrial).LowerLimb.Spatiotemporal.(nfield1{nf1})];
-                end
-            end
-        end
-        Condition(i).Average.LowerLimb.Spatiotemporal.(nfield1{nf1}).mean = mean(ndata);
-        Condition(i).Average.LowerLimb.Spatiotemporal.(nfield1{nf1}).std = std(ndata);
-    end
-    % Right stride joint kinematics
-    % Right stride segment kinematics
-    % Right stride dynamics
-    % Right stride EMG
-    % Right stride events
+%     % Spatiotemporal parameters
+%     nfield1 = fieldnames(Condition(1).Trial(1).LowerLimb.Spatiotemporal);
+%     for nf1 = 1:length(nfield1)
+%         ndata = [];
+%         for ntrial = 1:size(Condition(i).Trial,2)
+%             if ~isnan(Condition(i).Trial(ntrial).LowerLimb.Spatiotemporal.(nfield1{nf1}))
+%                 if ~isempty(Condition(i).Trial(ntrial).LowerLimb.Spatiotemporal.(nfield1{nf1}))
+%                     ndata = [ndata Condition(i).Trial(ntrial).LowerLimb.Spatiotemporal.(nfield1{nf1})];
+%                 end
+%             end
+%         end
+%         Condition(i).Average.LowerLimb.Spatiotemporal.(nfield1{nf1}).mean = mean(ndata);
+%         Condition(i).Average.LowerLimb.Spatiotemporal.(nfield1{nf1}).std = std(ndata);
+%     end
+%     % Right stride joint kinematics
+%     % Right stride segment kinematics
+%     % Right stride dynamics
+%     % Right stride EMG
+%     % Right stride events
     
     cd(patientFolder);
     filename = [Patient.lastname,'_',Patient.firstname,'_',regexprep(Patient.birthdate,'/',''),'_',Condition(i).name,'_',regexprep(Session.date,'/','')];
