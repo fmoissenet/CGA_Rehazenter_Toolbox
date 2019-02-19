@@ -26,7 +26,7 @@ disp('==================================================================');
 disp('            REHAZENTER CLINICAL GAIT ANALYSIS TOOLBOX             ');
 disp('==================================================================');
 disp('              Authors: F. Moissenet, C. Schreiber                 ');
-disp('                         Version: 2018                            ');
+disp('                         Version: 2019                            ');
 disp('                  Date of creation: 16/05/2018                    ');
 disp('==================================================================');
 disp(' ');
@@ -55,13 +55,7 @@ matFolder = c3dFolder;
 % Kinematic chains
 Module.lowerLimb = 1;
 Module.upperLimb = 0;
-% Setting.posture_PLUGIN = 0;
-% Setting.emg_PLUGIN = 0;
-% Setting.foot_PLUGIN = 0;
-% Setting.baropodo_PLUGIN = 0;
-% Setting.statistics_PLUGIN = 0;
-% Setting.report_PLUGIN = 0;
-% Setting.database_PLUGIN = 0;
+Module.foot = 0;
 
 % =========================================================================
 % Start Clinical Gait Analysis

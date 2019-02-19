@@ -13,7 +13,7 @@
 % =========================================================================
 
 function [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
-    startCGA(toolboxFolder,c3dFolder,matFolder,Module)
+    startCGA(toolboxFolder,c3dFolder,Module)
 
 % =========================================================================
 % Initialisation
@@ -33,8 +33,8 @@ disp(' ');
 % =========================================================================
 Patient = [];
 Pathology = [];
-Treatment = [];
 Examination = [];
+Treatment = [];
 Session = [];
 Condition = [];
 
@@ -44,15 +44,6 @@ Condition = [];
 disp('>> Import session information ...');
 [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
     importSessionInformation(Patient,Pathology,Treatment,Examination,Session,Condition,c3dFolder);
-disp(['  > Patient: ',Patient.lastname,' ',Patient.firstname,' ',Patient.birthdate]);
-disp(['  > Session: ',Session.date]);
-disp(' ');
-
-% =========================================================================
-% Import clinical examination
-% =========================================================================
-disp('>> Import clinical examination ...');
-Examination = importClinicalExamination(Examination,c3dFolder);
 disp(['  > Patient: ',Patient.lastname,' ',Patient.firstname,' ',Patient.birthdate]);
 disp(['  > Session: ',Session.date]);
 disp(' ');
@@ -132,8 +123,7 @@ for i = 1:length(Session.conditions)
     
     % ---------------------------------------------------------------------
     % Trial
-    % ---------------------------------------------------------------------
-    
+    % ---------------------------------------------------------------------    
     % Set the maximum values through the trial of a condition for EMGs
     % ---------------------------------------------------------------------
     MaxEMG = [];
@@ -238,48 +228,3 @@ for i = 1:length(Session.conditions)
     system(['C:\ProgramData\Mokka\Mokka.exe -c ',toolboxFolder,'\LWBM_model.mvc -p ',filename]);
     cd(toolboxFolder);
 end
-
-
-
- 
-%     if Module.statistics_PLUGIN == 1
-%         [Session,Condition(i)] = statistics_PLUGIN(Session,Condition(i));
-%     end       
-% 
-%     % Export condition in .mat file
-%     % ---------------------------------------------------------------------
-%     cd(matFolder);
-%     temp = Condition;
-%     Condition = Condition(i);
-%     save([regexprep(Patient.birthdate,' ','_'),'_',...
-%         regexprep(Patient.lastname,' ','_'),'_',...
-%         regexprep(Patient.firstname,' ','_'),'_',...
-%         regexprep(Condition.name,' ','_') ,'.mat'],...
-%         'Patient','Session','Condition','Module');
-%     Condition = temp;
-%     cd(toolboxFolder);
-%     disp('  > Condition saved');
-%     disp(' ');         
-% end    
-% 
-% % =========================================================================
-% % Store all information in the MySQL database
-% % =========================================================================
-% if Module.database_PLUGIN == 1
-%     cd(toolboxFolder);
-%     % Connect to the correct database
-%     javaaddpath([pwd,'\toolbox\queryMySQL\lib\mysql-connector-java-5.1.6\mysql-connector-java-5.1.6-bin.jar']);
-%     db = MySQLDatabase('bddlabo.rehazenter.local', 'bddaqm_v1', 'labomarche', 'qualisys');
-%     % Store information
-%     sqlStorePatient(Patient,db);
-%     sqlStorePathology(Patient,Pathology,db);
-%     sqlStoreSession(Patient,Session,db);
-%     sqlStoreTreatment(Patient,Session,Treatment,db);
-% %     sqlStoreExamination(Patient,Session,Examination,db);
-%     sqlStoreCondition(Patient,Session,db);
-%     % Close database
-%     db.close();
-%     disp('>> Database updated!');
-% end
-% disp(' ');
-% disp('>> Process achieved. Thanks for having used our toolbox!');
