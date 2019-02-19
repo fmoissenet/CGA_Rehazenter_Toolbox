@@ -25,23 +25,26 @@ for j = 1:length(nAnalog)
         % Band-pass filter (Butterworth 4nd order, 30-300 Hz)
         [B,A] = butter(4,[30/(fAnalog/2) 300/(fAnalog/2)],'bandpass');
         Analog2.(nAnalog{j}) = filtfilt(B, A, Analog2.(nAnalog{j}));
-        % Interpolate to number of marker frames
-        x = 1:length(Analog2.(nAnalog{j}));
-        xx = linspace(1,length(Analog2.(nAnalog{j})),n);
-        temp = Analog2.(nAnalog{j});
-        Analog2.(nAnalog{j}) = [];
-        Analog2.(nAnalog{j}) = (interp1(x,temp,xx,'spline'))';
+%         % Interpolate to number of marker frames
+%         x = 1:length(Analog2.(nAnalog{j}));
+%         xx = linspace(1,length(Analog2.(nAnalog{j})),n);
+%         temp = Analog2.(nAnalog{j});
+%         Analog2.(nAnalog{j}) = [];
+%         Analog2.(nAnalog{j}) = (interp1(x,temp,xx,'spline'))';
         % Keep only cycle data (keep 5 frames before and after first and last
         % event) & Zeroing low signals
         events = round(sort([Event.RHS,Event.RTO,Event.LHS,Event.LTO])*fMarker)-...
             n0+1;
+        temp = size(Analog2.(nAnalog{j})...
+            ((events(1))*fAnalog/fMarker:(events(end))*fAnalog/fMarker,:),1);
+        extra = (btkGetAnalogFrameNumber(btk2) - temp)/2;
         if max(Analog2.(nAnalog{j})) > 1e-6
             Analog2.(nAnalog{j}) = Analog2.(nAnalog{j})...
-                (events(1)-5:events(end)+5,:);
+                (events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:);
         else
             Analog2.(nAnalog{j}) = NaN(size(Analog2.(nAnalog{j})...
-                (events(1)-5:events(end)+5,:)));
-        end
+                (events(1)*fAnalog/fMarker-extra:events(end)*fAnalog/fMarker+extra,:)));
+        end        
     end
 end
 % Export EMG signals

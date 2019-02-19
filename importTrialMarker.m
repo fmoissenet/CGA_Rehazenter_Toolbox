@@ -10,7 +10,7 @@
 % Version: 1
 % =========================================================================
 
-function [Marker,btk2] = importTrialMarker(Marker,Event,n0,fMarker)
+function [Marker,btk2] = importTrialMarker(Marker,Event,n0,fMarker,fAnalog)
 
 nMarker = fieldnames(Marker);
 tMarker = [];
@@ -41,7 +41,7 @@ for j = 1:size(nMarker,1)
     if j == 1
         btk2 = btkNewAcquisition(size(nMarker,1),length(Marker.(nMarker{j})));
         btkSetFrequency(btk2,fMarker);
-        btkSetAnalogSampleNumberPerFrame(btk2,1);
+        btkSetAnalogSampleNumberPerFrame(btk2,fAnalog/fMarker);
     end
     btkSetPoint(btk2,j,Marker.(nMarker{j}));
     btkSetPointLabel(btk2,j,nMarker{j})
