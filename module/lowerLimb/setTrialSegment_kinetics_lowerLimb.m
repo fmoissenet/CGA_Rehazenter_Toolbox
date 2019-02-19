@@ -225,8 +225,12 @@ elseif direction == 2 % -X
     end
 end
 % Set joint parameters
-Joint(1).F = -F1;
-Joint(1).M = -M1;
+temp1 = permute(-F1,[3,1,2]);
+temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
+Joint(1).F = permute(temp2,[2,3,1]);
+temp1 = permute(-M1,[3,1,2]);
+temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
+Joint(1).M = permute(temp2,[2,3,1]);
 
 % =========================================================================
 % LEFT PELVIS
@@ -438,8 +442,12 @@ elseif direction == 2 % -X
     end
 end
 % Set joint parameters
-Joint(101).F = -F101;
-Joint(101).M = -M101;
+temp1 = permute(-F101,[3,1,2]);
+temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
+Joint(101).F = permute(temp2,[2,3,1]);
+temp1 = permute(-M101,[3,1,2]);
+temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
+Joint(101).M = permute(temp2,[2,3,1]);
 
 % =========================================================================
 % Set inertial parameters for all segments

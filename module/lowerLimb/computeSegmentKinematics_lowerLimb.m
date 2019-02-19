@@ -36,7 +36,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'angle');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Segment(5).FE,[3,2,1]) ...
     permute(Segment(5).AA,[3,2,1]) ...
     permute(Segment(5).IER,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'Pelvis_angle');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'Pelvis_Angle');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: Tup(+)/Tdw, Y-Axis: Oup(+)/Odw, Z-Axis: IR(+)/ER');
 
 % =========================================================================
@@ -59,7 +59,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'angle');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Segment(2).FE,[3,2,1]) ...
     permute(-Segment(2).IER,[3,2,1]) ...
     permute(Segment(2).AA,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Foot_angle');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Foot_Angle');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: Tup(+)/Tdw, Y-Axis: Val(+)/Var, Z-Axis: IR(+)/ER');
 
 % =========================================================================
@@ -82,5 +82,5 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'angle');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Segment(102).FE,[3,2,1]) ...
     permute(Segment(102).IER,[3,2,1]) ...
     permute(-Segment(102).AA,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Foot_angle');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Foot_Angle');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: Tup(+)/Tdw, Y-Axis: Val(+)/Var, Z-Axis: IR(+)/ER');

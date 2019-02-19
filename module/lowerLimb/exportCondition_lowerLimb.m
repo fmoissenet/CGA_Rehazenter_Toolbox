@@ -163,32 +163,46 @@ Output.Dynamics.L_Hip_Moment_IER = interp1(L_k,...
 % -------------------------------------------------------------------------
 nEMG = fieldnames(EMG);
 for i = 1:size(nEMG,1)
-    temp = EMG.(nEMG{i}).signal(:,:,Event.RHS(1):Event.RHS(2));
-    if sum(isnan(temp)) ~= size(isnan(temp),1)
-        Output.EMG.([nEMG{i},'_signal']) = permute(temp,[2,3,1]);
-    else
-        Output.EMG.([nEMG{i},'_signal']) = NaN(1,1,101);
-    end    
-    temp = EMG.(nEMG{i}).envelop(:,:,Event.RHS(1):Event.RHS(2));
-    if sum(isnan(temp)) ~= size(isnan(temp),1)
-        Output.EMG.([nEMG{i},'_envelop']) = interp1(R_k,permute(temp,[2,3,1]),R_ko,'spline');
-    else
-        Output.EMG.([nEMG{i},'_envelop']) = NaN(1,1,101);
+    % Right gait cycle
+    if strfind(nEMG{i},'R_')
+        temp = EMG.(nEMG{i}).signal(:,:,Event.RHS(1):Event.RHS(2));
+        if sum(isnan(temp)) ~= size(isnan(temp),1)
+            Output.EMG.([nEMG{i},'_signal']) = permute(temp,[2,3,1]);
+        else
+            Output.EMG.([nEMG{i},'_signal']) = NaN(1,1,101);
+        end    
+        temp = EMG.(nEMG{i}).envelop(:,:,Event.RHS(1):Event.RHS(2));
+        if sum(isnan(temp)) ~= size(isnan(temp),1)
+            Output.EMG.([nEMG{i},'_envelop']) = interp1(R_k,permute(temp,[2,3,1]),R_ko,'spline');
+        else
+            Output.EMG.([nEMG{i},'_envelop']) = NaN(1,1,101);
+        end
+    end
+    % Right gait cycle
+    if strfind(nEMG{i},'L_')
+        temp = EMG.(nEMG{i}).signal(:,:,Event.LHS(1):Event.LHS(2));
+        if sum(isnan(temp)) ~= size(isnan(temp),1)
+            Output.EMG.([nEMG{i},'_Signal']) = permute(temp,[2,3,1]);
+        else
+            Output.EMG.([nEMG{i},'_Signal']) = NaN(1,1,101);
+        end    
+        temp = EMG.(nEMG{i}).envelop(:,:,Event.LHS(1):Event.LHS(2));
+        if sum(isnan(temp)) ~= size(isnan(temp),1)
+            Output.EMG.([nEMG{i},'_Envelop']) = interp1(R_k,permute(temp,[2,3,1]),R_ko,'spline');
+        else
+            Output.EMG.([nEMG{i},'_Envelop']) = NaN(1,1,101);
+        end
     end
 end
 
 % -------------------------------------------------------------------------
-% Event
+% Events
 % -------------------------------------------------------------------------
-Output.Event.RHS = (Event.RHS-Event.RHS(1)+1)*100/(Event.RHS(2)-Event.RHS(1)+1);
-Output.Event.RTO = (Event.RTO-Event.RHS(1)+1)*100/(Event.RHS(2)-Event.RHS(1)+1);
-Output.Event.LHS = (Event.LHS-Event.RHS(1)+1)*100/(Event.RHS(2)-Event.RHS(1)+1);
-Output.Event.LTO = (Event.LTO-Event.RHS(1)+1)*100/(Event.RHS(2)-Event.RHS(1)+1);
-
-% -------------------------------------------------------------------------
-% Event
-% -------------------------------------------------------------------------
-Output.Lstride.Event.RHS = (Event.RHS-Event.LHS(1)+1)*100/(Event.LHS(2)-Event.LHS(1)+1);
-Output.Lstride.Event.RTO = (Event.RTO-Event.LHS(1)+1)*100/(Event.LHS(2)-Event.LHS(1)+1);
-Output.Lstride.Event.LHS = (Event.LHS-Event.LHS(1)+1)*100/(Event.LHS(2)-Event.LHS(1)+1);
-Output.Lstride.Event.LTO = (Event.LTO-Event.LHS(1)+1)*100/(Event.LHS(2)-Event.LHS(1)+1);
+Output.Event.R_RHS = (Event.RHS-Event.RHS(1)+1)*100/(Event.RHS(2)-Event.RHS(1)+1);
+Output.Event.R_RTO = (Event.RTO-Event.RHS(1)+1)*100/(Event.RHS(2)-Event.RHS(1)+1);
+Output.Event.R_LHS = (Event.LHS-Event.RHS(1)+1)*100/(Event.RHS(2)-Event.RHS(1)+1);
+Output.Event.R_LTO = (Event.LTO-Event.RHS(1)+1)*100/(Event.RHS(2)-Event.RHS(1)+1);
+Output.Event.L_RHS = (Event.RHS-Event.LHS(1)+1)*100/(Event.LHS(2)-Event.LHS(1)+1);
+Output.Event.L_RTO = (Event.RTO-Event.LHS(1)+1)*100/(Event.LHS(2)-Event.LHS(1)+1);
+Output.Event.L_LHS = (Event.LHS-Event.LHS(1)+1)*100/(Event.LHS(2)-Event.LHS(1)+1);
+Output.Event.L_LTO = (Event.LTO-Event.LHS(1)+1)*100/(Event.LHS(2)-Event.LHS(1)+1);

@@ -25,12 +25,6 @@ for j = 1:length(nAnalog)
         % Band-pass filter (Butterworth 4nd order, 30-300 Hz)
         [B,A] = butter(4,[30/(fAnalog/2) 300/(fAnalog/2)],'bandpass');
         Analog2.(nAnalog{j}) = filtfilt(B, A, Analog2.(nAnalog{j}));
-%         % Interpolate to number of marker frames
-%         x = 1:length(Analog2.(nAnalog{j}));
-%         xx = linspace(1,length(Analog2.(nAnalog{j})),n);
-%         temp = Analog2.(nAnalog{j});
-%         Analog2.(nAnalog{j}) = [];
-%         Analog2.(nAnalog{j}) = (interp1(x,temp,xx,'spline'))';
         % Keep only cycle data (keep 5 frames before and after first and last
         % event) & Zeroing low signals
         events = round(sort([Event.RHS,Event.RTO,Event.LHS,Event.LTO])*fMarker)-...
@@ -72,8 +66,8 @@ for j = 1:length(nAnalog)
         Analog.(nAnalog{j}) = filtfilt(B, A, Analog.(nAnalog{j}));
         % Rectification (absolute value of the signal)
         Analog.(nAnalog{j}) = abs(Analog.(nAnalog{j}));
-        % Low pass filter (Butterworth 4nd order, 15 Hz)
-        [B,A] = butter(4,15/(fAnalog/2),'low');
+        % Low pass filter (Butterworth 4nd order, 10 Hz)
+        [B,A] = butter(4,10/(fAnalog/2),'low');
         Analog.(nAnalog{j}) = filtfilt(B, A, Analog.(nAnalog{j}));
         % Interpolate to number of marker frames
         x = 1:length(Analog.(nAnalog{j}));
