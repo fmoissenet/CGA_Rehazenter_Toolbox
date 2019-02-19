@@ -10,12 +10,27 @@
 % Version: 1
 % =========================================================================
 
-function [Marker,btk2] = importTrialMarker(Marker,Event,n0,fMarker)
+function [Marker,btk2] = importTrialMarker(Marker,Event,n0,fMarker,fAnalog)
 
 nMarker = fieldnames(Marker);
-[B,A] = butter(4,6/(fMarker/2),'low');
+tMarker = [];
+for j = 1:size(nMarker,1)    
+    % Replace [0 0 0] by NaN
+    for i = 1:size(Marker.(nMarker{j}),1)
+        if Marker.(nMarker{j})(i,:) == [0 0 0]
+           Marker.(nMarker{j})(i,:) = nan(1,3);
+        end
+    end
+    % Merge marker data for interpolation
+    tMarker = [tMarker Marker.(nMarker{j})];
+end
+% Interpolate data
+tMarker = PredictMissingMarkers(tMarker);
 for j = 1:size(nMarker,1)
+    % Extract interpolated data
+    Marker.(nMarker{j}) = tMarker(:,(3*j)-2:3*j);
     % Low pass filter (Butterworth 4nd order, 6 Hz)
+    [B,A] = butter(4,6/(fMarker/2),'low');
     Marker.(nMarker{j}) = filtfilt(B,A,Marker.(nMarker{j}));
     % Keep only cycle data (keep 5 frames before and after first and last
     % event)
@@ -26,7 +41,7 @@ for j = 1:size(nMarker,1)
     if j == 1
         btk2 = btkNewAcquisition(size(nMarker,1),length(Marker.(nMarker{j})));
         btkSetFrequency(btk2,fMarker);
-        btkSetAnalogSampleNumberPerFrame(btk2,1);
+        btkSetAnalogSampleNumberPerFrame(btk2,fAnalog/fMarker);
     end
     btkSetPoint(btk2,j,Marker.(nMarker{j}));
     btkSetPointLabel(btk2,j,nMarker{j})
