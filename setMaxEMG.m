@@ -14,7 +14,9 @@ function MaxEMG = setMaxEMG(Session,Analog,MaxEMG,n,fAnalog)
 
 nAnalog = fieldnames(Analog);
 for j = 1:length(nAnalog)
-    if strfind(nAnalog{j},'EMG_')
+    if ~isempty(strfind(nAnalog{j},'EMG_')) || ...
+       ~isempty(strfind(nAnalog{j},'Right_')) || ...
+       ~isempty(strfind(nAnalog{j},'Left_'))
         % Rebase (remove signal mean)
         temp = Analog.(nAnalog{j}) - mean(Analog.(nAnalog{j}));
         % Band-pass filter (Butterworth 2nd order, 30-300 Hz)
@@ -45,13 +47,9 @@ for j = 1:length(nAnalog)
 end
 % Rename fields with muscle names
 nMaxEMG = fieldnames(MaxEMG);
-for i = 1:length(nMaxEMG)
-    for j = 1:16
-        if strcmp(nMaxEMG{i},['EMG_',num2str(j)])
-            if ~strcmp(Session.EMG{j},'none')
-                MaxEMG.(Session.EMG{j}).data = MaxEMG.(nMaxEMG{i}).data;
-                MaxEMG = rmfield(MaxEMG,nMaxEMG{i});
-            end
-        end
+for i = 1:16
+    if ~strcmp(Session.EMG{i},'none')
+        MaxEMG.(Session.EMG{i}).data = MaxEMG.(nMaxEMG{i}).data;
+        MaxEMG = rmfield(MaxEMG,nMaxEMG{i});
     end
 end

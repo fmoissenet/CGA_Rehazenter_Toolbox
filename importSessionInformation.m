@@ -11,17 +11,17 @@
 % =========================================================================
 
 function [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
-    importSessionInformation(Patient,Pathology,Treatment,Examination,Session,Condition,c3dFolder)
+    importSessionInformation(Patient,Pathology,Treatment,Examination,Session,Condition,sessionFolder)
 
 % =========================================================================
 % Load session information file
 % =========================================================================
-cd(c3dFolder);
+cd(sessionFolder);
 filename = dir('*.xlsm');
 Excel = actxserver('Excel.Application');
-Excel.Workbooks.Open([c3dFolder,'\',filename(1).name]);
+Excel.Workbooks.Open([sessionFolder,'\',filename(1).name]);
 Excel.Workbooks.Item(filename(1).name).RunAutoMacros(1);
-File =  [c3dFolder,'\',filename(1).name];
+File =  [sessionFolder,'\',filename(1).name];
 if ~exist(File,'file')
     ExcelWorkbook = Excel.Workbooks.Add;
     ExcelWorkbook.SaveAs(File,1);

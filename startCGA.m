@@ -13,24 +13,12 @@
 % =========================================================================
 
 function [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
-    startCGA(toolboxFolder,c3dFolder,Module)
-
-% =========================================================================
-% Initialisation
-% =========================================================================
-cd(toolboxFolder);
-disp('Loading selected modules ...');
-names = fieldnames(Module);
-for i = 1:length(names)
-    if Module.(names{i}) == 1
-        disp(['[MODULE ',names{i},']']);
-    end
-end
-disp(' ');
+    startCGA(toolboxFolder,sessionFolder,patientFolder)
 
 % =========================================================================
 % Initialise structures
 % =========================================================================
+cd(toolboxFolder);
 Patient = [];
 Pathology = [];
 Examination = [];
@@ -43,7 +31,7 @@ Condition = [];
 % =========================================================================
 disp('>> Import session information ...');
 [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
-    importSessionInformation(Patient,Pathology,Treatment,Examination,Session,Condition,c3dFolder);
+    importSessionInformation(Patient,Pathology,Treatment,Examination,Session,Condition,sessionFolder);
 disp(['  > Patient: ',Patient.lastname,' ',Patient.firstname,' ',Patient.birthdate]);
 disp(['  > Session: ',Session.date]);
 disp(' ');
@@ -52,7 +40,7 @@ disp(' ');
 % Import clinical examination
 % =========================================================================
 disp('>> Import clinical examination ...');
-Examination = importClinicalExamination(Examination,c3dFolder);
+Examination = importClinicalExamination(Examination,sessionFolder);
 disp(['  > Patient: ',Patient.lastname,' ',Patient.firstname,' ',Patient.birthdate]);
 disp(['  > Session: ',Session.date]);
 disp(' ');
@@ -64,7 +52,7 @@ disp(' ');
 % .xlsx file (staticXX, videoXX, trialXX)
 % =========================================================================
 disp('>> Load session files ...');
-cd(c3dFolder);
+cd(sessionFolder);
 % Load static file (.c3d) - 1 static per condition
 if isfield(Session,'Static')
     for i = 1:length(Session.Static)
@@ -86,7 +74,7 @@ disp(' ');
 % Data treatment of each trial of each condition
 % =========================================================================
 disp(['>> ',num2str(length(Session.conditions)),' condition(s) detected ...']);  
-for i = 1:length(Session.conditions)
+for i = 1%:length(Session.conditions)
     disp(['  > Condition ',Session.conditions{i}]);
     cd(toolboxFolder);
     
@@ -120,7 +108,7 @@ for i = 1:length(Session.conditions)
             % Compute leg length
             Session = setLegLength_lowerLimb(Session,Marker);
             % Export processed files
-            cd(c3dFolder);
+            cd(sessionFolder);
             btkWriteAcquisition(btk2,[strrep(Session.Static(j).filename,'.c3d',''),'_out.c3d']);
             cd(toolboxFolder);
         end
@@ -204,7 +192,7 @@ for i = 1:length(Session.conditions)
                 [Segment,Joint,btk2] = computeJointKinetics_lowerLimb(Session,Segment,Joint,fMarker,btk2);
                 % Store data in Condition (keep only intra cycle data)
                 Condition(i).Trial(k).LowerLimb = ...
-                    exportCondition_lowerLimb(Condition(i).Trial(k).LowerLimb,Segment,Joint,Marker,Vmarker,EMG,Event,Spatiotemporal,fMarker);
+                    exportCondition_lowerLimb(Condition(i).Trial(k).LowerLimb,Segment,Joint,Marker,Vmarker,EMG,Event,Spatiotemporal,fMarker);        
             end
             
             % Upper limb kinematic chain
@@ -218,22 +206,40 @@ for i = 1:length(Session.conditions)
                         
             % Export processed files
             % -------------------------------------------------------------
-            cd(c3dFolder);
+            cd(sessionFolder);
             btkWriteAcquisition(btk2,[strrep(Session.Trial(j).filename,'.c3d',''),'_out.c3d']);   
-%             system(['C:\ProgramData\Mokka\Mokka.exe -c ',toolboxFolder,'\LWBM_model.mvc -p ',strrep(Session.Trial(j).filename,'.c3d',''),'_out.c3d']);
-            cd(toolboxFolder);
-            
-            % Merge files of a same condition
-            % -------------------------------------------------------------
-            cd(c3dFolder);
-            writeConditionC3d(Session,Condition(i),btk2,Session.Trial(j).filename,k);
+            clear btk2 Marker Vmarker Analog Event Forceplate tGrf Grf Segment Joint Spatiotemporal;
             cd(toolboxFolder);
             k = k+1;
         end
     end 
-    cd(c3dFolder);
-    filename = [Patient.lastname,'_',Patient.firstname,'_',regexprep(Patient.birthdate,'/',''),'_',Condition.name,'_',regexprep(Session.date,'/','')];
-    system(['ren temp.c3d ',filename,'.c3d']);
-    save([filename,'.mat']);
+
+    % Export data per condition (augmented with mean and std values)
+    % ---------------------------------------------------------------------
+    % Spatiotemporal parameters
+    nfield1 = fieldnames(Condition(1).Trial(1).LowerLimb.Spatiotemporal);
+    for nf1 = 1:length(nfield1)
+        ndata = [];
+        for ntrial = 1:size(Condition(i).Trial,2)
+            if ~isnan(Condition(i).Trial(ntrial).LowerLimb.Spatiotemporal.(nfield1{nf1}))
+                if ~isempty(Condition(i).Trial(ntrial).LowerLimb.Spatiotemporal.(nfield1{nf1}))
+                    ndata = [ndata Condition(i).Trial(ntrial).LowerLimb.Spatiotemporal.(nfield1{nf1})];
+                end
+            end
+        end
+        Condition(i).Average.LowerLimb.Spatiotemporal.(nfield1{nf1}).mean = mean(ndata);
+        Condition(i).Average.LowerLimb.Spatiotemporal.(nfield1{nf1}).std = std(ndata);
+    end
+    % Right stride joint kinematics
+    % Right stride segment kinematics
+    % Right stride dynamics
+    % Right stride EMG
+    % Right stride events
+    
+    cd(patientFolder);
+    filename = [Patient.lastname,'_',Patient.firstname,'_',regexprep(Patient.birthdate,'/',''),'_',Condition(i).name,'_',regexprep(Session.date,'/','')];
+    tCondition = Condition; clear Condition; Condition = tCondition(i);
+    save([filename,'.mat'],'Patient','Pathology','Treatment','Examination','Session','Condition');
+    clear Condition; Condition = tCondition; clear tCondition;
     cd(toolboxFolder);
 end

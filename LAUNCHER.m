@@ -46,21 +46,10 @@ disp(' ');
 % =========================================================================
 % Set patient folder
 % =========================================================================
-c3dFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\routines\github\CGA_Rehazenter_Toolbox\example';
-matFolder = c3dFolder;
-
-% =========================================================================
-% Active modules % 0: inactive | 1: active
-% =========================================================================
-% Kinematic chains
-Module.lowerLimb = 1;
-Module.upperLimb = 0;
-Module.foot = 0;
+sessionFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\publications\articles\2- soumis\Schreiber - A multimodal dataset of human gait at different walking speeds\data\2014001';
+patientFolder = sessionFolder;
 
 % =========================================================================
 % Start Clinical Gait Analysis
 % =========================================================================
-startCGA(toolboxFolder,c3dFolder,Module);
-% if Setting.report == 1
-%     report_PLUGIN();
-% end
+startCGA(toolboxFolder,sessionFolder,patientFolder);
