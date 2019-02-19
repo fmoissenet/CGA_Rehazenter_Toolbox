@@ -17,7 +17,7 @@ function [EMG,btk2] = importTrialEMG(Session,Analog,Event,MaxEMG,btk2,n0,n,fMark
 % =========================================================================
 nAnalog = fieldnames(Analog);
 for j = 1:length(nAnalog)
-    if strfind(nAnalog{j},'Right_')
+    if strfind(nAnalog{j},'EMG_')%strfind(nAnalog{j},'Right_')
         % Rebase (remove signal mean)
         Analog2.(nAnalog{j}) = Analog.(nAnalog{j}) - mean(Analog.(nAnalog{j}));
         % Band-pass filter (Butterworth 4nd order, 30-300 Hz)
@@ -49,13 +49,13 @@ end
 % Export EMG signals (manage if a channel as been removed in the hardware
 % for maintenance reasons)
 nAnalog2 = fieldnames(Analog2);
-for i = 1:length(nAnalog2)
+for i = 9:length(nAnalog2)%1:length(nAnalog2)
 %     for j = 9:16
 %         if strcmp(nAnalog2{i},['Right_',num2str(j)])
 %             if ~strcmp(Session.EMG{j},'none')
-                btkAppendAnalog(btk2,Session.EMG{i+8},...
+                btkAppendAnalog(btk2,Session.EMG{i},...%btkAppendAnalog(btk2,Session.EMG{i+8},...
                     Analog2.(nAnalog2{i}),'EMG signal (V)');
-                EMG.(Session.EMG{i+8}).signal = permute(Analog2.(nAnalog2{i}),[2,3,1]);
+                EMG.(Session.EMG{i}).signal = permute(Analog2.(nAnalog2{i}),[2,3,1]);%EMG.(Session.EMG{i+8}).signal = permute(Analog2.(nAnalog2{i}),[2,3,1]);
 %             end
 %         end
 %     end
