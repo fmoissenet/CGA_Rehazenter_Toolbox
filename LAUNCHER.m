@@ -60,7 +60,7 @@ Module.foot = 0;
 % =========================================================================
 % Start Clinical Gait Analysis
 % =========================================================================
-startCGA(toolboxFolder,c3dFolder,matFolder,Module);
+startCGA(toolboxFolder,c3dFolder,Module);
 % if Setting.report == 1
 %     report_PLUGIN();
 % end

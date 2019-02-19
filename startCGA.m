@@ -225,6 +225,7 @@ for i = 1:length(Session.conditions)
     cd(c3dFolder);
     filename = [Patient.lastname,'_',Patient.firstname,'_',regexprep(Patient.birthdate,'/',''),'_',Condition.name,'_',regexprep(Session.date,'/',''),'.c3d'];
     system(['ren temp.c3d ',filename]);
+    save([filename,'.mat']);
     system(['C:\ProgramData\Mokka\Mokka.exe -c ',toolboxFolder,'\LWBM_model.mvc -p ',filename]);
     cd(toolboxFolder);
 end

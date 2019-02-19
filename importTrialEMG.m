@@ -20,8 +20,8 @@ for j = 1:length(nAnalog)
     if strfind(nAnalog{j},'EMG_')
         % Rebase (remove signal mean)
         Analog2.(nAnalog{j}) = Analog.(nAnalog{j}) - mean(Analog.(nAnalog{j}));
-        % Band-pass filter (Butterworth 2nd order, 30-300 Hz)
-        [B,A] = butter(2,[30/(fAnalog/2) 300/(fAnalog/2)],'bandpass');
+        % Band-pass filter (Butterworth 4nd order, 30-300 Hz)
+        [B,A] = butter(4,[30/(fAnalog/2) 300/(fAnalog/2)],'bandpass');
         Analog2.(nAnalog{j}) = filtfilt(B, A, Analog2.(nAnalog{j}));
         % Interpolate to number of marker frames
         x = 1:length(Analog2.(nAnalog{j}));
@@ -30,10 +30,9 @@ for j = 1:length(nAnalog)
         Analog2.(nAnalog{j}) = [];
         Analog2.(nAnalog{j}) = (interp1(x,temp,xx,'spline'))';
         % Keep only cycle data (keep 5 frames before and after first and last
-        % event)
+        % event) & Zeroing low signals
         events = round(sort([Event.RHS,Event.RTO,Event.LHS,Event.LTO])*fMarker)-...
             n0+1;
-        % Zeroing of low signals
         if max(Analog2.(nAnalog{j})) > 1e-6
             Analog2.(nAnalog{j}) = Analog2.(nAnalog{j})...
                 (events(1)-5:events(end)+5,:);
@@ -71,8 +70,8 @@ for j = 1:length(nAnalog)
         Analog.(nAnalog{j}) = filtfilt(B, A, Analog.(nAnalog{j}));
         % Rectification (absolute value of the signal)
         Analog.(nAnalog{j}) = abs(Analog.(nAnalog{j}));
-        % Low pass filter (Butterworth 2nd order, 50 Hz)
-        [B,A] = butter(2,50/(fAnalog/2),'low');
+        % Low pass filter (Butterworth 4nd order, 15 Hz)
+        [B,A] = butter(4,15/(fAnalog/2),'low');
         Analog.(nAnalog{j}) = filtfilt(B, A, Analog.(nAnalog{j}));
         % Interpolate to number of marker frames
         x = 1:length(Analog.(nAnalog{j}));
@@ -81,7 +80,7 @@ for j = 1:length(nAnalog)
         Analog.(nAnalog{j}) = [];
         Analog.(nAnalog{j}) = (interp1(x,temp,xx,'spline'))';
         % Keep only cycle data (keep 5 frames before and after first and last
-        % event)
+        % event) & Zeroing low signals
         events = round(sort([Event.RHS,Event.RTO,Event.LHS,Event.LTO])*fMarker)-...
             n0+1;
         if max(Analog.(nAnalog{j})) > 1e-6
@@ -93,8 +92,7 @@ for j = 1:length(nAnalog)
         end
     end
 end
-% Normalise by condition max and export EMG signals (manage if a channel as
-% been removed in the hardware for maintenance reasons)
+% Normalise by condition max and export EMG signals
 nAnalog2 = fieldnames(Analog2);
 for i = 1:length(nAnalog2)
     for j = 1:16

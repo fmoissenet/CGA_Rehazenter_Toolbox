@@ -66,6 +66,7 @@ Treatment.treatment6date = temp1{21,8};                                    % Pre
 % =========================================================================
 % Get session information
 % =========================================================================
+Session.age = [];                                                          % Patient age, based on session year
 Session.weight = temp1{5,2};                                               % Patient weight (kg)
 Session.height = temp1{6,2}*1e-2;                                          % Patient height (m)
 Session.R_legLength = [];
@@ -82,6 +83,8 @@ else
 end
 if ~isnan(temp1{26,2})
     Session.date = temp1{26,2};                                            % Date
+    Session.age = str2num(Session.date(7:10)) - ...
+                  str2num(Patient.birthdate(7:10));
 else
     Session.date = '';
 end
