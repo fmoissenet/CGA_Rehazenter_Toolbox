@@ -11,7 +11,7 @@
 % Version: 1
 % =========================================================================
 
-function Output = exportCondition_lowerLimb(Output,Segment,Joint,Marker,Vmarker,EMG,Event,Spatiotemporal,fMarker,fAnalog)
+function Output = exportCondition_lowerLimb(Output,Segment,Joint,EMG,Event,Spatiotemporal,fMarker,fAnalog)
 
 % =========================================================================
 % Initialisation
@@ -166,73 +166,193 @@ end
 % Segment kinematics
 % =========================================================================
 % Right gait cycle
-Output.Segmentkinematics.R_Foot_Angle_FE = interp1(R_k,...
-    permute(Segment(2).FE(1,1,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Segmentkinematics.R_Foot_Angle_AA = interp1(R_k,...
-    permute(Segment(2).AA(1,1,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Segmentkinematics.R_Foot_Angle_IER = interp1(R_k,...
+if sum(isnan(Segment(2).FE)) ~= size(isnan(Segment(2).FE),1)
+    Output.Segmentkinematics.R_Foot_Angle_FE = interp1(R_k,...
+        permute(Segment(2).FE(1,1,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Segmentkinematics.R_Foot_Angle_FE = NaN(101,1);
+end
+if sum(isnan(Segment(2).AA)) ~= size(isnan(Segment(2).AA),1)
+    Output.Segmentkinematics.R_Foot_Angle_AA = interp1(R_k,...
+        permute(Segment(2).AA(1,1,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Segmentkinematics.R_Foot_Angle_AA = NaN(101,1);
+end
+if sum(isnan(Segment(2).IER)) ~= size(isnan(Segment(2).IER),1)
+    Output.Segmentkinematics.R_Foot_Angle_IER = interp1(R_k,...
     permute(Segment(2).IER(1,1,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Segmentkinematics.R_Pelvis_Angle_FE = interp1(R_k,...
+else
+    Output.Segmentkinematics.R_Foot_Angle_IER = NaN(101,1);
+end
+if sum(isnan(Segment(5).FE)) ~= size(isnan(Segment(5).FE),1)
+    Output.Segmentkinematics.R_Pelvis_Angle_FE = interp1(R_k,...
     permute(Segment(5).FE(1,1,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Segmentkinematics.R_Pelvis_Angle_AA = interp1(R_k,...
+else
+    Output.Segmentkinematics.R_Pelvis_Angle_FE = NaN(101,1);
+end
+if sum(isnan(Segment(5).AA)) ~= size(isnan(Segment(5).AA),1)
+    Output.Segmentkinematics.R_Pelvis_Angle_AA = interp1(R_k,...
     permute(Segment(5).AA(1,1,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Segmentkinematics.R_Pelvis_Angle_IER = interp1(R_k,...
+else
+    Output.Segmentkinematics.R_Pelvis_Angle_AA = NaN(101,1);
+end
+if sum(isnan(Segment(5).IER)) ~= size(isnan(Segment(5).IER),1)
+    Output.Segmentkinematics.R_Pelvis_Angle_IER = interp1(R_k,...
     permute(Segment(5).IER(1,1,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Segmentkinematics.R_Pelvis_Angle_IER = NaN(101,1);
+end
 % Left gait cycle
-Output.Segmentkinematics.L_Foot_Angle_FE = interp1(L_k,...
-    permute(Segment(102).FE(1,1,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Segmentkinematics.L_Foot_Angle_AA = interp1(L_k,...
-    permute(Segment(102).AA(1,1,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Segmentkinematics.L_Foot_Angle_IER = interp1(L_k,...
+if sum(isnan(Segment(102).FE)) ~= size(isnan(Segment(102).FE),1)
+    Output.Segmentkinematics.L_Foot_Angle_FE = interp1(L_k,...
+        permute(Segment(102).FE(1,1,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Segmentkinematics.L_Foot_Angle_FE = NaN(101,1);
+end
+if sum(isnan(Segment(102).AA)) ~= size(isnan(Segment(102).AA),1)
+    Output.Segmentkinematics.L_Foot_Angle_AA = interp1(L_k,...
+        permute(Segment(102).AA(1,1,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Segmentkinematics.L_Foot_Angle_AA = NaN(101,1);
+end
+if sum(isnan(Segment(102).IER)) ~= size(isnan(Segment(102).IER),1)
+    Output.Segmentkinematics.L_Foot_Angle_IER = interp1(L_k,...
     permute(Segment(102).IER(1,1,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Segmentkinematics.L_Pelvis_Angle_FE = interp1(L_k,...
-    permute(Segment(5).FE(1,1,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Segmentkinematics.L_Pelvis_Angle_AA = interp1(L_k,...
-    permute(Segment(5).AA(1,1,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Segmentkinematics.L_Pelvis_Angle_IER = interp1(L_k,...
-    permute(Segment(5).IER(1,1,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Segmentkinematics.L_Foot_Angle_IER = NaN(101,1);
+end
+if sum(isnan(Segment(105).FE)) ~= size(isnan(Segment(105).FE),1)
+    Output.Segmentkinematics.L_Pelvis_Angle_FE = interp1(L_k,...
+    permute(Segment(105).FE(1,1,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Segmentkinematics.L_Pelvis_Angle_FE = NaN(101,1);
+end
+if sum(isnan(Segment(105).AA)) ~= size(isnan(Segment(105).AA),1)
+    Output.Segmentkinematics.L_Pelvis_Angle_AA = interp1(L_k,...
+    permute(Segment(105).AA(1,1,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Segmentkinematics.L_Pelvis_Angle_AA = NaN(101,1);
+end
+if sum(isnan(Segment(105).IER)) ~= size(isnan(Segment(105).IER),1)
+    Output.Segmentkinematics.L_Pelvis_Angle_IER = interp1(L_k,...
+    permute(Segment(105).IER(1,1,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Segmentkinematics.L_Pelvis_Angle_IER = NaN(101,1);
+end
 
 % =========================================================================
 % Dynamics
 % =========================================================================
 % Right gait cycle
-Output.Dynamics.R_Ankle_Moment_FE = interp1(R_k,...
-    permute(Joint(2).Mj(1,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Dynamics.R_Ankle_Moment_AA = interp1(R_k,...
-    permute(Joint(2).Mj(3,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Dynamics.R_Ankle_Moment_IER = interp1(R_k,...
-    permute(Joint(2).Mj(2,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Dynamics.R_Knee_Moment_FE = interp1(R_k,...
-    permute(Joint(3).Mj(1,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Dynamics.R_Knee_Moment_AA = interp1(R_k,...
-    permute(Joint(3).Mj(2,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Dynamics.R_Knee_Moment_IER = interp1(R_k,...
-    permute(Joint(3).Mj(3,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Dynamics.R_Hip_Moment_FE = interp1(R_k,...
-    permute(Joint(4).Mj(1,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Dynamics.R_Hip_Moment_AA = interp1(R_k,...
-    permute(Joint(4).Mj(2,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
-Output.Dynamics.R_Hip_Moment_IER = interp1(R_k,...
-    permute(Joint(4).Mj(3,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+if sum(isnan(Joint(2).Mj(1,:,:))) ~= size(isnan(Joint(2).Mj(1,:,:)),3)
+    Output.Dynamics.R_Ankle_Moment_FE = interp1(R_k,...
+        permute(Joint(2).Mj(1,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Dynamics.R_Ankle_Moment_FE = NaN(101,1);
+end
+if sum(isnan(Joint(2).Mj(3,:,:))) ~= size(isnan(Joint(2).Mj(3,:,:)),3)
+    Output.Dynamics.R_Ankle_Moment_AA = interp1(R_k,...
+        permute(Joint(2).Mj(3,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Dynamics.R_Ankle_Moment_AA = NaN(101,1);
+end
+if sum(isnan(Joint(2).Mj(2,:,:))) ~= size(isnan(Joint(2).Mj(2,:,:)),3)
+    Output.Dynamics.R_Ankle_Moment_IER = interp1(R_k,...
+        permute(Joint(2).Mj(2,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Dynamics.R_Ankle_Moment_IER = NaN(101,1);
+end
+if sum(isnan(Joint(3).Mj(1,:,:))) ~= size(isnan(Joint(3).Mj(1,:,:)),3)
+    Output.Dynamics.R_Knee_Moment_FE = interp1(R_k,...
+        permute(Joint(3).Mj(1,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Dynamics.R_Knee_Moment_FE = NaN(101,1);
+end
+if sum(isnan(Joint(3).Mj(2,:,:))) ~= size(isnan(Joint(3).Mj(2,:,:)),3)
+    Output.Dynamics.R_Knee_Moment_AA = interp1(R_k,...
+        permute(Joint(3).Mj(2,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Dynamics.R_Knee_Moment_AA = NaN(101,1);
+end
+if sum(isnan(Joint(3).Mj(3,:,:))) ~= size(isnan(Joint(3).Mj(3,:,:)),3)
+    Output.Dynamics.R_Knee_Moment_IER = interp1(R_k,...
+        permute(Joint(3).Mj(3,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Dynamics.R_Knee_Moment_IER = NaN(101,1);
+end
+if sum(isnan(Joint(4).Mj(1,:,:))) ~= size(isnan(Joint(4).Mj(1,:,:)),3)
+    Output.Dynamics.R_Hip_Moment_FE = interp1(R_k,...
+        permute(Joint(4).Mj(1,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Dynamics.R_Hip_Moment_FE = NaN(101,1);
+end
+if sum(isnan(Joint(4).Mj(2,:,:))) ~= size(isnan(Joint(4).Mj(2,:,:)),3)
+    Output.Dynamics.R_Hip_Moment_AA = interp1(R_k,...
+        permute(Joint(4).Mj(2,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Dynamics.R_Hip_Moment_AA = NaN(101,1);
+end
+if sum(isnan(Joint(4).Mj(3,:,:))) ~= size(isnan(Joint(4).Mj(3,:,:)),3)
+    Output.Dynamics.R_Hip_Moment_IER = interp1(R_k,...
+        permute(Joint(4).Mj(3,:,mRHS(1):mRHS(2)),[3,1,2]),R_ko,'spline');
+else
+    Output.Dynamics.R_Hip_Moment_IER = NaN(101,1);
+end
 % Left gait cycle
-Output.Dynamics.L_Ankle_Moment_FE = interp1(L_k,...
-    permute(Joint(102).Mj(1,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Dynamics.L_Ankle_Moment_AA = interp1(L_k,...
-    permute(Joint(102).Mj(3,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Dynamics.L_Ankle_Moment_IER = interp1(L_k,...
-    permute(Joint(102).Mj(2,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Dynamics.L_Knee_Moment_FE = interp1(L_k,...
-    permute(Joint(103).Mj(1,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Dynamics.L_Knee_Moment_AA = interp1(L_k,...
-    permute(Joint(103).Mj(2,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Dynamics.L_Knee_Moment_IER = interp1(L_k,...
-    permute(Joint(103).Mj(3,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Dynamics.L_Hip_Moment_FE = interp1(L_k,...
-    permute(Joint(104).Mj(1,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Dynamics.L_Hip_Moment_AA = interp1(L_k,...
-    permute(Joint(104).Mj(2,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
-Output.Dynamics.L_Hip_Moment_IER = interp1(L_k,...
-    permute(Joint(104).Mj(3,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+if sum(isnan(Joint(102).Mj(1,:,:))) ~= size(isnan(Joint(102).Mj(1,:,:)),3)
+    Output.Dynamics.L_Ankle_Moment_FE = interp1(L_k,...
+        permute(Joint(102).Mj(1,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Dynamics.L_Ankle_Moment_FE = NaN(101,1);
+end
+if sum(isnan(Joint(102).Mj(3,:,:))) ~= size(isnan(Joint(102).Mj(3,:,:)),3)
+    Output.Dynamics.L_Ankle_Moment_AA = interp1(L_k,...
+        permute(Joint(102).Mj(3,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Dynamics.L_Ankle_Moment_AA = NaN(101,1);
+end
+if sum(isnan(Joint(102).Mj(2,:,:))) ~= size(isnan(Joint(102).Mj(2,:,:)),3)
+    Output.Dynamics.L_Ankle_Moment_IER = interp1(L_k,...
+        permute(Joint(102).Mj(2,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Dynamics.L_Ankle_Moment_IER = NaN(101,1);
+end
+if sum(isnan(Joint(103).Mj(1,:,:))) ~= size(isnan(Joint(103).Mj(1,:,:)),3)
+    Output.Dynamics.L_Knee_Moment_FE = interp1(L_k,...
+        permute(Joint(103).Mj(1,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Dynamics.L_Knee_Moment_FE = NaN(101,1);
+end
+if sum(isnan(Joint(103).Mj(2,:,:))) ~= size(isnan(Joint(103).Mj(2,:,:)),3)
+    Output.Dynamics.L_Knee_Moment_AA = interp1(L_k,...
+        permute(Joint(103).Mj(2,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Dynamics.L_Knee_Moment_AA = NaN(101,1);
+end
+if sum(isnan(Joint(103).Mj(3,:,:))) ~= size(isnan(Joint(103).Mj(3,:,:)),3)
+    Output.Dynamics.L_Knee_Moment_IER = interp1(L_k,...
+        permute(Joint(103).Mj(3,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Dynamics.L_Knee_Moment_IER = NaN(101,1);
+end
+if sum(isnan(Joint(104).Mj(1,:,:))) ~= size(isnan(Joint(104).Mj(1,:,:)),3)
+    Output.Dynamics.L_Hip_Moment_FE = interp1(L_k,...
+        permute(Joint(104).Mj(1,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Dynamics.L_Hip_Moment_FE = NaN(101,1);
+end
+if sum(isnan(Joint(104).Mj(2,:,:))) ~= size(isnan(Joint(104).Mj(2,:,:)),3)
+    Output.Dynamics.L_Hip_Moment_AA = interp1(L_k,...
+        permute(Joint(104).Mj(2,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Dynamics.L_Hip_Moment_AA = NaN(101,1);
+end
+if sum(isnan(Joint(104).Mj(3,:,:))) ~= size(isnan(Joint(104).Mj(3,:,:)),3)
+    Output.Dynamics.L_Hip_Moment_IER = interp1(L_k,...
+        permute(Joint(104).Mj(3,:,mLHS(1):mLHS(2)),[3,1,2]),L_ko,'spline');
+else
+    Output.Dynamics.L_Hip_Moment_IER = NaN(101,1);
+end
 
 % -------------------------------------------------------------------------
 % EMG
@@ -274,11 +394,11 @@ end
 % -------------------------------------------------------------------------
 % Events
 % -------------------------------------------------------------------------
-Output.Event.R_RHS = (mRHS-mRHS(1)+1)*100/(mRHS(2)-mRHS(1)+1);
-Output.Event.R_RTO = (mRTO-mRHS(1)+1)*100/(mRHS(2)-mRHS(1)+1);
-Output.Event.R_LHS = (mLHS-mRHS(1)+1)*100/(mRHS(2)-mRHS(1)+1);
-Output.Event.R_LTO = (mLTO-mRHS(1)+1)*100/(mRHS(2)-mRHS(1)+1);
-Output.Event.L_RHS = (mRHS-mLHS(1)+1)*100/(mLHS(2)-mLHS(1)+1);
-Output.Event.L_RTO = (mRTO-mLHS(1)+1)*100/(mLHS(2)-mLHS(1)+1);
-Output.Event.L_LHS = (mLHS-mLHS(1)+1)*100/(mLHS(2)-mLHS(1)+1);
-Output.Event.L_LTO = (mLTO-mLHS(1)+1)*100/(mLHS(2)-mLHS(1)+1);
+Output.Events.R_RHS = fix((mRHS-mRHS(1)+1)*100/(mRHS(2)-mRHS(1)+1));
+Output.Events.R_RTO = fix((mRTO-mRHS(1)+1)*100/(mRHS(2)-mRHS(1)+1));
+Output.Events.R_LHS = fix((mLHS-mRHS(1)+1)*100/(mRHS(2)-mRHS(1)+1));
+Output.Events.R_LTO = fix((mLTO-mRHS(1)+1)*100/(mRHS(2)-mRHS(1)+1));
+Output.Events.L_RHS = fix((mRHS-mLHS(1)+1)*100/(mLHS(2)-mLHS(1)+1));
+Output.Events.L_RTO = fix((mRTO-mLHS(1)+1)*100/(mLHS(2)-mLHS(1)+1));
+Output.Events.L_LHS = fix((mLHS-mLHS(1)+1)*100/(mLHS(2)-mLHS(1)+1));
+Output.Events.L_LTO = fix((mLTO-mLHS(1)+1)*100/(mLHS(2)-mLHS(1)+1));
