@@ -30,7 +30,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'angle');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Joint(2).FE,[3,2,1]) ...
     permute(Joint(2).AA,[3,2,1]) ...
     permute(Joint(2).IER,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Ankle_angle');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Ankle_Angle');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: DF(+)/PF, Y-Axis: Ad(+)/Ab, Z-Axis: IR(+)/ER');
 
 % =========================================================================
@@ -48,7 +48,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'angle');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(-Joint(3).FE,[3,2,1]) ...
     permute(-Joint(3).AA,[3,2,1]) ...
     permute(Joint(3).IER,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Knee_angle');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Knee_Angle');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: F(+)/E, Y-Axis: Ad(+)/Ab, Z-Axis: IR(+)/ER');
 
 % =========================================================================
@@ -66,7 +66,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'angle');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Joint(4).FE,[3,2,1]) ...
     permute(Joint(4).AA,[3,2,1]) ...
     permute(Joint(4).IER,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Hip_angle');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Hip_Angle');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: F(+)/E, Y-Axis: Ad(+)/Ab, Z-Axis: IR(+)/ER');
 
 % =========================================================================
@@ -84,7 +84,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'angle');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Joint(102).FE,[3,2,1]) ...
     permute(Joint(102).AA,[3,2,1]) ...
     permute(Joint(102).IER,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Ankle_angle');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Ankle_Angle');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: DF(+)/PF, Y-Axis: Ad(+)/Ab, Z-Axis: IR(+)/ER');
 
 % =========================================================================
@@ -102,7 +102,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'angle');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(-Joint(103).FE,[3,2,1]) ...
     permute(-Joint(103).AA,[3,2,1]) ...
     permute(Joint(103).IER,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Knee_angle');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Knee_Angle');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: F(+)/E, Y-Axis: Ad(+)/Ab, Z-Axis: IR(+)/ER');
 
 % =========================================================================
@@ -120,5 +120,5 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'angle');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Joint(104).FE,[3,2,1]) ...
     permute(Joint(104).AA,[3,2,1]) ...
     permute(Joint(104).IER,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Hip_angle');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Hip_Angle');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: F(+)/E, Y-Axis: Ad(+)/Ab, Z-Axis: IR(+)/ER');

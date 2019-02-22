@@ -1,7 +1,7 @@
 % =========================================================================
 % REHAZENTER CLINICAL GAIT ANALYSIS TOOLBOX
 % =========================================================================
-% This toolbox uses the Biomechanical ToolKit for .c3d importation
+% This toolbox uses the Biomechanical ToolKit for .c3d imp/exportation
 % (https://code.google.com/p/b-tk/) 
 % and the kinematics/dynamics toolbox developed by Raphaël Dumas 
 % (https://nl.mathworks.com/matlabcentral/fileexchange/...
@@ -15,7 +15,7 @@
 % Date of creation: 16/05/2018
 % Version: 1
 % =========================================================================
-
+tic
 % =========================================================================
 % Initialisation
 % =========================================================================
@@ -26,7 +26,7 @@ disp('==================================================================');
 disp('            REHAZENTER CLINICAL GAIT ANALYSIS TOOLBOX             ');
 disp('==================================================================');
 disp('              Authors: F. Moissenet, C. Schreiber                 ');
-disp('                         Version: 2018                            ');
+disp('                         Version: 2019                            ');
 disp('                  Date of creation: 16/05/2018                    ');
 disp('==================================================================');
 disp(' ');
@@ -44,12 +44,13 @@ addpath(genpath([toolboxFolder,'\toolbox']));
 disp(' ');
 
 % =========================================================================
-% Set c3d folder
+% Set patient folder
 % =========================================================================
-c3dFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\publications\articles\1- en cours\Schreiber - Bdd\data\2015020';
-matFolder = c3dFolder;
+sessionFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\publications\articles\2- soumis\Schreiber - A multimodal dataset of human gait at different walking speeds\data\2014001';
+patientFolder = sessionFolder;
 
 % =========================================================================
 % Start Clinical Gait Analysis
 % =========================================================================
-startCGA(toolboxFolder,c3dFolder);
+startCGA(toolboxFolder,sessionFolder,patientFolder);
+toc

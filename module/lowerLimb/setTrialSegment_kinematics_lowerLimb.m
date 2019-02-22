@@ -230,28 +230,20 @@ end
 if direction == 1 % +X
     if RFootXmax+threshold <= FP1Xmax && RFootXmin+threshold >= FP1Xmin ...
             && RFootYmax+threshold <= FP1Ymax && RFootYmin+threshold >= FP1Ymin
-        temp1 = permute(Grf(1).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP1 = permute(temp2,[2,3,1]);
+        rP1 = Grf(1).P;
     elseif RFootXmax+threshold <= FP2Xmax && RFootXmin+threshold >= FP2Xmin ...
             && RFootYmax <= FP2Ymax && RFootYmin >= FP2Ymin
-        temp1 = permute(Grf(2).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP1 = permute(temp2,[2,3,1]);
+        rP1 = Grf(2).P;
     else
         rP1 = NaN(3,1,length(Marker.R_FCC));
     end
 elseif direction == 2 % -X
     if RFootXmax-threshold <= FP1Xmax && RFootXmin-threshold >= FP1Xmin ...
             && RFootYmax <= FP1Ymax && RFootYmin >= FP1Ymin
-        temp1 = permute(Grf(1).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP1 = permute(temp2,[2,3,1]);
+        rP1 = Grf(1).P;
     elseif RFootXmax-threshold <= FP2Xmax && RFootXmin-threshold >= FP2Xmin ...
             && RFootYmax <= FP2Ymax && RFootYmin >= FP2Ymin
-        temp1 = permute(Grf(2).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP1 = permute(temp2,[2,3,1]);
+        rP1 = Grf(2).P;
     else
         rP1 = NaN(3,1,length(Marker.R_FCC));
     end
@@ -461,28 +453,20 @@ end
 if direction == 1 % +X
     if LFootXmax+threshold <= FP1Xmax && LFootXmin+threshold >= FP1Xmin ...
             && LFootYmax <= FP1Ymax && LFootYmin >= FP1Ymin
-        temp1 = permute(Grf(1).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP101 = permute(temp2,[2,3,1]);
+        rP101 = Grf(1).P;
     elseif LFootXmax+threshold <= FP2Xmax && LFootXmin+threshold >= FP2Xmin ...
             && LFootYmax <= FP2Ymax && LFootYmin >= FP2Ymin
-        temp1 = permute(Grf(2).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP101 = permute(temp2,[2,3,1]);
+        rP101 = Grf(2).P;
     else
         rP101 = NaN(3,1,length(Marker.R_FCC));
     end
 elseif direction == 2 % -X
     if LFootXmax-threshold <= FP1Xmax && LFootXmin-threshold >= FP1Xmin ...
             && LFootYmax <= FP1Ymax && LFootYmin >= FP1Ymin
-        temp1 = permute(Grf(1).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP101 = permute(temp2,[2,3,1]);
+        rP101 = Grf(1).P;
     elseif LFootXmax-threshold <= FP2Xmax && LFootXmin-threshold >= FP2Xmin ...
             && LFootYmax <= FP2Ymax && LFootYmin >= FP2Ymin
-        temp1 = permute(Grf(2).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP101 = permute(temp2,[2,3,1]);
+        rP101 = Grf(2).P;
     else
         rP101 = NaN(3,1,length(Marker.R_FCC));
     end

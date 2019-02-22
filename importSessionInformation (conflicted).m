@@ -11,17 +11,17 @@
 % =========================================================================
 
 function [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
-    importSessionInformation(Patient,Pathology,Treatment,Examination,Session,Condition,c3dFolder)
+    importSessionInformation(Patient,Pathology,Treatment,Examination,Session,Condition,sessionFolder)
 
 % =========================================================================
 % Load session information file
 % =========================================================================
-cd(c3dFolder);
+cd(sessionFolder);
 filename = dir('*.xlsm');
 Excel = actxserver('Excel.Application');
-Excel.Workbooks.Open([c3dFolder,'\',filename(1).name]);
+Excel.Workbooks.Open([sessionFolder,'\',filename(1).name]);
 Excel.Workbooks.Item(filename(1).name).RunAutoMacros(1);
-File =  [c3dFolder,'\',filename(1).name];
+File =  [sessionFolder,'\',filename(1).name];
 if ~exist(File,'file')
     ExcelWorkbook = Excel.Workbooks.Add;
     ExcelWorkbook.SaveAs(File,1);
@@ -66,6 +66,7 @@ Treatment.treatment6date = temp1{21,8};                                    % Pre
 % =========================================================================
 % Get session information
 % =========================================================================
+Session.age = [];                                                          % Patient age, based on session year
 Session.weight = temp1{5,2};                                               % Patient weight (kg)
 Session.height = temp1{6,2}*1e-2;                                          % Patient height (m)
 Session.R_legLength = [];
@@ -82,6 +83,8 @@ else
 end
 if ~isnan(temp1{26,2})
     Session.date = temp1{26,2};                                            % Date
+    Session.age = str2num(Session.date(7:10)) - ...
+                  str2num(Patient.birthdate(7:10));
 else
     Session.date = '';
 end

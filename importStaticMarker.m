@@ -12,6 +12,19 @@
 
 function [Marker,btk2] = importStaticMarker(Marker,btk2)
 
+% Remove head markers
+if isfield(Marker,'R_HDF')
+    Marker = rmfield(Marker,'R_HDF');
+end
+if isfield(Marker,'R_HDB')
+    Marker = rmfield(Marker,'R_HDB');
+end
+if isfield(Marker,'L_HDF')
+    Marker = rmfield(Marker,'L_HDF');
+end
+if isfield(Marker,'L_HDB')
+    Marker = rmfield(Marker,'L_HDB');
+end
 nMarker = fieldnames(Marker);
 for j = 1:size(nMarker,1)
     % Keep only the man value of the coordinates
