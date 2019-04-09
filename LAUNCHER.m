@@ -46,7 +46,7 @@ disp(' ');
 % =========================================================================
 % Set patient folder
 % =========================================================================
-sessionFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\publications\articles\2- soumis\Schreiber - A multimodal dataset of human gait at different walking speeds\data\2014001';
+sessionFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\routines\github\CGA_Rehazenter_Toolbox\example';
 patientFolder = sessionFolder;
 
 % =========================================================================
