@@ -27,7 +27,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'moment');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(-Joint(2).Mj(1,:,:)/Session.weight,[3,2,1]) ...
     permute(Joint(2).Mj(2,:,:)/Session.weight,[3,2,1]) ...
     permute(Joint(2).Mj(3,:,:)/Session.weight,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Ankle_moment');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Ankle_Moment');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Moment (Nm/kg): X-Axis: PF(+)/DF, Y-Axis: IR(+)/ER, Z-Axis: Ad(+)/Ab');
 % Right knee
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
@@ -35,7 +35,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'moment');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Joint(3).Mj(1,:,:)/Session.weight,[3,2,1]) ...
     permute(-Joint(3).Mj(2,:,:)/Session.weight,[3,2,1]) ...
     permute(Joint(3).Mj(3,:,:)/Session.weight,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Knee_moment');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Knee_Moment');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Moment (Nm/kg): X-Axis: E(+)/F, Y-Axis: Ab(+)/Ad, Z-Axis: IR(+)/ER');
 % Right hip
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
@@ -43,7 +43,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'moment');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(-Joint(4).Mj(1,:,:)/Session.weight,[3,2,1]) ...
     permute(-Joint(4).Mj(2,:,:)/Session.weight,[3,2,1]) ...
     permute(Joint(4).Mj(3,:,:)/Session.weight,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Hip_moment');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Hip_Moment');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Moment (Nm/kg): X-Axis: E(+)/F, Y-Axis: Ab(+)/Ad, Z-Axis: IR(+)/ER');
 % Left ankle
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
@@ -51,7 +51,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'moment');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(-Joint(102).Mj(1,:,:)/Session.weight,[3,2,1]) ...
     permute(-Joint(102).Mj(2,:,:)/Session.weight,[3,2,1]) ...
     permute(-Joint(102).Mj(3,:,:)/Session.weight,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Ankle_moment');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Ankle_Moment');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Moment (Nm/kg): X-Axis: PF(+)/DF, Y-Axis: IR(+)/ER, Z-Axis: Ad(+)/Ab');
 % Left knee
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
@@ -59,7 +59,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'moment');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Joint(103).Mj(1,:,:)/Session.weight,[3,2,1]) ...
     permute(Joint(103).Mj(2,:,:)/Session.weight,[3,2,1]) ...
     permute(-Joint(103).Mj(3,:,:)/Session.weight,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Knee_moment');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Knee_Moment');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Moment (Nm/kg): X-Axis: Ext(+)/Flex, Y-Axis: Ab(+)/Ad, Z-Axis: IR(+)/ER');
 % Left hip
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
@@ -67,7 +67,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'moment');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(-Joint(104).Mj(1,:,:)/Session.weight,[3,2,1]) ...
     permute(Joint(104).Mj(2,:,:)/Session.weight,[3,2,1]) ...
     permute(-Joint(104).Mj(3,:,:)/Session.weight,[3,2,1])]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Hip_moment');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Hip_Moment');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Moment (Nm/kg): X-Axis: E(+)/F, Y-Axis: Ab(+)/Ad, Z-Axis: IR(+)/ER');
 
 % =========================================================================
@@ -116,7 +116,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'power');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Joint(2).power(:,:,:)/Session.weight,[3,2,1]) ...
     zeros(size(permute(Joint(2).power(:,:,:)/Session.weight,[3,2,1]))) ...
     zeros(size(permute(Joint(2).power(:,:,:)/Session.weight,[3,2,1])))]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Ankle_power');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Ankle_Power');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Power (W/kg): Gen(+)/Abs');
 % Right knee
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
@@ -124,7 +124,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'power');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(-Joint(3).power(:,:,:)/Session.weight,[3,2,1]) ...
     zeros(size(permute(Joint(3).power(:,:,:)/Session.weight,[3,2,1]))) ...
     zeros(size(permute(Joint(3).power(:,:,:)/Session.weight,[3,2,1])))]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Knee_power');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Knee_Power');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Power (W/kg): Gen(+)/Abs');
 % Right hip
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
@@ -132,7 +132,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'power');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Joint(4).power(:,:,:)/Session.weight,[3,2,1]) ...
     zeros(size(permute(Joint(4).power(:,:,:)/Session.weight,[3,2,1]))) ...
     zeros(size(permute(Joint(4).power(:,:,:)/Session.weight,[3,2,1])))]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Hip_power');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Hip_Power');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Power (W/kg): Gen(+)/Abs');
 % Left ankle
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
@@ -140,7 +140,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'power');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(-Joint(102).power(:,:,:)/Session.weight,[3,2,1]) ...
     zeros(size(permute(Joint(102).power(:,:,:)/Session.weight,[3,2,1]))) ...
     zeros(size(permute(Joint(102).power(:,:,:)/Session.weight,[3,2,1])))]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Ankle_power');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Ankle_Power');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Power (W/kg): Gen(+)/Abs');
 % Left knee
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
@@ -148,7 +148,7 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'power');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(Joint(103).power(:,:,:)/Session.weight,[3,2,1]) ...
     zeros(size(permute(Joint(103).power(:,:,:)/Session.weight,[3,2,1]))) ...
     zeros(size(permute(Joint(103).power(:,:,:)/Session.weight,[3,2,1])))]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Knee_power');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Knee_Power');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Power (W/kg): Gen(+)/Abs');
 % Left hip
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
@@ -156,5 +156,5 @@ btkSetPointType(btk2,btkGetPointNumber(btk2),'power');
 btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(-Joint(104).power(:,:,:)/Session.weight,[3,2,1]) ...
     zeros(size(permute(Joint(104).power(:,:,:)/Session.weight,[3,2,1]))) ...
     zeros(size(permute(Joint(104).power(:,:,:)/Session.weight,[3,2,1])))]);
-btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Hip_power');
+btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Hip_Power');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Power (W/kg): Gen(+)/Abs');

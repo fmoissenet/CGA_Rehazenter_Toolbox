@@ -13,7 +13,7 @@
 % =========================================================================
 
 function [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
-    startCGA(toolboxFolder,c3dFolder)
+    startCGA(toolboxFolder,sessionFolder,patientFolder)
 
 % =========================================================================
 % Initialise structures
@@ -21,8 +21,8 @@ function [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
 cd(toolboxFolder);
 Patient = [];
 Pathology = [];
-Treatment = [];
 Examination = [];
+Treatment = [];
 Session = [];
 Condition = [];
 
@@ -31,7 +31,7 @@ Condition = [];
 % =========================================================================
 disp('>> Import session information ...');
 [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
-    importSessionInformation(Patient,Pathology,Treatment,Examination,Session,Condition,c3dFolder);
+    importSessionInformation(Patient,Pathology,Treatment,Examination,Session,Condition,sessionFolder);
 disp(['  > Patient: ',Patient.lastname,' ',Patient.firstname,' ',Patient.birthdate]);
 disp(['  > Session: ',Session.date]);
 disp(' ');
@@ -40,7 +40,7 @@ disp(' ');
 % Import clinical examination
 % =========================================================================
 disp('>> Import clinical examination ...');
-Examination = importClinicalExamination(Examination,c3dFolder);
+Examination = importClinicalExamination(Examination,sessionFolder);
 disp(['  > Patient: ',Patient.lastname,' ',Patient.firstname,' ',Patient.birthdate]);
 disp(['  > Session: ',Session.date]);
 disp(' ');
@@ -52,7 +52,7 @@ disp(' ');
 % .xlsx file (staticXX, videoXX, trialXX)
 % =========================================================================
 disp('>> Load session files ...');
-cd(c3dFolder);
+cd(sessionFolder);
 % Load static file (.c3d) - 1 static per condition
 if isfield(Session,'Static')
     for i = 1:length(Session.Static)
@@ -74,7 +74,7 @@ disp(' ');
 % Data treatment of each trial of each condition
 % =========================================================================
 disp(['>> ',num2str(length(Session.conditions)),' condition(s) detected ...']);  
-for i = 1:length(Session.conditions)
+for i = 1%1:length(Session.conditions)
     disp(['  > Condition ',Session.conditions{i}]);
     cd(toolboxFolder);
     
@@ -90,20 +90,53 @@ for i = 1:length(Session.conditions)
             Marker = btkGetMarkers(static);
             fMarker = btkGetPointFrequency(static);
             % Set BTK parameters to export a new C3D file
-            btk2 = btkNewAcquisition(btkGetPointNumber(static)-4); % The 4 head markers are removed
+            btk2 = btkNewAcquisition(btkGetPointNumber(static));
             btkSetFrameNumber(btk2,1);
             btkSetFrequency(btk2,fMarker);          
             % Import mean markers 3D position
             [Marker,btk2] = importStaticMarker(Marker,btk2);            
+            % Lower limb kinematic chain
+            Condition(i).Static.LowerLimb = [];
+            if Session.Static(j).kinematics.lowerLimb == 1
+                disp('      Lower limb');
+                % Set body segments
+                [Condition(i),Segment,Vmarker,btk2] = setStaticSegment_lowerLimb(Session,Patient,Condition(i),Marker,btk2);
+            end
+            % Upper limb kinematic chain
+            % Head/Trunk limb kinematic chain
+            % Foot limb kinematic chain
             % Compute leg length
             Session = setLegLength_lowerLimb(Session,Marker);
-            % Export raw and processed files
-            if j == 1
-                cd(c3dFolder);
-                btkWriteAcquisition(btk2,[Patient.lastname(3:end),'_','ST','.c3d']);
-                cd(toolboxFolder);
-            end
+            % Export processed files
+            cd(sessionFolder);
+            btkWriteAcquisition(btk2,[strrep(Session.Static(j).filename,'.c3d',''),'_out.c3d']);
+            cd(toolboxFolder);
         end
+    end
+    
+    % ---------------------------------------------------------------------
+    % Video
+    % ---------------------------------------------------------------------
+    
+    % ---------------------------------------------------------------------
+    % Trial
+    % ---------------------------------------------------------------------    
+    % Set the maximum values through the trial of a condition for EMGs
+    % ---------------------------------------------------------------------
+    MaxEMG = [];
+    for j = 1:length(Session.Trial)
+        if strcmp(Session.Trial(j).condition,Condition(i).name)
+            trial = Session.Trial(j).file;
+            Analog = btkGetAnalogs(trial);
+            fAnalog = btkGetAnalogFrequency(trial);
+            n = btkGetLastFrame(trial)-btkGetFirstFrame(trial)+1;
+            MaxEMG = setMaxEMG(Session,Analog,MaxEMG,n,fAnalog);
+        end
+    end
+    nMaxEMG = fieldnames(MaxEMG);
+    for j = 1:length(nMaxEMG)
+        MaxEMG.(nMaxEMG{j}).data = sort(MaxEMG.(nMaxEMG{j}).data,1,'descend');
+        MaxEMG.(nMaxEMG{j}).max = mean(MaxEMG.(nMaxEMG{j}).data(1:10));
     end
     
     % Compute biomechanical parameters
@@ -132,24 +165,67 @@ for i = 1:length(Session.conditions)
             % Import reaction forces
             [Grf,tGrf] = importTrialReaction(Event,Forceplate,tGrf,Grf,btk2,n0,n,fMarker,fAnalog);
             % Import EMG signals
-            MaxEMG = [];
             [EMG,btk2] = importTrialEMG(Session,Analog,Event,MaxEMG,btk2,n0,n,fMarker,fAnalog);
             % Update and export events
             [Event,btk2] = exportEvents(Event,trial,btk2,fMarker);
             % Export normalisation values
-            btk2 = exportNormalisationValues(Session,Patient,btk2);
-            % Set forceplates
-            btkAppendForcePlatformType2(btk2,tGrf(1).F,...
-                tGrf(1).M,Forceplate(1).corners',[0,0,0],[0,0,0]);
-            btkAppendForcePlatformType2(btk2,tGrf(2).F,...
-                tGrf(2).M,Forceplate(2).corners',[0,0,0],[0,0,0]);
+            btk2 = exportNormalisationValues(Session,Patient,MaxEMG,btk2);
+            
+            % Lower limb kinematic chain
+            % -------------------------------------------------------------
+            Condition(i).Trial(k).LowerLimb = [];
+            if Session.Trial(j).kinematics.lowerLimb == 1
+                disp('      Lower limb');
+                % Set body segments for kinematics
+                [Segment,Vmarker,btk2] = ...
+                    setTrialSegment_kinematics_lowerLimb(Session,Patient,Condition(i),Marker,Event,Forceplate,tGrf,Grf,trial,btk2,fMarker);
+                % Compute spatiotemporal parameters
+                [Spatiotemporal,btk2] = computeSpatiotemporal_lowerLimb(Session,Vmarker,Event,fMarker,btk2);
+                % Compute joint kinematics
+                [Joint,btk2] = computeJointKinematics_lowerLimb(Segment,btk2);
+                % Compute segment kinematics
+                [Segment,btk2] = computeSegmentKinematics_lowerLimb(Segment,btk2);
+                % Set body segments and joints for kinetics
+                [Segment,Joint,Vmarker] = ...
+                    setTrialSegment_kinetics_lowerLimb(Session,Patient,Condition(i),Segment,Joint,Marker,Event,Forceplate,tGrf,Grf,trial,btk2,fMarker);
+                % Compute kinetics
+                [Segment,Joint,btk2] = computeJointKinetics_lowerLimb(Session,Segment,Joint,fMarker,btk2);
+                % Store data in Condition (keep only intra cycle data)
+                Condition(i).Trial(k).LowerLimb = ...
+                    exportCondition_lowerLimb(Condition(i).Trial(k).LowerLimb,Segment,Joint,EMG,Event,Spatiotemporal,fMarker,fAnalog);        
+            end
+            
+            % Upper limb kinematic chain
+            % -------------------------------------------------------------
+            
+            % Head/Trunk limb kinematic chain
+            % -------------------------------------------------------------
+            
+            % Foot limb kinematic chain
+            % -------------------------------------------------------------
                         
             % Export processed files
             % -------------------------------------------------------------
-            cd(c3dFolder);
-            btkWriteAcquisition(btk2,[Patient.lastname(3:end),'_',Condition(i).name,'_','0',num2str(k),'.c3d']);
+            cd(sessionFolder);
+            btkWriteAcquisition(btk2,[strrep(Session.Trial(j).filename,'.c3d',''),'_out.c3d']);   
+            clear btk2 Marker Vmarker Analog Event Forceplate tGrf Grf Segment Joint Spatiotemporal;
             cd(toolboxFolder);
             k = k+1;
         end
     end 
+
+    % Compute mean and std per item and per condition
+    % Export data in a MAT file
+    % ---------------------------------------------------------------------    
+    % Lower limb kinematic chain
+    if isfield(Condition(i).Trial(1),'LowerLimb')
+        Condition = computeAverage_lowerLimb(Condition,i);
+    end   
+    exportMAT(Patient,Pathology,Treatment,Examination,Session,Condition,...
+              i,sessionFolder,toolboxFolder);
+        
+    % Export data per condition in the XLS file
+    % ---------------------------------------------------------------------     
+    exportXLS_lowerLimb(Condition,i,sessionFolder,toolboxFolder);
+    
 end
