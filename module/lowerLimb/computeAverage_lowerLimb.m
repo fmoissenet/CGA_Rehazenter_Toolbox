@@ -53,14 +53,21 @@ for nField = 1:length(nDynamics)
     Condition(i).Average.LowerLimb.Dynamics.(nDynamics{nField}).std = nanstd(tDynamics,1,2);
 end
 for nField = 1:length(nEMG)
-    tEMG = [];
-    for nTrial = 1:size(Condition(i).Trial,2)
-        if strfind(nEMG{nField},'Envelop') % only for envelops normalised as % of gait cycle
-            tEMG = [tEMG Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})];
+    if strfind(nEMG{nField},'Envelop') % only for envelops normalised as % of gait cycle
+        tEMG = [];
+        for nTrial = 1:size(Condition(i).Trial,2)
+                tEMG = [tEMG Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})];
         end
+        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).mean = nanmean(tEMG,2);
+        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).std = nanstd(tEMG,1,2);
+    elseif strfind(nEMG{nField},'Signal') % special case: all cycle signals are merged to compare their shape repetability
+        tEMG = [];
+        for nTrial = 1:size(Condition(i).Trial,2)
+                tEMG = [tEMG; Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})];
+        end
+        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).mean = tEMG;
+        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).std = zeros(size(tEMG));
     end
-    Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).mean = nanmean(tEMG,2);
-    Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).std = nanstd(tEMG,1,2);
 end
 for nField = 1:length(nEvents)
     tEvents = [];

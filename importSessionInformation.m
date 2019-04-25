@@ -17,18 +17,17 @@ function [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
 % Load session information file
 % =========================================================================
 cd(sessionFolder);
-filename = dir('*.xlsm');
+xlsfile = dir('*.xls*');
 Excel = actxserver('Excel.Application');
-Excel.Workbooks.Open([sessionFolder,'\',filename(1).name]);
-Excel.Workbooks.Item(filename(1).name).RunAutoMacros(1);
-File =  [sessionFolder,'\',filename(1).name];
-if ~exist(File,'file')
+fname = fullfile(pwd,xlsfile(1).name);
+if ~exist(fname,'file')
     ExcelWorkbook = Excel.Workbooks.Add;
-    ExcelWorkbook.SaveAs(File,1);
+    ExcelWorkbook.Sheets.Add;
+    ExcelWorkbook.SaveAs(fname,1);
     ExcelWorkbook.Close(false);
 end
-Excel.Workbooks.Open(File); 
-[~,~,temp1] = xlsread1(Excel,filename(1).name,1,'B2:K112');
+invoke(Excel.Workbooks,'Open',fname);
+[~,~,temp1] = xlsread1(Excel,xlsfile(1).name,1,'B2:K112');
 
 % =========================================================================
 % Get patient information

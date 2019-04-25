@@ -384,7 +384,7 @@ for i = 1:size(nEMG,1)
         end    
         temp = EMG.(nEMG{i}).envelop(:,:,mLHS(1):mLHS(2));
         if sum(isnan(temp)) ~= size(isnan(temp),1)
-            Output.EMG.([nEMG{i},'_Envelop']) = interp1(R_k,permute(temp,[2,3,1]),R_ko,'spline');
+            Output.EMG.([nEMG{i},'_Envelop']) = interp1(L_k,permute(temp,[2,3,1]),L_ko,'spline');
         else
             Output.EMG.([nEMG{i},'_Envelop']) = NaN(101,1);
         end
