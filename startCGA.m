@@ -180,7 +180,7 @@ for i = 1%1:length(Session.conditions)
                 [Segment,Vmarker,btk2] = ...
                     setTrialSegment_kinematics_lowerLimb(Session,Patient,Condition(i),Marker,Event,Forceplate,tGrf,Grf,trial,btk2,fMarker);
                 % Compute spatiotemporal parameters
-                [Spatiotemporal,btk2] = computeSpatiotemporal_lowerLimb(Session,Vmarker,Event,fMarker,btk2);
+                [Spatiotemporal,btk2] = computeSpatiotemporal_lowerLimb(Session,Vmarker,Event,fMarker,fAnalog,btk2);
                 % Compute joint kinematics
                 [Joint,btk2] = computeJointKinematics_lowerLimb(Segment,btk2);
                 % Compute segment kinematics
@@ -192,7 +192,7 @@ for i = 1%1:length(Session.conditions)
                 [Segment,Joint,btk2] = computeJointKinetics_lowerLimb(Session,Segment,Joint,fMarker,btk2);
                 % Store data in Condition (keep only intra cycle data)
                 Condition(i).Trial(k).LowerLimb = ...
-                    exportCondition_lowerLimb(Condition(i).Trial(k).LowerLimb,Segment,Joint,EMG,Event,Spatiotemporal,fMarker,fAnalog);        
+                    exportCondition_lowerLimb(Session,Condition(i).Trial(k).LowerLimb,Segment,Joint,EMG,Event,Spatiotemporal,fMarker,fAnalog);        
             end
             
             % Upper limb kinematic chain

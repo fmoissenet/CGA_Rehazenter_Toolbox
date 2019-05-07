@@ -93,23 +93,23 @@ xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.L_Double_
 xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Double_Support2.mean,sheet,['T',num2str(nline+5)]);
 xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Double_Support2.std,sheet,['U',num2str(nline+5)]);
 %---
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.L_Stride_Length.mean,sheet,['V',num2str(nline+5)]);
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.L_Stride_Length.std,sheet,['W',num2str(nline+5)]);
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Stride_Length.mean,sheet,['X',num2str(nline+5)]);
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Stride_Length.std,sheet,['Y',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.L_Stride_Length.mean*1e2,sheet,['V',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.L_Stride_Length.std*1e2,sheet,['W',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Stride_Length.mean*1e2,sheet,['X',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Stride_Length.std*1e2,sheet,['Y',num2str(nline+5)]);
 %---
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.L_Step_Length.mean,sheet,['Z',num2str(nline+5)]);
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.L_Step_Length.std,sheet,['AA',num2str(nline+5)]);
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Step_Length.mean,sheet,['AB',num2str(nline+5)]);
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Step_Length.std,sheet,['AC',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.L_Step_Length.mean*1e2,sheet,['Z',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.L_Step_Length.std*1e2,sheet,['AA',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Step_Length.mean*1e2,sheet,['AB',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Step_Length.std*1e2,sheet,['AC',num2str(nline+5)]);
 %---
 xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.L_Gait_Cycle.mean,sheet,['AD',num2str(nline+5)]);
 xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.L_Gait_Cycle.std,sheet,['AE',num2str(nline+5)]);
 xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Gait_Cycle.mean,sheet,['AF',num2str(nline+5)]);
 xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Gait_Cycle.std,sheet,['AG',num2str(nline+5)]);
 %---
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.Stride_Width.mean,sheet,['AH',num2str(nline+5)]);
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.Stride_Width.std,sheet,['AI',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.Stride_Width.mean*1e2,sheet,['AH',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.Stride_Width.std*1e2,sheet,['AI',num2str(nline+5)]);
 %---
 xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.Cadence.mean,sheet,['AJ',num2str(nline+5)]);
 xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.Cadence.std,sheet,['AK',num2str(nline+5)]);
@@ -211,6 +211,84 @@ xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Segmentkinematics.R_Foo
 xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Segmentkinematics.R_Foot_Angle_IER.std,sheet,['BI',num2str(nline+5)]);
 
 % =========================================================================
+% Kinetics
+% =========================================================================
+sheet = 'Examen - data (3)';
+xlswrite1(fname,cellstr(['Condition ',num2str(iCondition)]),sheet,['A',num2str(nline)]);
+xlswrite1(fname,cellstr('Temps'),sheet,['A',num2str(nline+4)]);
+xlswrite1(fname,(0:1:100)',sheet,['A',num2str(nline+5)]);
+xlswrite1(fname,{'Hanche' 'Hanche' 'Hanche' 'Hanche' 'Hanche' 'Hanche' 'Hanche' 'Hanche' ...
+    'Genou' 'Genou' 'Genou' 'Genou' 'Genou' 'Genou' 'Genou' 'Genou' ...
+    'Cheville' 'Cheville' 'Cheville' 'Cheville' 'Cheville' 'Cheville' 'Cheville' 'Cheville' ...
+    'Force de réaction /X' 'Force de réaction /X' 'Force de réaction /X' 'Force de réaction /X' ...
+    'Force de réaction /Y' 'Force de réaction /Y' 'Force de réaction /Y' 'Force de réaction /Y' ...
+    'Force de réaction /Z' 'Force de réaction /Z' 'Force de réaction /Z' 'Force de réaction /Z'} ...
+    ,sheet,['B',num2str(nline+1)]);
+xlswrite1(fname,{'Flexion (+) / Extension (-) (Nm/kg)' 'Flexion (+) / Extension (-) (Nm/kg)' 'Flexion (+) / Extension (-) (Nm/kg)' 'Flexion (+) / Extension (-) (Nm/kg)' 'Generation (+) / Absorption (-) (W/kg)' 'Generation (+) / Absorption (-) (W/kg)' 'Generation (+) / Absorption (-) (W/kg)' 'Generation (+) / Absorption (-) (W/kg)' ...
+    'Flexion (+) / Extension (-) (Nm/kg)' 'Flexion (+) / Extension (-) (Nm/kg)' 'Flexion (+) / Extension (-) (Nm/kg)' 'Flexion (+) / Extension (-) (Nm/kg)' 'Generation (+) / Absorption (-) (W/kg)' 'Generation (+) / Absorption (-) (W/kg)' 'Generation (+) / Absorption (-) (W/kg)' 'Generation (+) / Absorption (-) (W/kg)' ...
+    'Dorsif. (+) / Plantarf. (-) (Nm/kg)' 'Dorsif. (+) / Plantarf. (-) (Nm/kg)' 'Dorsif. (+) / Plantarf. (-) (Nm/kg)' 'Dorsif. (+) / Plantarf. (-) (Nm/kg)' 'Generation (+) / Absorption (-) (W/kg)' 'Generation (+) / Absorption (-) (W/kg)' 'Generation (+) / Absorption (-) (W/kg)' 'Generation (+) / Absorption (-) (W/kg)' ...
+    'Anterieur (+) / Posterieur (-) (N/Kg)' 'Anterieur (+) / Posterieur (-) (N/Kg)' 'Anterieur (+) / Posterieur (N/Kg)' 'Anterieur (+) / Posterieur (-) (N/Kg)' ...
+    'Superieur (+) / Inferieur (-) (N/Kg)' 'Superieur (+) / Inferieur (-) (N/Kg)' 'Superieur (+) / Inferieur (-) (N/Kg)' 'Superieur (+) / Inferieur (-) (N/Kg)' ...
+    'Lateral (+) / Medial (-) (N/Kg)' 'Lateral (+) / Medial (-) (N/Kg)' 'Lateral (+) / Medial (-) (N/Kg)' 'Lateral (+) / Medial (-) (N/Kg)'} ...
+    ,sheet,['B',num2str(nline+2)]);
+xlswrite1(fname,{'Gauche' 'Gauche' 'Droite' 'Droite' 'Gauche' 'Gauche' 'Droite' 'Droite' ...
+    'Gauche' 'Gauche' 'Droite' 'Droite' 'Gauche' 'Gauche' 'Droite' 'Droite' ...
+    'Gauche' 'Gauche' 'Droite' 'Droite' 'Gauche' 'Gauche' 'Droite' 'Droite' ...
+    'Gauche' 'Gauche' 'Droite' 'Droite' ...
+    'Gauche' 'Gauche' 'Droite' 'Droite' ...
+    'Gauche' 'Gauche' 'Droite' 'Droite'} ...
+    ,sheet,['B',num2str(nline+3)]);
+xlswrite1(fname,{'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type' ...
+    'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type' ...
+    'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type' ...
+    'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type' ...
+    'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type' ...
+    'Moyenne' 'Ecart-type' 'Moyenne' 'Ecart-type'} ...
+    ,sheet,['B',num2str(nline+4)]);
+%---
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.L_Hip_Moment_FE.mean,sheet,['B',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.L_Hip_Moment_FE.std,sheet,['C',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.R_Hip_Moment_FE.mean,sheet,['D',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.R_Hip_Moment_FE.std,sheet,['E',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.L_Hip_Power_FE.mean,sheet,['F',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.L_Hip_Power_FE.std,sheet,['G',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.R_Hip_Power_FE.mean,sheet,['H',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.R_Hip_Power_FE.std,sheet,['I',num2str(nline+5)]);
+%---
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.L_Knee_Moment_FE.mean,sheet,['J',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.L_Knee_Moment_FE.std,sheet,['K',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_Knee_Moment_FE.mean,sheet,['L',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_Knee_Moment_FE.std,sheet,['M',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.L_Knee_Power_FE.mean,sheet,['N',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.L_Knee_Power_FE.std,sheet,['O',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.R_Knee_Power_FE.mean,sheet,['P',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.R_Knee_Power_FE.std,sheet,['Q',num2str(nline+5)]);
+%---
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.L_Ankle_Moment_FE.mean,sheet,['R',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.L_Ankle_Moment_FE.std,sheet,['S',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.R_Ankle_Moment_FE.mean,sheet,['T',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.R_Ankle_Moment_FE.std,sheet,['U',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.L_Ankle_Power_FE.mean,sheet,['V',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.L_Ankle_Power_FE.std,sheet,['W',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_Ankle_Power_FE.mean,sheet,['X',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_Ankle_Power_FE.std,sheet,['Y',num2str(nline+5)]);
+%---
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.L_GRF_X.mean,sheet,['Z',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.L_GRF_X.std,sheet,['AA',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_GRF_X.mean,sheet,['AB',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_GRF_X.std,sheet,['AC',num2str(nline+5)]);
+%---
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.L_GRF_Y.mean,sheet,['AD',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.L_GRF_Y.std,sheet,['AE',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_GRF_Y.mean,sheet,['AF',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_GRF_Y.std,sheet,['AG',num2str(nline+5)]);
+%---
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.L_GRF_Z.mean,sheet,['AH',num2str(nline+5)]);
+xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Dynamics.L_GRF_Z.std,sheet,['AI',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_GRF_Z.mean,sheet,['AJ',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_GRF_Z.std,sheet,['AK',num2str(nline+5)]);
+
+% =========================================================================
 % EMG
 % =========================================================================
 sheet = 'Examen - data (4)';
@@ -222,7 +300,7 @@ k = 1;
 eFields = fieldnames(Condition.Average.LowerLimb.EMG);
 for i = 1:length(eFields)
     if ~isempty(strfind(eFields{i}, 'Envelop'))
-        for j = 1:3
+        for j = 1:4
             eNames{k} = regexprep(eFields{i},'_Envelop','');
             k = k+1;
         end
@@ -234,11 +312,11 @@ k = 1;
 eFields = fieldnames(Condition.Average.LowerLimb.EMG);
 for i = 1:length(eFields)
     if ~isempty(strfind(eFields{i}, 'Envelop'))
-        for j = 1
+        for j = 1:2
             eNames{k} = 'Signal (V)';
             k = k+1;
         end
-        for j = 2:3
+        for j = 3:4
             eNames{k} = 'Enveloppe (adim)';
             k = k+1;
         end
@@ -250,15 +328,15 @@ k = 1;
 eFields = fieldnames(Condition.Average.LowerLimb.EMG);
 for i = 1:length(eFields)/2
     if ~isempty(strfind(eFields{i}, 'Envelop'))
-        for j = 1:3
+        for j = 1:4
             eNames{k} = 'Gauche';
             k = k+1;
         end
     end
 end
-for i = length(eFields)+1:length(eFields)
+for i = length(eFields)/2+1:length(eFields)
     if ~isempty(strfind(eFields{i}, 'Envelop'))
-        for j = 1:3
+        for j = 1:4
             eNames{k} = 'Droite';
             k = k+1;
         end
@@ -270,10 +348,8 @@ k = 1;
 eFields = fieldnames(Condition.Average.LowerLimb.EMG);
 for i = 1:length(eFields)
     if ~isempty(strfind(eFields{i}, 'Envelop'))
-        for j = 1
-            eNames{k} = 'Répétitions';
-            k = k+1;
-        end
+        eNames{k} = 'Répétitions'; k = k+1;
+        eNames{k} = 'Signal'; k = k+1;
         eNames{k} = 'Moyenne'; k = k+1;
         eNames{k} = 'Ecart-type'; k = k+1;
     end
@@ -293,8 +369,9 @@ k = 2;
 eFields = fieldnames(Condition.Average.LowerLimb.EMG);
 for i = 1:length(eFields)
     if ~isempty(strfind(eFields{i}, 'L_'))
-        if ~isempty(strfind(eFields{i}, '_Signal'))
-            xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean*1e3,sheet,[columns{k},num2str(nline+5)]); k = k+1;
+        if ~isempty(strfind(eFields{i}, '_Signal2'))
+            xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline+5)]); k = k+1;
+            xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline+5)]); k = k+1;
         end
         if ~isempty(strfind(eFields{i}, '_Envelop'))
             xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline+5)]); k = k+1;
@@ -302,8 +379,9 @@ for i = 1:length(eFields)
         end
     end
     if ~isempty(strfind(eFields{i}, 'R_'))
-        if ~isempty(strfind(eFields{i}, '_Signal'))
-            xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean*1e3,sheet,[columns{k},num2str(nline+5)]); k = k+1;
+        if ~isempty(strfind(eFields{i}, '_Signal2'))
+            xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline+5)]); k = k+1;
+            xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline+5)]); k = k+1;
         end
         if ~isempty(strfind(eFields{i}, '_Envelop'))
             xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline+5)]); k = k+1;

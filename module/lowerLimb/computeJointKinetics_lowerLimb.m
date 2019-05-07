@@ -76,33 +76,33 @@ btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Moment (Nm/kg): X-Axis: E(+
 n = size(Joint(1).F,3);
 for j = 1:n
     % Right ankle
-    M = permute(Joint(2).Mj(:,:,j),[3,1,2]);
-    Omega = permute(Segment(3).Omega(:,:,j) - Segment(2).Omega(:,:,j),[3,1,2]); % in ICS
+    M = permute(Joint(2).Mj(:,:,j),[3,1,2])';
+    Omega = abs(Segment(3).Omega(:,:,j) - Segment(2).Omega(:,:,j)); % in ICS
     Joint(2).power(:,:,j) = dot(M,Omega); % 3D joint power
     Joint(2).alpha(:,:,j) = atan(norm(cross(M,Omega))/dot(M,Omega));
     % Right knee
-    M = permute(Joint(3).Mj(:,:,j),[3,1,2]);
-    Omega = permute(Segment(4).Omega(:,:,j) - Segment(3).Omega(:,:,j),[3,1,2]); % in ICS
+    M = permute(Joint(3).Mj(:,:,j),[3,1,2])';
+    Omega = abs(Segment(4).Omega(:,:,j) - Segment(3).Omega(:,:,j)); % in ICS
     Joint(3).power(:,:,j) = dot(M,Omega); % 3D joint power
     Joint(3).alpha(:,:,j) = atan(norm(cross(M,Omega))/dot(M,Omega));
     % Right hip
-    M = permute(Joint(4).Mj(:,:,j),[3,1,2]);
-    Omega = permute(Segment(5).Omega(:,:,j) - Segment(4).Omega(:,:,j),[3,1,2]); % in ICS
+    M = permute(Joint(4).Mj(:,:,j),[3,1,2])';
+    Omega = abs(Segment(5).Omega(:,:,j) - Segment(4).Omega(:,:,j)); % in ICS
     Joint(4).power(:,:,j) = dot(M,Omega); % 3D joint power
     Joint(4).alpha(:,:,j) = atan(norm(cross(M,Omega))/dot(M,Omega));
     % Left ankle
-    M = permute(Joint(102).Mj(:,:,j),[3,1,2]);
-    Omega = permute(Segment(103).Omega(:,:,j) - Segment(102).Omega(:,:,j),[3,1,2]); % in ICS
+    M = permute(Joint(102).Mj(:,:,j),[3,1,2])';
+    Omega = abs(Segment(103).Omega(:,:,j) - Segment(102).Omega(:,:,j)); % in ICS
     Joint(102).power(:,:,j) = dot(M,Omega); % 3D joint power
     Joint(102).alpha(:,:,j) = atan(norm(cross(M,Omega))/dot(M,Omega));
     % Left knee
-    M = permute(Joint(103).Mj(:,:,j),[3,1,2]);
-    Omega = permute(Segment(104).Omega(:,:,j) - Segment(103).Omega(:,:,j),[3,1,2]); % in ICS
+    M = permute(Joint(103).Mj(:,:,j),[3,1,2])';
+    Omega = abs(Segment(104).Omega(:,:,j) - Segment(103).Omega(:,:,j)); % in ICS
     Joint(103).power(:,:,j) = dot(M,Omega); % 3D joint power
     Joint(103).alpha(:,:,j) = atan(norm(cross(M,Omega))/dot(M,Omega));
     % Left hip
-    M = permute(Joint(104).Mj(:,:,j),[3,1,2]);
-    Omega = permute(Segment(105).Omega(:,:,j) - Segment(104).Omega(:,:,j),[3,1,2]); % in ICS
+    M = permute(Joint(104).Mj(:,:,j),[3,1,2])';
+    Omega = abs(Segment(105).Omega(:,:,j) - Segment(104).Omega(:,:,j)); % in ICS
     Joint(104).power(:,:,j) = dot(M,Omega); % 3D joint power
     Joint(104).alpha(:,:,j) = atan(norm(cross(M,Omega))/dot(M,Omega));
 end

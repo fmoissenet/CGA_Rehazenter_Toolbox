@@ -11,7 +11,7 @@
 % =========================================================================
 
 function [Spatiotemporal,btk2] = ...
-    computeSpatiotemporal_lowerLimb(Session,Vmarker,Event,fMarker,btk2)
+    computeSpatiotemporal_lowerLimb(Session,Vmarker,Event,fMarker,fAnalog,btk2)
 
 % =========================================================================
 % Initialisation

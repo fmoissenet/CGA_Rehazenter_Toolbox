@@ -50,6 +50,13 @@ for i = 1:length(nAnalog2)
         EMG.(Session.EMG{i}).signal = permute(Analog2.(nAnalog2{i}),[2,3,1]);
     end
 end
+% ONLY FOR THE REPORT (signal2)
+for i = 1:length(nAnalog2)
+    if ~strcmp(Session.EMG{i},'none')
+        EMG.(Session.EMG{i}).signal2 = ...
+            permute(Analog2.(nAnalog2{i}),[2,3,1])/MaxEMG.(Session.EMG{i}).max;
+    end
+end
 
 % =========================================================================
 % EMG envelop
