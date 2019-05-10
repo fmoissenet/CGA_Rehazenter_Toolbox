@@ -45,6 +45,16 @@ btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(-Joint(4).Mj(1,:,:)/Session.we
     permute(Joint(4).Mj(3,:,:)/Session.weight,[3,2,1])]);
 btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_Hip_Moment');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Moment (Nm/kg): X-Axis: E(+)/F, Y-Axis: Ab(+)/Ad, Z-Axis: IR(+)/ER');
+% Right ground reaction forces
+if Segment(5).Q(4,:,end) > Segment(5).Q(4,:,1)
+    Joint(1).F(1,1,:) = Joint(1).F(1,1,:);
+    Joint(1).F(2,1,:) = Joint(1).F(2,1,:);
+    Joint(1).F(3,1,:) = Joint(1).F(3,1,:);
+elseif Segment(5).Q(4,:,end) < Segment(5).Q(4,:,1)
+    Joint(1).F(1,1,:) = -Joint(1).F(1,1,:);
+    Joint(1).F(2,1,:) = Joint(1).F(2,1,:);
+    Joint(1).F(3,1,:) = -Joint(1).F(3,1,:);
+end
 % Left ankle
 btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
 btkSetPointType(btk2,btkGetPointNumber(btk2),'moment');
@@ -69,6 +79,16 @@ btkSetPoint(btk2,btkGetPointNumber(btk2),[permute(-Joint(104).Mj(1,:,:)/Session.
     permute(-Joint(104).Mj(3,:,:)/Session.weight,[3,2,1])]);
 btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_Hip_Moment');
 btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Moment (Nm/kg): X-Axis: E(+)/F, Y-Axis: Ab(+)/Ad, Z-Axis: IR(+)/ER');
+% Left ground reaction forces
+if Segment(5).Q(4,:,end) > Segment(5).Q(4,:,1)
+    Joint(101).F(1,1,:) = Joint(101).F(1,1,:);
+    Joint(101).F(2,1,:) = Joint(101).F(2,1,:);
+    Joint(101).F(3,1,:) = Joint(101).F(3,1,:);
+elseif Segment(5).Q(4,:,end) < Segment(5).Q(4,:,1)
+    Joint(101).F(1,1,:) = -Joint(101).F(1,1,:);
+    Joint(101).F(2,1,:) = Joint(101).F(2,1,:);
+    Joint(101).F(3,1,:) = -Joint(101).F(3,1,:);
+end
 
 % =========================================================================
 % Joint power and alpha angle

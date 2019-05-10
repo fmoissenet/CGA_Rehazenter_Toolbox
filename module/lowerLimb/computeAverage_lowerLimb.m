@@ -55,27 +55,27 @@ end
 for nField = 1:length(nEMG)
     if strfind(nEMG{nField},'Envelop') % only for envelops normalised as % of gait cycle
         tEMG = [];
-        for nTrial = 1:size(Condition(i).Trial,2)
+        for nTrial = size(Condition(i).Trial,2) % the last trial envelop is plotted
                 tEMG = [tEMG Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})];
         end
-        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).mean = nanmean(tEMG,2);
-        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).std = nanstd(tEMG,1,2);
-    % ONLY FOR THE REPORT (signal2)
-    elseif strfind(nEMG{nField},'Signal2') 
+        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).mean = nanmean(tEMG,2)/max(nanmean(tEMG,2));
+        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).std = nanstd(tEMG,1,2)/max(nanmean(tEMG,2));
+    elseif strfind(nEMG{nField},'Signal')
         tEMG1 = [];
-        for nTrial = 1:size(Condition(i).Trial,2)
-            tEMG1 = [tEMG1 Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})];
+        for nTrial = size(Condition(i).Trial,2) % the last trial signal is plotted
+            x = 1:length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}));
+            xx = linspace(1,length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})),1000);
+            tEMG1 = [tEMG1 (interp1(x,Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}),xx,'spline'))'];
         end
-        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).mean = nanmean(tEMG1,2);
-        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).std = nanstd(tEMG1,1,2);
-        % special case: all cycle signals are interpolate to 1000 frames and merged to compare their shape repetability
+        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).mean = nanmean(tEMG1,2)/max(nanmean(tEMG1,2));
+        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).std = nanstd(tEMG1,1,2)/max(nanmean(tEMG1,2));
         tEMG2 = [];
         for nTrial = 1:size(Condition(i).Trial,2)
             x = 1:length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}));
             xx = linspace(1,length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})),1000);
             tEMG2 = [tEMG2; (interp1(x,Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}),xx,'spline'))'];
         end
-        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).repetition = tEMG2;        
+        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).repetition = tEMG2*1e3; 
     end
 end
 for nField = 1:length(nEvents)

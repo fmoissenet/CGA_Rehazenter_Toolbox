@@ -11,7 +11,7 @@
 % Version: 1
 % =========================================================================
 
-function btk2 = exportNormalisationValues(Session,Patient,MaxEMG,btk2)
+function btk2 = exportNormalisationValues(Session,Patient,btk2)
 
 % SUBJECT metadata
 nData = 6;
@@ -43,30 +43,3 @@ info.values(5) = Session.height;
 info.values(6) = Session.R_legLength;
 info.values(7) = Session.L_legLength;
 btkAppendMetaData(btk2,'SUBJECT','VALUES',info);
-
-% MVC metadata
-nMaxEMG = fieldnames(MaxEMG);
-info.format = 'Integer';
-info.values = length(nMaxEMG);
-btkAppendMetaData(btk2,'MVC','USED',info);
-clear info;
-info.format = 'Char';
-info.dimensions = ['1x',length(nMaxEMG)];
-for i = 1:length(nMaxEMG)
-    info.values(i) = {nMaxEMG{i}};
-end
-btkAppendMetaData(btk2,'MVC','LABELS',info);
-clear info;
-info.format = 'Char';
-info.dimensions = ['1x',length(nMaxEMG)];
-for i = 1:length(nMaxEMG)
-    info.values(i) = {'mV'};
-end
-btkAppendMetaData(btk2,'MVC','UNITS',info);
-clear info;
-info.format = 'Real';
-info.dimensions = ['1x',length(nMaxEMG)];
-for i = 1:length(nMaxEMG)
-    info.values(i) = MaxEMG.(nMaxEMG{i}).max;
-end
-btkAppendMetaData(btk2,'MVC','VALUES',info);

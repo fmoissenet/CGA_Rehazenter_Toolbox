@@ -10,7 +10,7 @@
 % Version: 1
 % =========================================================================
 
-function [EMG,btk2] = importTrialEMG(Session,Analog,Event,MaxEMG,btk2,n0,n,fMarker,fAnalog)
+function [EMG,btk2] = importTrialEMG(Session,Analog,Event,btk2,n0,n,fMarker,fAnalog)
 
 % =========================================================================
 % EMG signal (only band-pass filter)
@@ -46,15 +46,8 @@ nAnalog2 = fieldnames(Analog2);
 for i = 1:length(nAnalog2)
     if ~strcmp(Session.EMG{i},'none')
         btkAppendAnalog(btk2,Session.EMG{i},...
-            Analog2.(nAnalog2{i}),'EMG signal (mV)');
+            Analog2.(nAnalog2{i}),'EMG signal (V)');
         EMG.(Session.EMG{i}).signal = permute(Analog2.(nAnalog2{i}),[2,3,1]);
-    end
-end
-% ONLY FOR THE REPORT (signal2)
-for i = 1:length(nAnalog2)
-    if ~strcmp(Session.EMG{i},'none')
-        EMG.(Session.EMG{i}).signal2 = ...
-            permute(Analog2.(nAnalog2{i}),[2,3,1])/MaxEMG.(Session.EMG{i}).max;
     end
 end
 
@@ -95,19 +88,18 @@ for j = 1:length(nAnalog)
         end
     end
 end
-% Normalise by condition max and export EMG signals
+% Export EMG signals
 nAnalog2 = fieldnames(Analog2);
 for i = 1:length(nAnalog2)
     if ~strcmp(Session.EMG{i},'none')
         btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
         btkSetPointType(btk2,btkGetPointNumber(btk2),'scalar');
         btkSetPoint(btk2,btkGetPointNumber(btk2),...
-            [Analog.(nAnalog2{i})/MaxEMG.(Session.EMG{i}).max ...
+            [Analog.(nAnalog2{i}) ...
             zeros(size(Analog.(nAnalog2{i}))) ...
             zeros(size(Analog.(nAnalog2{i})))]);
         btkSetPointLabel(btk2,btkGetPointNumber(btk2),Session.EMG{i});
-        btkSetPointDescription(btk2,btkGetPointNumber(btk2),'EMG envelop normalised by condition max');
-        EMG.(Session.EMG{i}).envelop = ...
-            permute(Analog.(nAnalog2{i}),[2,3,1])/MaxEMG.(Session.EMG{i}).max;
+        btkSetPointDescription(btk2,btkGetPointNumber(btk2),'EMG envelop');
+        EMG.(Session.EMG{i}).envelop = permute(Analog.(nAnalog2{i}),[2,3,1]);
     end
 end

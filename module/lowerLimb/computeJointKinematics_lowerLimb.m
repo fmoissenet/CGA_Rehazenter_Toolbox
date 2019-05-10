@@ -20,7 +20,11 @@ Joint = Joint_Kinematics_2legs(Segment);
 % =========================================================================
 Joint(2).FE = Joint(2).Euler(1,1,:)*180/pi;
 Joint(2).IER = Joint(2).Euler(1,2,:)*180/pi;
-Joint(2).AA = Joint(2).Euler(1,3,:)*180/pi;
+if max(abs(Joint(2).Euler(1,3,:)*180/pi)) > 150
+    Joint(2).AA = -mod(Joint(2).Euler(1,3,:),2*pi)*180/pi;
+else
+    Joint(2).AA = -Joint(2).Euler(1,3,:)*180/pi;
+end
 Joint(2).LM = Joint(2).dj(1,1,:);
 Joint(2).PD = Joint(2).dj(2,1,:);
 Joint(2).AP = Joint(2).dj(1,1,:);
@@ -74,7 +78,11 @@ btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: F(+)/E
 % =========================================================================
 Joint(102).FE = Joint(102).Euler(1,1,:)*180/pi;
 Joint(102).IER = Joint(102).Euler(1,2,:)*180/pi;
-Joint(102).AA = -(Joint(102).Euler(1,3,:)*180/pi+180); % +180°
+if max(abs(Joint(102).Euler(1,3,:)*180/pi)) > 150
+    Joint(102).AA = mod(Joint(102).Euler(1,3,:),2*pi)*180/pi-180;
+else
+    Joint(102).AA = Joint(102).Euler(1,3,:)*180/pi-180;
+end
 Joint(102).LM = Joint(102).dj(1,1,:);
 Joint(102).PD = Joint(102).dj(2,1,:);
 Joint(102).AP = Joint(102).dj(1,1,:);

@@ -19,9 +19,14 @@ function [Segment,btk2] = computeSegmentKinematics_lowerLimb(Segment,btk2)
 T = Q2Tuv_array3(Segment(5).Q);
 Rotation = R2fixedYXZ_array3(T(1:3,1:3,:)); % (Wren and Mitiguy 2007)
 Translation = T(1:3,4,:);
-Segment(5).FE = Rotation(1,3,:)*180/pi;
-Segment(5).AA = -Rotation(1,2,:)*180/pi; % *(-1)
-if max(Rotation(1,1,:)*180/pi) > 150
+if Segment(5).Q(4,:,end) > Segment(5).Q(4,:,1)
+    Segment(5).FE = Rotation(1,3,:)*180/pi;
+    Segment(5).AA = Rotation(1,2,:)*180/pi;
+elseif Segment(5).Q(4,:,end) < Segment(5).Q(4,:,1)
+    Segment(5).FE = -Rotation(1,3,:)*180/pi;
+    Segment(5).AA = -Rotation(1,2,:)*180/pi;
+end
+if max(abs(Rotation(1,1,:)*180/pi)) > 150
     Segment(5).IER = (mod(Rotation(1,1,:),2*pi)-pi)*180/pi;
 else
     Segment(5).IER = Rotation(1,1,:)*180/pi;
@@ -45,12 +50,30 @@ btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: Tup(+)
 T = Q2Tuv_array3(Segment(2).Q);
 Rotation = R2fixedZYX_array3(T(1:3,1:3,:));
 Translation = T(1:3,4,:);
-Segment(2).FE = Rotation(1,1,:)*180/pi;
-Segment(2).AA = Rotation(1,2,:)*180/pi;
-if max(Rotation(1,3,:)*180/pi) > 150
-    Segment(2).IER = (mod(Rotation(1,3,:),2*pi)-pi)*180/pi;
-else
-    Segment(2).IER = Rotation(1,3,:)*180/pi;
+if Segment(5).Q(4,:,end) > Segment(5).Q(4,:,1)
+    if max(Rotation(1,1,:)*180/pi) > 150
+        Segment(2).FE = (mod(Rotation(1,1,:),2*pi)-pi)*180/pi;
+    else
+        Segment(2).FE = Rotation(1,1,:)*180/pi;
+    end
+    Segment(2).IER = Rotation(1,2,:)*180/pi;
+    if max(Rotation(1,3,:)*180/pi) > 150
+        Segment(2).AA = -(mod(Rotation(1,3,:),2*pi)-pi)*180/pi;
+    else
+        Segment(2).AA = -Rotation(1,3,:)*180/pi;
+    end
+elseif Segment(5).Q(4,:,end) < Segment(5).Q(4,:,1)
+    if max(Rotation(1,1,:)*180/pi) > 150
+        Segment(2).FE = (mod(Rotation(1,1,:),2*pi)-pi)*180/pi;
+    else
+        Segment(2).FE = Rotation(1,1,:)*180/pi;
+    end
+    Segment(2).IER = -Rotation(1,2,:)*180/pi;
+    if max(Rotation(1,3,:)*180/pi) > 150
+        Segment(2).AA = (mod(Rotation(1,3,:),2*pi)-pi)*180/pi;
+    else
+        Segment(2).AA = Rotation(1,3,:)*180/pi;
+    end
 end
 clear T Rotation Translation;
 % Export marker in C3D file
@@ -68,12 +91,30 @@ btkSetPointDescription(btk2,btkGetPointNumber(btk2),'Angle (Deg): X-Axis: Tup(+)
 T = Q2Tuv_array3(Segment(102).Q);
 Rotation = R2fixedZYX_array3(T(1:3,1:3,:));
 Translation = T(1:3,4,:);
-Segment(102).FE = Rotation(1,1,:)*180/pi;
-Segment(102).AA = Rotation(1,2,:)*180/pi;
-if max(Rotation(1,3,:)*180/pi) > 150
-    Segment(102).IER = (mod(Rotation(1,3,:),2*pi)-pi)*180/pi;
-else
-    Segment(102).IER = Rotation(1,3,:)*180/pi;
+if Segment(5).Q(4,:,end) > Segment(5).Q(4,:,1)
+    if max(Rotation(1,1,:)*180/pi) > 150
+        Segment(102).FE = (mod(Rotation(1,1,:),2*pi)-pi)*180/pi;
+    else
+        Segment(102).FE = Rotation(1,1,:)*180/pi;
+    end
+    Segment(102).IER = Rotation(1,2,:)*180/pi;
+    if max(Rotation(1,3,:)*180/pi) > 150
+        Segment(102).AA = -(mod(Rotation(1,3,:),2*pi)-pi)*180/pi;
+    else
+        Segment(102).AA = -Rotation(1,3,:)*180/pi;
+    end
+elseif Segment(5).Q(4,:,end) < Segment(5).Q(4,:,1)
+    if max(Rotation(1,1,:)*180/pi) > 150
+        Segment(102).FE = (mod(Rotation(1,1,:),2*pi)-pi)*180/pi;
+    else
+        Segment(102).FE = Rotation(1,1,:)*180/pi;
+    end
+    Segment(102).IER = -Rotation(1,2,:)*180/pi;  
+    if max(Rotation(1,3,:)*180/pi) > 150
+        Segment(102).AA = (mod(Rotation(1,3,:),2*pi)-pi)*180/pi;
+    else
+        Segment(102).AA = Rotation(1,3,:)*180/pi;
+    end
 end
 clear T Rotation Translation;
 % Export marker in C3D file

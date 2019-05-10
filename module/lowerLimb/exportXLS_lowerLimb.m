@@ -201,10 +201,10 @@ xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Segmentkinematics.L_Foot
 xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Segmentkinematics.L_Foot_Angle_FE.std,sheet,['AY',num2str(nline+5)]);
 xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Segmentkinematics.R_Foot_Angle_FE.mean,sheet,['AZ',num2str(nline+5)]);
 xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Segmentkinematics.R_Foot_Angle_FE.std,sheet,['BA',num2str(nline+5)]);
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Segmentkinematics.L_Foot_Angle_AA.mean,sheet,['BB',num2str(nline+5)]);
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Segmentkinematics.L_Foot_Angle_AA.std,sheet,['BC',num2str(nline+5)]);
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Segmentkinematics.R_Foot_Angle_AA.mean,sheet,['BD',num2str(nline+5)]);
-xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Segmentkinematics.R_Foot_Angle_AA.std,sheet,['BE',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Segmentkinematics.L_Foot_Angle_AA.mean,sheet,['BB',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Segmentkinematics.L_Foot_Angle_AA.std,sheet,['BC',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Segmentkinematics.R_Foot_Angle_AA.mean,sheet,['BD',num2str(nline+5)]);
+xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Segmentkinematics.R_Foot_Angle_AA.std,sheet,['BE',num2str(nline+5)]);
 xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Segmentkinematics.L_Foot_Angle_IER.mean,sheet,['BF',num2str(nline+5)]);
 xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Segmentkinematics.L_Foot_Angle_IER.std,sheet,['BG',num2str(nline+5)]);
 xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Segmentkinematics.R_Foot_Angle_IER.mean,sheet,['BH',num2str(nline+5)]);
@@ -369,23 +369,21 @@ k = 2;
 eFields = fieldnames(Condition.Average.LowerLimb.EMG);
 for i = 1:length(eFields)
     if ~isempty(strfind(eFields{i}, 'L_'))
-        if ~isempty(strfind(eFields{i}, '_Signal2'))
+        if ~isempty(strfind(eFields{i}, '_Signal'))
             xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline+5)]); k = k+1;
             xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline+5)]); k = k+1;
-        end
-        if ~isempty(strfind(eFields{i}, '_Envelop'))
+        elseif ~isempty(strfind(eFields{i}, '_Envelop'))
             xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline+5)]); k = k+1;
-            xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).std,sheet,[columns{k},num2str(nline+5)]); k = k+1;
+            xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).std,sheet,[columns{k},num2str(nline+5)]); k = k+1;            
         end
     end
     if ~isempty(strfind(eFields{i}, 'R_'))
-        if ~isempty(strfind(eFields{i}, '_Signal2'))
+        if ~isempty(strfind(eFields{i}, '_Signal'))
             xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline+5)]); k = k+1;
             xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline+5)]); k = k+1;
-        end
-        if ~isempty(strfind(eFields{i}, '_Envelop'))
+        elseif ~isempty(strfind(eFields{i}, '_Envelop'))
             xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline+5)]); k = k+1;
-            xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).std,sheet,[columns{k},num2str(nline+5)]); k = k+1;
+            xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline+5)]); k = k+1;
         end
     end
 end    

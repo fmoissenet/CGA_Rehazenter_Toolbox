@@ -120,24 +120,7 @@ for i = 1%1:length(Session.conditions)
     
     % ---------------------------------------------------------------------
     % Trial
-    % ---------------------------------------------------------------------    
-    % Set the maximum values through the trial of a condition for EMGs
     % ---------------------------------------------------------------------
-    MaxEMG = [];
-    for j = 1:length(Session.Trial)
-        if strcmp(Session.Trial(j).condition,Condition(i).name)
-            trial = Session.Trial(j).file;
-            Analog = btkGetAnalogs(trial);
-            fAnalog = btkGetAnalogFrequency(trial);
-            n = btkGetLastFrame(trial)-btkGetFirstFrame(trial)+1;
-            MaxEMG = setMaxEMG(Session,Analog,MaxEMG,n,fAnalog);
-        end
-    end
-    nMaxEMG = fieldnames(MaxEMG);
-    for j = 1:length(nMaxEMG)
-        MaxEMG.(nMaxEMG{j}).data = sort(MaxEMG.(nMaxEMG{j}).data,1,'descend');
-        MaxEMG.(nMaxEMG{j}).max = mean(MaxEMG.(nMaxEMG{j}).data(1:10));
-    end
     
     % Compute biomechanical parameters
     % ---------------------------------------------------------------------
@@ -165,11 +148,11 @@ for i = 1%1:length(Session.conditions)
             % Import reaction forces
             [Grf,tGrf] = importTrialReaction(Event,Forceplate,tGrf,Grf,btk2,n0,n,fMarker,fAnalog);
             % Import EMG signals
-            [EMG,btk2] = importTrialEMG(Session,Analog,Event,MaxEMG,btk2,n0,n,fMarker,fAnalog);
+            [EMG,btk2] = importTrialEMG(Session,Analog,Event,btk2,n0,n,fMarker,fAnalog);
             % Update and export events
             [Event,btk2] = exportEvents(Event,trial,btk2,fMarker);
             % Export normalisation values
-            btk2 = exportNormalisationValues(Session,Patient,MaxEMG,btk2);
+            btk2 = exportNormalisationValues(Session,Patient,btk2);
             
             % Lower limb kinematic chain
             % -------------------------------------------------------------

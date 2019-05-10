@@ -28,7 +28,7 @@ disp('            REHAZENTER CLINICAL GAIT ANALYSIS TOOLBOX             ');
 disp('==================================================================');
 disp('              Authors: F. Moissenet, C. Schreiber                 ');
 disp('                         Version: 2019                            ');
-disp('                  Date of creation: 16/05/2018                    ');
+disp('                  Date of creation: 02/05/2019                    ');
 disp('==================================================================');
 disp(' ');
 

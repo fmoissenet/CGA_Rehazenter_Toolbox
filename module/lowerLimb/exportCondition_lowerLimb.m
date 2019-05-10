@@ -439,15 +439,6 @@ for i = 1:size(nEMG,1)
         else
             Output.EMG.([nEMG{i},'_Signal']) = NaN(length(aRHS(1):aRHS(2)),1);
         end  
-        % ONLY FOR THE REPORT (signal2)
-        temp = EMG.(nEMG{i}).signal2(:,:,aRHS(1):aRHS(2));
-        if sum(isnan(temp)) ~= size(isnan(temp),1)
-            x = 1:length(temp);
-            xx = linspace(1,length(temp),101*10);
-            Output.EMG.([nEMG{i},'_Signal2']) = (interp1(x,(permute(temp,[2,3,1]))',xx,'spline'))';
-        else
-            Output.EMG.([nEMG{i},'_Signal2']) = NaN(101*10,1);
-        end     
         temp = EMG.(nEMG{i}).envelop(:,:,mRHS(1):mRHS(2));
         if sum(isnan(temp)) ~= size(isnan(temp),1)
             Output.EMG.([nEMG{i},'_Envelop']) = interp1(R_k,permute(temp,[2,3,1]),R_ko,'spline');
@@ -462,15 +453,6 @@ for i = 1:size(nEMG,1)
             Output.EMG.([nEMG{i},'_Signal']) = permute(temp,[2,3,1])';
         else
             Output.EMG.([nEMG{i},'_Signal']) = NaN(length(aLHS(1):aLHS(2)),1);
-        end    
-        % ONLY FOR THE REPORT (signal2)
-        temp = EMG.(nEMG{i}).signal2(:,:,aLHS(1):aLHS(2));
-        if sum(isnan(temp)) ~= size(isnan(temp),1)
-            x = 1:length(temp);
-            xx = linspace(1,length(temp),101*10);
-            Output.EMG.([nEMG{i},'_Signal2']) = (interp1(x,(permute(temp,[2,3,1]))',xx,'spline'))';
-        else
-            Output.EMG.([nEMG{i},'_Signal2']) = NaN(101*10,1);
         end     
         temp = EMG.(nEMG{i}).envelop(:,:,mLHS(1):mLHS(2));
         if sum(isnan(temp)) ~= size(isnan(temp),1)
