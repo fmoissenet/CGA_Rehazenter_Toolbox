@@ -1,7 +1,7 @@
 % =========================================================================
 % REHAZENTER CLINICAL GAIT ANALYSIS TOOLBOX
 % =========================================================================
-% This toolbox uses the Biomechanical ToolKit for .c3d importation
+% This toolbox uses the Biomechanical ToolKit for .c3d imp/exportation
 % (https://code.google.com/p/b-tk/) 
 % and the kinematics/dynamics toolbox developed by Raphaël Dumas 
 % (https://nl.mathworks.com/matlabcentral/fileexchange/...
@@ -15,7 +15,7 @@
 % Date of creation: 16/05/2018
 % Version: 1
 % =========================================================================
-
+tic
 % =========================================================================
 % Initialisation
 % =========================================================================
@@ -26,8 +26,8 @@ disp('==================================================================');
 disp('            REHAZENTER CLINICAL GAIT ANALYSIS TOOLBOX             ');
 disp('==================================================================');
 disp('              Authors: F. Moissenet, C. Schreiber                 ');
-disp('                         Version: 2018                            ');
-disp('                  Date of creation: 16/05/2018                    ');
+disp('                         Version: 2019                            ');
+disp('                  Date of creation: 02/05/2019                    ');
 disp('==================================================================');
 disp(' ');
 
@@ -46,27 +46,38 @@ disp(' ');
 % =========================================================================
 % Set patient folder
 % =========================================================================
-c3dFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\routines\github\CGA_Rehazenter_Toolbox\example';
-matFolder = c3dFolder;
-
-% =========================================================================
-% Active modules % 0: inactive | 1: active
-% =========================================================================
-% Kinematic chains
-Module.lowerLimb = 1;
-Module.upperLimb = 0;
-% Setting.posture_PLUGIN = 0;
-% Setting.emg_PLUGIN = 0;
-% Setting.foot_PLUGIN = 0;
-% Setting.baropodo_PLUGIN = 0;
-% Setting.statistics_PLUGIN = 0;
-% Setting.report_PLUGIN = 0;
-% Setting.database_PLUGIN = 0;
+sessionFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\routines\github\CGA_Rehazenter_Toolbox\example\patient2';
+patientFolder = sessionFolder;
 
 % =========================================================================
 % Start Clinical Gait Analysis
 % =========================================================================
-startCGA(toolboxFolder,c3dFolder,matFolder,Module);
-% if Setting.report == 1
-%     report_PLUGIN();
-% end
+startCGA(toolboxFolder,sessionFolder,patientFolder);
+
+% =========================================================================
+% Reporting tool
+% =========================================================================
+% Condition #1 (diagnosis condition)
+clearvars -except patientFolder sessionFolder toolboxFolder
+cd(patientFolder);
+load('Sadeler_Marc_26091985_N-Aa-NNN-NN_20122018.mat','-mat','Condition','Patient','Session');
+tempC(1) = Condition;
+tempS(1) = Session;
+
+% Condition #2 (other condition)
+clearvars -except tempC tempS Patient patientFolder sessionFolder toolboxFolder
+cd(patientFolder);
+load('Sadeler_Marc_26091985_N-N-NNSed-NN_20122018.mat','-mat','Condition','Session');
+tempC(2) = Condition;
+tempS(2) = Session;
+
+% Merge conditions
+clear Condition Session;
+Condition = tempC;
+Session = tempS;
+clear tempC tempS;
+        
+% Generate diagnostic XLS report
+exportXLS_diagnosis_lowerLimb(Patient,Session,Condition,length(Condition),sessionFolder,toolboxFolder);
+
+toc

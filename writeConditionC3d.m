@@ -68,10 +68,13 @@ else
     % Merge EMG data
     nEMG = 1;
     for m = 1:size(nAnalog,1)
-        if ~isempty(strfind(nAnalog{m},'R_')) || ~isempty(strfind(nAnalog{m},'L_'))
-            btkAppendAnalog(btk3,Session.EMG{nEMG},...
-                [Analog1.(nAnalog{m});Analog2.(nAnalog{m})],'EMG signal (mV)');
-            nEMG = nEMG+1;
+        if ~strcmp(Session.EMG{nEMG},'none')
+            if ~isempty(strfind(nAnalog{m},'R_')) || ...
+               ~isempty(strfind(nAnalog{m},'L_'))
+                btkAppendAnalog(btk3,Session.EMG{nEMG},...
+                    [Analog1.(nAnalog{m});Analog2.(nAnalog{m})],'EMG signal (mV)');
+                nEMG = nEMG+1;
+            end
         end
     end
     for m = 1:size(nScalar,1)

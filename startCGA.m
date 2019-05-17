@@ -13,28 +13,16 @@
 % =========================================================================
 
 function [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
-    startCGA(toolboxFolder,c3dFolder,matFolder,Module)
-
-% =========================================================================
-% Initialisation
-% =========================================================================
-cd(toolboxFolder);
-disp('Loading selected modules ...');
-names = fieldnames(Module);
-for i = 1:length(names)
-    if Module.(names{i}) == 1
-        disp(['[MODULE ',names{i},']']);
-    end
-end
-disp(' ');
+    startCGA(toolboxFolder,sessionFolder,patientFolder)
 
 % =========================================================================
 % Initialise structures
 % =========================================================================
+cd(toolboxFolder);
 Patient = [];
 Pathology = [];
-Treatment = [];
 Examination = [];
+Treatment = [];
 Session = [];
 Condition = [];
 
@@ -43,7 +31,7 @@ Condition = [];
 % =========================================================================
 disp('>> Import session information ...');
 [Patient,Pathology,Treatment,Examination,Session,Condition] = ...
-    importSessionInformation(Patient,Pathology,Treatment,Examination,Session,Condition,c3dFolder);
+    importSessionInformation(Patient,Pathology,Treatment,Examination,Session,Condition,sessionFolder);
 disp(['  > Patient: ',Patient.lastname,' ',Patient.firstname,' ',Patient.birthdate]);
 disp(['  > Session: ',Session.date]);
 disp(' ');
@@ -52,7 +40,7 @@ disp(' ');
 % Import clinical examination
 % =========================================================================
 disp('>> Import clinical examination ...');
-Examination = importClinicalExamination(Examination,c3dFolder);
+Examination = importClinicalExamination(Examination,sessionFolder);
 disp(['  > Patient: ',Patient.lastname,' ',Patient.firstname,' ',Patient.birthdate]);
 disp(['  > Session: ',Session.date]);
 disp(' ');
@@ -64,7 +52,7 @@ disp(' ');
 % .xlsx file (staticXX, videoXX, trialXX)
 % =========================================================================
 disp('>> Load session files ...');
-cd(c3dFolder);
+cd(sessionFolder);
 % Load static file (.c3d) - 1 static per condition
 if isfield(Session,'Static')
     for i = 1:length(Session.Static)
@@ -120,7 +108,7 @@ for i = 1:length(Session.conditions)
             % Compute leg length
             Session = setLegLength_lowerLimb(Session,Marker);
             % Export processed files
-            cd(c3dFolder);
+            cd(sessionFolder);
             btkWriteAcquisition(btk2,[strrep(Session.Static(j).filename,'.c3d',''),'_out.c3d']);
             cd(toolboxFolder);
         end
@@ -133,24 +121,6 @@ for i = 1:length(Session.conditions)
     % ---------------------------------------------------------------------
     % Trial
     % ---------------------------------------------------------------------
-    
-    % Set the maximum values through the trial of a condition for EMGs
-    % ---------------------------------------------------------------------
-    MaxEMG = [];
-    for j = 1:length(Session.Trial)
-        if strcmp(Session.Trial(j).condition,Condition(i).name)
-            trial = Session.Trial(j).file;
-            Analog = btkGetAnalogs(trial);
-            fAnalog = btkGetAnalogFrequency(trial);
-            n = btkGetLastFrame(trial)-btkGetFirstFrame(trial)+1;
-            MaxEMG = setMaxEMG(Session,Analog,MaxEMG,n,fAnalog);
-        end
-    end
-    nMaxEMG = fieldnames(MaxEMG);
-    for j = 1:length(nMaxEMG)
-        MaxEMG.(nMaxEMG{j}).data = sort(MaxEMG.(nMaxEMG{j}).data,1,'descend');
-        MaxEMG.(nMaxEMG{j}).max = mean(MaxEMG.(nMaxEMG{j}).data(1:10));
-    end
     
     % Compute biomechanical parameters
     % ---------------------------------------------------------------------
@@ -174,15 +144,15 @@ for i = 1:length(Session.conditions)
             n0 = btkGetFirstFrame(trial);
             n = btkGetLastFrame(trial)-btkGetFirstFrame(trial)+1;
             % Import markers 3D trajectories
-            [Marker,btk2] = importTrialMarker(Marker,Event,n0,fMarker);
+            [Marker,btk2] = importTrialMarker(Marker,Event,n0,fMarker,fAnalog);
             % Import reaction forces
-            [Grf,tGrf] = importTrialReaction(Event,Forceplate,tGrf,Grf,n0,n,fMarker,fAnalog);
+            [Grf,tGrf] = importTrialReaction(Event,Forceplate,tGrf,Grf,btk2,n0,n,fMarker,fAnalog);
             % Import EMG signals
-            [EMG,btk2] = importTrialEMG(Session,Analog,Event,MaxEMG,btk2,n0,n,fMarker,fAnalog);
+            [EMG,btk2] = importTrialEMG(Session,Analog,Event,btk2,n0,n,fMarker,fAnalog);
             % Update and export events
             [Event,btk2] = exportEvents(Event,trial,btk2,fMarker);
             % Export normalisation values
-            btk2 = exportNormalisationValues(Session,Patient,MaxEMG,btk2);
+            btk2 = exportNormalisationValues(Session,Patient,btk2);
             
             % Lower limb kinematic chain
             % -------------------------------------------------------------
@@ -190,22 +160,22 @@ for i = 1:length(Session.conditions)
             if Session.Trial(j).kinematics.lowerLimb == 1
                 disp('      Lower limb');
                 % Set body segments for kinematics
-                [Segment,Vmarker,btk2] = ...
-                    setTrialSegment_kinematics_lowerLimb(Session,Patient,Condition(i),Marker,Event,Forceplate,tGrf,Grf,trial,btk2,fMarker);
+                [Segment,Vmarker,btk2] = ... 
+                    setTrialSegment_kinematics_lowerLimb(Session,Patient,Condition(i),Marker,Event,Forceplate,tGrf,Grf,trial,btk2,Session.Trial(j).s,fMarker);
                 % Compute spatiotemporal parameters
-                [Spatiotemporal,btk2] = computeSpatiotemporal_lowerLimb(Session,Vmarker,Event,fMarker,btk2);
+                [Spatiotemporal,btk2] = computeSpatiotemporal_lowerLimb(Session,Vmarker,Event,fMarker,fAnalog,btk2);
                 % Compute joint kinematics
                 [Joint,btk2] = computeJointKinematics_lowerLimb(Segment,btk2);
                 % Compute segment kinematics
                 [Segment,btk2] = computeSegmentKinematics_lowerLimb(Segment,btk2);
                 % Set body segments and joints for kinetics
                 [Segment,Joint,Vmarker] = ...
-                    setTrialSegment_kinetics_lowerLimb(Session,Patient,Condition(i),Segment,Joint,Marker,Event,Forceplate,tGrf,Grf,trial,btk2,fMarker);
+                    setTrialSegment_kinetics_lowerLimb(Session,Patient,Condition(i),Segment,Joint,Marker,Event,Forceplate,tGrf,Grf,trial,btk2,Session.Trial(j).s,fMarker);
                 % Compute kinetics
                 [Segment,Joint,btk2] = computeJointKinetics_lowerLimb(Session,Segment,Joint,fMarker,btk2);
                 % Store data in Condition (keep only intra cycle data)
                 Condition(i).Trial(k).LowerLimb = ...
-                    exportCondition_lowerLimb(Condition(i).Trial(k).LowerLimb,Segment,Joint,Marker,Vmarker,EMG,Event,Spatiotemporal,fMarker);
+                    exportCondition_lowerLimb(Session,Condition(i).Trial(k).LowerLimb,Segment,Joint,EMG,Event,Spatiotemporal,fMarker,fAnalog);        
             end
             
             % Upper limb kinematic chain
@@ -219,67 +189,22 @@ for i = 1:length(Session.conditions)
                         
             % Export processed files
             % -------------------------------------------------------------
-            cd(c3dFolder);
+            cd(sessionFolder);
             btkWriteAcquisition(btk2,[strrep(Session.Trial(j).filename,'.c3d',''),'_out.c3d']);   
-%             system(['C:\ProgramData\Mokka\Mokka.exe -c ',toolboxFolder,'\LWBM_model.mvc -p ',strrep(Session.Trial(j).filename,'.c3d',''),'_out.c3d']);
-            cd(toolboxFolder);
-            
-            % Merge files of a same condition
-            % -------------------------------------------------------------
-            cd(c3dFolder);
-            writeConditionC3d(Session,Condition(i),btk2,Session.Trial(j).filename,k);
+            clear btk2 Marker Vmarker Analog Event Forceplate tGrf Grf Segment Joint Spatiotemporal;
             cd(toolboxFolder);
             k = k+1;
         end
     end 
-    cd(c3dFolder);
-    filename = [Patient.lastname,'_',Patient.firstname,'_',regexprep(Patient.birthdate,'/',''),'_',Condition.name,'_',regexprep(Session.date,'/',''),'.c3d'];
-    system(['ren temp.c3d ',filename]);
-    system(['C:\ProgramData\Mokka\Mokka.exe -c ',toolboxFolder,'\LWBM_model.mvc -p ',filename]);
-    cd(toolboxFolder);
+
+    % Compute mean and std per item and per condition
+    % Export data in a MAT file
+    % ---------------------------------------------------------------------    
+    % Lower limb kinematic chain
+    if isfield(Condition(i).Trial(1),'LowerLimb')
+        Condition = computeAverage_lowerLimb(Condition,i);
+    end   
+    exportMAT(Patient,Pathology,Treatment,Examination,Session,Condition,...
+              i,sessionFolder,toolboxFolder);
+    
 end
-
-
-
- 
-%     if Module.statistics_PLUGIN == 1
-%         [Session,Condition(i)] = statistics_PLUGIN(Session,Condition(i));
-%     end       
-% 
-%     % Export condition in .mat file
-%     % ---------------------------------------------------------------------
-%     cd(matFolder);
-%     temp = Condition;
-%     Condition = Condition(i);
-%     save([regexprep(Patient.birthdate,' ','_'),'_',...
-%         regexprep(Patient.lastname,' ','_'),'_',...
-%         regexprep(Patient.firstname,' ','_'),'_',...
-%         regexprep(Condition.name,' ','_') ,'.mat'],...
-%         'Patient','Session','Condition','Module');
-%     Condition = temp;
-%     cd(toolboxFolder);
-%     disp('  > Condition saved');
-%     disp(' ');         
-% end    
-% 
-% % =========================================================================
-% % Store all information in the MySQL database
-% % =========================================================================
-% if Module.database_PLUGIN == 1
-%     cd(toolboxFolder);
-%     % Connect to the correct database
-%     javaaddpath([pwd,'\toolbox\queryMySQL\lib\mysql-connector-java-5.1.6\mysql-connector-java-5.1.6-bin.jar']);
-%     db = MySQLDatabase('bddlabo.rehazenter.local', 'bddaqm_v1', 'labomarche', 'qualisys');
-%     % Store information
-%     sqlStorePatient(Patient,db);
-%     sqlStorePathology(Patient,Pathology,db);
-%     sqlStoreSession(Patient,Session,db);
-%     sqlStoreTreatment(Patient,Session,Treatment,db);
-% %     sqlStoreExamination(Patient,Session,Examination,db);
-%     sqlStoreCondition(Patient,Session,db);
-%     % Close database
-%     db.close();
-%     disp('>> Database updated!');
-% end
-% disp(' ');
-% disp('>> Process achieved. Thanks for having used our toolbox!');
