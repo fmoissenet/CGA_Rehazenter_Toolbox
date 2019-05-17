@@ -57,7 +57,7 @@ startCGA(toolboxFolder,sessionFolder,patientFolder);
 % =========================================================================
 % Reporting tool
 % =========================================================================
-% Condition #1 (diagnosis condition)
+% Condition #1 (diagnosis condition - in case of multiple dates, the most recent exam)
 clearvars -except patientFolder sessionFolder toolboxFolder
 cd(patientFolder);
 load('Sadeler_Marc_26091985_N-Aa-NNN-NN_20122018.mat','-mat','Condition','Patient','Session');
@@ -78,6 +78,10 @@ Session = tempS;
 clear tempC tempS;
         
 % Generate diagnostic XLS report
-exportXLS_diagnosis_lowerLimb(Patient,Session,Condition,length(Condition),sessionFolder,toolboxFolder);
+for i = 1:length(Condition)
+    exportXLS_lowerLimb(Patient,Session,Condition,i,sessionFolder,toolboxFolder);
+end
+system(['rename template.xlsx ',Patient.lastname,'_',Patient.firstname,'_',regexprep(Patient.birthdate,'/',''),'_AQM_',regexprep(Session(1).date,'/',''),'.xlsx']);
+cd(toolboxFolder);
 
 toc

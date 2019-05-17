@@ -27,7 +27,8 @@ if ~exist(fname,'file')
     ExcelWorkbook.SaveAs(fname,1);
     ExcelWorkbook.Close(false);
 end
-invoke(Excel.Workbooks,'Open',fname);
+% invoke(Excel.Workbooks,'Open',fname);
+Excel.Workbooks.Open(fname);
 [~,~,temp1] = xlsread1(Excel,xlsfile(1).name,1,'B2:K112');
 
 % =========================================================================
