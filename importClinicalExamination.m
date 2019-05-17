@@ -16,7 +16,8 @@ function Examination = importClinicalExamination(Examination,sessionFolder)
 % Load session information file
 % =========================================================================
 cd(sessionFolder);
-xlsfile = dir('*.xls*');
+xlsfile = dir('template.xls*');
+system('Taskkill /F /IM EXCEL.EXE');
 Excel = actxserver('Excel.Application');
 fname = fullfile(pwd,xlsfile(1).name);
 if ~exist(fname,'file')

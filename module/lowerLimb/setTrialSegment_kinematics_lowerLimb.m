@@ -12,7 +12,7 @@
 % =========================================================================
 
 function [Segment,Vmarker,btk2] = ...
-    setTrialSegment_kinematics_lowerLimb(Session,Patient,Condition,Marker,Event,Forceplate,tGrf,Grf,btk,btk2,fMarker)
+    setTrialSegment_kinematics_lowerLimb(Session,Patient,Condition,Marker,Event,Forceplate,tGrf,Grf,btk,btk2,s,fMarker)
 
 n = size(Marker.R_IAS,3);
 
@@ -175,88 +175,18 @@ Segment(2).rM = [Marker.R_FCC,Marker.R_FM1,Marker.R_FM5];
 % =========================================================================
 % RIGHT FORCEPLATE (1)
 % =========================================================================
-if length(Event.RTO) == 1
-    t1 = fix(Event.RHS(1)*fMarker)+1;
-    t2 = fix(Event.RTO(1)*fMarker)+1;
-elseif length(Event.RTO) == 2
-    t1 = fix(Event.RHS(1)*fMarker)+1;
-    t2 = fix(Event.RTO(2)*fMarker)+1;
-end
-temp = btkGetMetaData(btk,'FORCE_PLATFORM');
-% Set walking direction
-if Vmarker.LJC(1,:,1)<Vmarker.LJC(1,:,end)
-    direction = 1; % +X
-else
-    direction = 2; % -X
-end
-% Set detection threshold (normal = 20)
-threshold = 20; % mm
-% Set forceplate corners
-corners1 = temp.children.CORNERS.info.values(:,:,1);
-corners2 = temp.children.CORNERS.info.values(:,:,2);
-FP1Xmax = max([corners1(1,1) corners1(1,2) corners1(1,3) corners1(1,4)]);
-FP1Xmin = min([corners1(1,1) corners1(1,2) corners1(1,3) corners1(1,4)]);
-FP1Ymax = max([corners1(2,1) corners1(2,2) corners1(2,3) corners1(2,4)]);
-FP1Ymin = min([corners1(2,1) corners1(2,2) corners1(2,3) corners1(2,4)]);
-FP2Xmax = max([corners2(1,1) corners2(1,2) corners2(1,3) corners2(1,4)]);
-FP2Xmin = min([corners2(1,1) corners2(1,2) corners2(1,3) corners2(1,4)]);
-FP2Ymax = max([corners2(2,1) corners2(2,2) corners2(2,3) corners2(2,4)]);
-FP2Ymin = min([corners2(2,1) corners2(2,2) corners2(2,3) corners2(2,4)]);
-% Set foot position
-if Marker.R_FCC(2,1,t1) < 50*1e-3
-    RFootXmax = max([Marker.R_FCC(1,1,t1) Marker.R_FCC(1,1,t2) ...
-        Marker.R_FM1(1,1,t1) Marker.R_FM1(1,1,t2) ...
-        Marker.R_FM5(1,1,t1) Marker.R_FM5(1,1,t2)])*1e3;
-    RFootXmin = min([Marker.R_FCC(1,1,t1) Marker.R_FCC(1,1,t2) ...
-        Marker.R_FM1(1,1,t1) Marker.R_FM1(1,1,t2) ...
-        Marker.R_FM5(1,1,t1) Marker.R_FM5(1,1,t2)])*1e3;
-    RFootYmax = max([-Marker.R_FCC(3,1,t1) -Marker.R_FCC(3,1,t2) ...
-        -Marker.R_FM1(3,1,t1) -Marker.R_FM1(3,1,t2) ...
-        -Marker.R_FM5(3,1,t1) -Marker.R_FM5(3,1,t2)])*1e3;
-    RFootYmin = min([-Marker.R_FCC(3,t1) -Marker.R_FCC(3,1,t2) ...
-        -Marker.R_FM1(3,1,t1) -Marker.R_FM1(3,1,t2) ...
-        -Marker.R_FM5(3,1,t1) -Marker.R_FM5(3,1,t2)])*1e3;
-else % equinus foot
-    RFootXmax = max([Marker.R_FM1(1,1,t1) Marker.R_FM1(1,1,t2) ...
-        Marker.R_FM5(1,1,t1) Marker.R_FM5(1,1,t2)])*1e3;
-    RFootXmin = min([Marker.R_FM1(1,1,t1) Marker.R_FM1(1,1,t2) ...
-        Marker.R_FM5(1,1,t1) Marker.R_FM5(1,1,t2)])*1e3;
-    RFootYmax = max([-Marker.R_FM1(3,1,t1) -Marker.R_FM1(3,1,t2) ...
-        -Marker.R_FM5(3,1,t1) -Marker.R_FM5(3,1,t2)])*1e3;
-    RFootYmin = min([-Marker.R_FM1(3,1,t1) -Marker.R_FM1(3,1,t2) ...
-        -Marker.R_FM5(3,1,t1) -Marker.R_FM5(3,1,t2)])*1e3;
-end
-% Detect forceplate
-if direction == 1 % +X
-    if RFootXmax+threshold <= FP1Xmax && RFootXmin+threshold >= FP1Xmin ...
-            && RFootYmax+threshold <= FP1Ymax && RFootYmin+threshold >= FP1Ymin
-        temp1 = permute(Grf(1).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP1 = permute(temp2,[2,3,1]);
-    elseif RFootXmax+threshold <= FP2Xmax && RFootXmin+threshold >= FP2Xmin ...
-            && RFootYmax <= FP2Ymax && RFootYmin >= FP2Ymin
-        temp1 = permute(Grf(2).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP1 = permute(temp2,[2,3,1]);
-    else
-        rP1 = NaN(3,1,length(Marker.R_FCC));
-    end
-elseif direction == 2 % -X
-    if RFootXmax-threshold <= FP1Xmax && RFootXmin-threshold >= FP1Xmin ...
-            && RFootYmax <= FP1Ymax && RFootYmin >= FP1Ymin
-        temp1 = permute(Grf(1).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP1 = permute(temp2,[2,3,1]);
-    elseif RFootXmax-threshold <= FP2Xmax && RFootXmin-threshold >= FP2Xmin ...
-            && RFootYmax <= FP2Ymax && RFootYmin >= FP2Ymin
-        temp1 = permute(Grf(2).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP1 = permute(temp2,[2,3,1]);
-    else
-        rP1 = NaN(3,1,length(Marker.R_FCC));
-    end
-end
 % Set segment parameters
+if s(1) == 1
+    temp1 = permute(Grf(1).P,[3,1,2]);
+    temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
+    rP1 = permute(temp2,[2,3,1]);
+elseif s(1) == 2
+    temp1 = permute(Grf(2).P,[3,1,2]);
+    temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
+    rP1 = permute(temp2,[2,3,1]);
+else
+rP1 = NaN(3,1,length(Marker.R_FCC));
+end
 rD1 = zeros(3,1,length(Marker.R_FCC));
 u1 = repmat([1;0;0],[1,1,length(Marker.R_FCC)]);
 w1 = repmat([1;0;0],[1,1,length(Marker.R_FCC)]);
@@ -406,88 +336,18 @@ Segment(102).rM = [Marker.L_FCC,Marker.L_FM1,Marker.L_FM5];
 % =========================================================================
 % LEFT FORCEPLATE (2)
 % =========================================================================
-if length(Event.LTO) == 1
-    t1 = fix(Event.LHS(1)*fMarker)+1;
-    t2 = fix(Event.LTO(1)*fMarker)+1;
-elseif length(Event.LTO) == 2
-    t1 = fix(Event.LHS(1)*fMarker)+1;
-    t2 = fix(Event.LTO(2)*fMarker)+1;
-end
-temp = btkGetMetaData(btk,'FORCE_PLATFORM');
-% Set walking direction
-if Vmarker.LJC(1,:,1)<Vmarker.LJC(1,:,end)
-    direction = 1; % +X
-else
-    direction = 2; % -X
-end
-% Set detection threshold (normal = 20)
-threshold = 20; % mm
-% Set forceplate corners
-corners1 = temp.children.CORNERS.info.values(:,:,1);
-corners2 = temp.children.CORNERS.info.values(:,:,2);
-FP1Xmax = max([corners1(1,1) corners1(1,2) corners1(1,3) corners1(1,4)]);
-FP1Xmin = min([corners1(1,1) corners1(1,2) corners1(1,3) corners1(1,4)]);
-FP1Ymax = max([corners1(2,1) corners1(2,2) corners1(2,3) corners1(2,4)]);
-FP1Ymin = min([corners1(2,1) corners1(2,2) corners1(2,3) corners1(2,4)]);
-FP2Xmax = max([corners2(1,1) corners2(1,2) corners2(1,3) corners2(1,4)]);
-FP2Xmin = min([corners2(1,1) corners2(1,2) corners2(1,3) corners2(1,4)]);
-FP2Ymax = max([corners2(2,1) corners2(2,2) corners2(2,3) corners2(2,4)]);
-FP2Ymin = min([corners2(2,1) corners2(2,2) corners2(2,3) corners2(2,4)]);
-% Set foot position
-if Marker.L_FCC(2,1,t1) < 50*1e-3
-    LFootXmax = max([Marker.L_FCC(1,1,t1) Marker.L_FCC(1,1,t2) ...
-        Marker.L_FM1(1,1,t1) Marker.L_FM1(1,1,t2) ...
-        Marker.L_FM5(1,1,t1) Marker.L_FM5(1,1,t2)])*1e3;
-    LFootXmin = min([Marker.L_FCC(1,1,t1) Marker.L_FCC(1,1,t2) ...
-        Marker.L_FM1(1,1,t1) Marker.L_FM1(1,1,t2) ...
-        Marker.L_FM5(1,1,t1) Marker.L_FM5(1,1,t2)])*1e3;
-    LFootYmax = max([-Marker.L_FCC(3,1,t1) -Marker.L_FCC(3,1,t2) ...
-        -Marker.L_FM1(3,1,t1) -Marker.L_FM1(3,1,t2) ...
-        -Marker.L_FM5(3,1,t1) -Marker.L_FM5(3,1,t2)])*1e3;
-    LFootYmin = min([-Marker.L_FCC(3,t1) -Marker.L_FCC(3,1,t2) ...
-        -Marker.L_FM1(3,1,t1) -Marker.L_FM1(3,1,t2) ...
-        -Marker.L_FM5(3,1,t1) -Marker.L_FM5(3,1,t2)])*1e3;
-else % equinus foot
-    LFootXmax = max([Marker.L_FM1(1,1,t1) Marker.L_FM1(1,1,t2) ...
-        Marker.L_FM5(1,1,t1) Marker.L_FM5(1,1,t2)])*1e3;
-    LFootXmin = min([Marker.L_FM1(1,1,t1) Marker.L_FM1(1,1,t2) ...
-        Marker.L_FM5(1,1,t1) Marker.L_FM5(1,1,t2)])*1e3;
-    LFootYmax = max([-Marker.L_FM1(3,1,t1) -Marker.L_FM1(3,1,t2) ...
-        -Marker.L_FM5(3,1,t1) -Marker.L_FM5(3,1,t2)])*1e3;
-    LFootYmin = min([-Marker.L_FM1(3,1,t1) -Marker.L_FM1(3,1,t2) ...
-        -Marker.L_FM5(3,1,t1) -Marker.L_FM5(3,1,t2)])*1e3;
-end
-% Detect forceplate
-if direction == 1 % +X
-    if LFootXmax+threshold <= FP1Xmax && LFootXmin+threshold >= FP1Xmin ...
-            && LFootYmax <= FP1Ymax && LFootYmin >= FP1Ymin
-        temp1 = permute(Grf(1).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP101 = permute(temp2,[2,3,1]);
-    elseif LFootXmax+threshold <= FP2Xmax && LFootXmin+threshold >= FP2Xmin ...
-            && LFootYmax <= FP2Ymax && LFootYmin >= FP2Ymin
-        temp1 = permute(Grf(2).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP101 = permute(temp2,[2,3,1]);
-    else
-        rP101 = NaN(3,1,length(Marker.R_FCC));
-    end
-elseif direction == 2 % -X
-    if LFootXmax-threshold <= FP1Xmax && LFootXmin-threshold >= FP1Xmin ...
-            && LFootYmax <= FP1Ymax && LFootYmin >= FP1Ymin
-        temp1 = permute(Grf(1).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP101 = permute(temp2,[2,3,1]);
-    elseif LFootXmax-threshold <= FP2Xmax && LFootXmin-threshold >= FP2Xmin ...
-            && LFootYmax <= FP2Ymax && LFootYmin >= FP2Ymin
-        temp1 = permute(Grf(2).P,[3,1,2]);
-        temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
-        rP101 = permute(temp2,[2,3,1]);
-    else
-        rP101 = NaN(3,1,length(Marker.R_FCC));
-    end
-end
 % Set segment parameters
+if s(2) == 1
+    temp1 = permute(Grf(1).P,[3,1,2]);
+    temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
+    rP101 = permute(temp2,[2,3,1]);
+elseif s(2) == 2
+    temp1 = permute(Grf(2).P,[3,1,2]);
+    temp2 = interp1(1:length(temp1),temp1,linspace(1,length(temp1),n),'pchip');
+    rP101 = permute(temp2,[2,3,1]);
+else
+    rP101 = NaN(3,1,length(Marker.L_FCC));
+end
 rD101 = zeros(3,1,length(Marker.R_FCC));
 u101 = repmat([1;0;0],[1,1,length(Marker.R_FCC)]);
 w101 = repmat([1;0;0],[1,1,length(Marker.R_FCC)]);

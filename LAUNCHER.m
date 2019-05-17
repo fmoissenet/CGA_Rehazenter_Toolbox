@@ -19,7 +19,6 @@ tic
 % =========================================================================
 % Initialisation
 % =========================================================================
-system('Taskkill /F /IM EXCEL.EXE');
 clearvars;
 warning('off','All');
 clc;
@@ -47,11 +46,38 @@ disp(' ');
 % =========================================================================
 % Set patient folder
 % =========================================================================
-sessionFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\routines\github\CGA_Rehazenter_Toolbox\example\patient';
+sessionFolder = 'C:\Users\florent.moissenet\Documents\Professionnel\routines\github\CGA_Rehazenter_Toolbox\example\patient2';
 patientFolder = sessionFolder;
 
 % =========================================================================
 % Start Clinical Gait Analysis
 % =========================================================================
 startCGA(toolboxFolder,sessionFolder,patientFolder);
+
+% =========================================================================
+% Reporting tool
+% =========================================================================
+% Condition #1 (diagnosis condition)
+clearvars -except patientFolder sessionFolder toolboxFolder
+cd(patientFolder);
+load('Sadeler_Marc_26091985_N-Aa-NNN-NN_20122018.mat','-mat','Condition','Patient','Session');
+tempC(1) = Condition;
+tempS(1) = Session;
+
+% Condition #2 (other condition)
+clearvars -except tempC tempS Patient patientFolder sessionFolder toolboxFolder
+cd(patientFolder);
+load('Sadeler_Marc_26091985_N-N-NNSed-NN_20122018.mat','-mat','Condition','Session');
+tempC(2) = Condition;
+tempS(2) = Session;
+
+% Merge conditions
+clear Condition Session;
+Condition = tempC;
+Session = tempS;
+clear tempC tempS;
+        
+% Generate diagnostic XLS report
+exportXLS_diagnosis_lowerLimb(Patient,Session,Condition,length(Condition),sessionFolder,toolboxFolder);
+
 toc

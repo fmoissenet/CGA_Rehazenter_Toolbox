@@ -74,7 +74,7 @@ disp(' ');
 % Data treatment of each trial of each condition
 % =========================================================================
 disp(['>> ',num2str(length(Session.conditions)),' condition(s) detected ...']);  
-for i = 1%1:length(Session.conditions)
+for i = 1:length(Session.conditions)
     disp(['  > Condition ',Session.conditions{i}]);
     cd(toolboxFolder);
     
@@ -160,8 +160,8 @@ for i = 1%1:length(Session.conditions)
             if Session.Trial(j).kinematics.lowerLimb == 1
                 disp('      Lower limb');
                 % Set body segments for kinematics
-                [Segment,Vmarker,btk2] = ...
-                    setTrialSegment_kinematics_lowerLimb(Session,Patient,Condition(i),Marker,Event,Forceplate,tGrf,Grf,trial,btk2,fMarker);
+                [Segment,Vmarker,btk2] = ... 
+                    setTrialSegment_kinematics_lowerLimb(Session,Patient,Condition(i),Marker,Event,Forceplate,tGrf,Grf,trial,btk2,Session.Trial(j).s,fMarker);
                 % Compute spatiotemporal parameters
                 [Spatiotemporal,btk2] = computeSpatiotemporal_lowerLimb(Session,Vmarker,Event,fMarker,fAnalog,btk2);
                 % Compute joint kinematics
@@ -170,7 +170,7 @@ for i = 1%1:length(Session.conditions)
                 [Segment,btk2] = computeSegmentKinematics_lowerLimb(Segment,btk2);
                 % Set body segments and joints for kinetics
                 [Segment,Joint,Vmarker] = ...
-                    setTrialSegment_kinetics_lowerLimb(Session,Patient,Condition(i),Segment,Joint,Marker,Event,Forceplate,tGrf,Grf,trial,btk2,fMarker);
+                    setTrialSegment_kinetics_lowerLimb(Session,Patient,Condition(i),Segment,Joint,Marker,Event,Forceplate,tGrf,Grf,trial,btk2,Session.Trial(j).s,fMarker);
                 % Compute kinetics
                 [Segment,Joint,btk2] = computeJointKinetics_lowerLimb(Session,Segment,Joint,fMarker,btk2);
                 % Store data in Condition (keep only intra cycle data)
@@ -206,9 +206,5 @@ for i = 1%1:length(Session.conditions)
     end   
     exportMAT(Patient,Pathology,Treatment,Examination,Session,Condition,...
               i,sessionFolder,toolboxFolder);
-        
-    % Export data per condition in the XLS file
-    % ---------------------------------------------------------------------     
-    exportXLS_lowerLimb(Condition,i,sessionFolder,toolboxFolder);
     
 end
