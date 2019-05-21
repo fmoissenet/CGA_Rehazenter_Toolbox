@@ -86,7 +86,7 @@ Vmarker.R_KJC = ...
 Vmarker.R_KJC = Vmarker.R_KJC(1:3,:,:);
 % Femur axes (Dumas and Wojtusch 2018)
 Y4 = Vnorm_array3(Vmarker.R_HJC-Vmarker.R_KJC);
-X4 = Vnorm_array3(cross(Marker.R_FLE-Vmarker.R_HJC,Marker.R_FME-Vmarker.R_HJC)*1e3);
+X4 = Vnorm_array3(cross(Marker.R_FLE-Vmarker.R_HJC,Vmarker.R_KJC-Vmarker.R_HJC));
 Z4 = Vnorm_array3(cross(X4,Y4));
 % Femur parameters (Dumas and Chèze 2007)
 rP4 = Vmarker.R_HJC;
@@ -238,7 +238,7 @@ Vmarker.L_KJC = ...
 Vmarker.L_KJC = Vmarker.L_KJC(1:3,:,:);
 % Femur axes (Dumas and Wojtusch 2018)
 Y104 = Vnorm_array3(Vmarker.L_HJC-Vmarker.L_KJC);
-X104 = -Vnorm_array3(cross(Marker.L_FLE-Vmarker.L_HJC,Marker.L_FME-Vmarker.L_HJC));
+X104 = -Vnorm_array3(cross(Marker.L_FLE-Vmarker.L_HJC,Vmarker.L_KJC-Vmarker.L_HJC));
 Z104 = Vnorm_array3(cross(X104,Y104));
 % Femur parameters (Dumas and Chèze 2007)
 rP104 = Vmarker.L_HJC;
@@ -268,7 +268,7 @@ Vmarker.L_AJC = ...
 Vmarker.L_AJC = Vmarker.L_AJC(1:3,:,:);
 % Tibia/fibula axes (Dumas and Wojtusch 2018)
 Y103 = Vnorm_array3(Vmarker.L_KJC-Vmarker.L_AJC);
-X103 = -Vnorm_array3(cross(Marker.L_FAL-Vmarker.L_KJC,Marker.L_TAM-Vmarker.L_KJC));
+X103 = -Vnorm_array3(cross(Vmarker.L_AJC-Marker.L_FAX,Vmarker.L_KJC-Marker.L_FAX));
 Z103 = Vnorm_array3(cross(X103,Y103));
 % Tibia/fibula parameters (Dumas and Chèze 2007)
 rP103 = Vmarker.L_KJC;

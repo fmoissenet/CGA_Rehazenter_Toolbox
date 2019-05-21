@@ -106,12 +106,12 @@ btkSetPoint(btk2,btkGetPointNumber(btk2),permute(temp,[3,2,1])*1e3);
 btkSetPointLabel(btk2,btkGetPointNumber(btk2),'R_KJC');
 % Femur axes (Dumas and Wojtusch 2018)
 Y4 = Vnorm_array3(Vmarker.R_HJC-Vmarker.R_KJC);
-X4 = Vnorm_array3(cross(Marker.R_FLE-Vmarker.R_HJC,Marker.R_FME-Vmarker.R_HJC)*1e3);
+X4 = Vnorm_array3(cross(Marker.R_FLE-Vmarker.R_HJC,Vmarker.R_KJC-Vmarker.R_HJC));
 Z4 = Vnorm_array3(cross(X4,Y4));
 % Femur parameters (Dumas and Chèze 2007)
 rP4 = Vmarker.R_HJC;
 rD4 = Vmarker.R_KJC;
-w4 = Vnorm_array3(Marker.R_FLE-Marker.R_FME);%Z4;
+w4 = Vnorm_array3(Marker.R_FLE-Vmarker.R_KJC);%Z4;
 u4 = X4;
 Segment(4).Q = [u4;rP4;rD4;w4];
 
@@ -146,7 +146,7 @@ Z3 = Vnorm_array3(cross(X3,Y3));
 % Tibia/fibula parameters (Dumas and Chèze 2007)
 rP3 = Vmarker.R_KJC;
 rD3 = Vmarker.R_AJC;
-w3 = Vnorm_array3(Marker.R_FAL-Marker.R_TAM);%Z3;
+w3 = Vnorm_array3(Marker.R_FAL-Vmarker.R_AJC);%Z3;
 u3 = X3;
 Segment(3).Q = [u3;rP3;rD3;w3];
 
@@ -267,12 +267,12 @@ btkSetPoint(btk2,btkGetPointNumber(btk2),permute(temp,[3,2,1])*1e3);
 btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_KJC');
 % Femur axes (Dumas and Wojtusch 2018)
 Y104 = Vnorm_array3(Vmarker.L_HJC-Vmarker.L_KJC);
-X104 = -Vnorm_array3(cross(Marker.L_FLE-Vmarker.L_HJC,Marker.L_FME-Vmarker.L_HJC));
+X104 = -Vnorm_array3(cross(Marker.L_FLE-Vmarker.L_HJC,Vmarker.L_KJC-Vmarker.L_HJC));
 Z104 = Vnorm_array3(cross(X104,Y104));
 % Femur parameters (Dumas and Chèze 2007)
 rP104 = Vmarker.L_HJC;
 rD104 = Vmarker.L_KJC;
-w104 = Vnorm_array3(Marker.L_FLE-Marker.L_FME);%Z4;
+w104 = Vnorm_array3(Marker.L_FLE-Vmarker.L_KJC);%Z4;
 u104 = X104;
 Segment(104).Q = [u104;rP104;rD104;w104];
 
@@ -302,12 +302,12 @@ btkSetPoint(btk2,btkGetPointNumber(btk2),permute(temp,[3,2,1])*1e3);
 btkSetPointLabel(btk2,btkGetPointNumber(btk2),'L_AJC');
 % Tibia/fibula axes (Dumas and Wojtusch 2018)
 Y103 = Vnorm_array3(Vmarker.L_KJC-Vmarker.L_AJC);
-X103 = -Vnorm_array3(cross(Marker.L_FAL-Vmarker.L_KJC,Marker.L_TAM-Vmarker.L_KJC));
+X103 = -Vnorm_array3(cross(Vmarker.L_AJC-Marker.L_FAX,Vmarker.L_KJC-Marker.L_FAX));
 Z103 = Vnorm_array3(cross(X103,Y103));
 % Tibia/fibula parameters (Dumas and Chèze 2007)
 rP103 = Vmarker.L_KJC;
 rD103 = Vmarker.L_AJC;
-w103 = Vnorm_array3(Marker.L_FAL-Marker.L_TAM);%Z3;
+w103 = Vnorm_array3(Marker.L_FAL-Vmarker.L_AJC);%Z3;
 u103 = X103;
 Segment(103).Q = [u103;rP103;rD103;w103];
 
