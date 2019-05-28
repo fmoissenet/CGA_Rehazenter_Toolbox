@@ -13,9 +13,15 @@
 function [EMG,btk2] = importTrialEMG(Session,Analog,Event,btk2,n0,n,fMarker,fAnalog)
 
 % =========================================================================
+% Initialise the EMG structure
+% =========================================================================
+EMG = [];
+
+% =========================================================================
 % EMG signal (only band-pass filter)
 % =========================================================================
 nAnalog = fieldnames(Analog);
+Analog2 = [];
 for j = 1:length(nAnalog)
     if ~isempty(strfind(nAnalog{j},'EMG_')) || ...
        ~isempty(strfind(nAnalog{j},'Right_')) || ...
@@ -42,12 +48,14 @@ for j = 1:length(nAnalog)
     end
 end
 % Export EMG signals
-nAnalog2 = fieldnames(Analog2);
-for i = 1:length(nAnalog2)
-    if ~strcmp(Session.EMG{i},'none')
-        btkAppendAnalog(btk2,Session.EMG{i},...
-            Analog2.(nAnalog2{i}),'EMG signal (V)');
-        EMG.(Session.EMG{i}).signal = permute(Analog2.(nAnalog2{i}),[2,3,1]);
+if ~isempty(Analog2)
+    nAnalog2 = fieldnames(Analog2);
+    for i = 1:length(nAnalog2)
+        if ~strcmp(Session.EMG{i},'none')
+            btkAppendAnalog(btk2,Session.EMG{i},...
+                Analog2.(nAnalog2{i}),'EMG signal (V)');
+            EMG.(Session.EMG{i}).signal = permute(Analog2.(nAnalog2{i}),[2,3,1]);
+        end
     end
 end
 
@@ -55,6 +63,7 @@ end
 % EMG envelop
 % =========================================================================
 nAnalog = fieldnames(Analog);
+Analog2 = [];
 for j = 1:length(nAnalog)
     if ~isempty(strfind(nAnalog{j},'EMG_')) || ...
        ~isempty(strfind(nAnalog{j},'Right_')) || ...
@@ -89,17 +98,19 @@ for j = 1:length(nAnalog)
     end
 end
 % Export EMG signals
-nAnalog2 = fieldnames(Analog2);
-for i = 1:length(nAnalog2)
-    if ~strcmp(Session.EMG{i},'none')
-        btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
-        btkSetPointType(btk2,btkGetPointNumber(btk2),'scalar');
-        btkSetPoint(btk2,btkGetPointNumber(btk2),...
-            [Analog.(nAnalog2{i}) ...
-            zeros(size(Analog.(nAnalog2{i}))) ...
-            zeros(size(Analog.(nAnalog2{i})))]);
-        btkSetPointLabel(btk2,btkGetPointNumber(btk2),Session.EMG{i});
-        btkSetPointDescription(btk2,btkGetPointNumber(btk2),'EMG envelop');
-        EMG.(Session.EMG{i}).envelop = permute(Analog.(nAnalog2{i}),[2,3,1]);
+if ~isempty(Analog2)
+    nAnalog2 = fieldnames(Analog2);
+    for i = 1:length(nAnalog2)
+        if ~strcmp(Session.EMG{i},'none')
+            btkSetPointNumber(btk2,btkGetPointNumber(btk2)+1);
+            btkSetPointType(btk2,btkGetPointNumber(btk2),'scalar');
+            btkSetPoint(btk2,btkGetPointNumber(btk2),...
+                [Analog.(nAnalog2{i}) ...
+                zeros(size(Analog.(nAnalog2{i}))) ...
+                zeros(size(Analog.(nAnalog2{i})))]);
+            btkSetPointLabel(btk2,btkGetPointNumber(btk2),Session.EMG{i});
+            btkSetPointDescription(btk2,btkGetPointNumber(btk2),'EMG envelop');
+            EMG.(Session.EMG{i}).envelop = permute(Analog.(nAnalog2{i}),[2,3,1]);
+        end
     end
 end

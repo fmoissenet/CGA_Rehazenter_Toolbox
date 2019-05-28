@@ -429,36 +429,38 @@ end
 % -------------------------------------------------------------------------
 % EMG
 % -------------------------------------------------------------------------
-nEMG = fieldnames(EMG);
-for i = 1:size(nEMG,1)
-    % Right gait cycle
-    if strfind(nEMG{i},'R_')
-        temp = EMG.(nEMG{i}).signal(:,:,aRHS(1):aRHS(2));
-        if sum(isnan(temp)) ~= size(isnan(temp),3)
-            Output.EMG.([nEMG{i},'_Signal']) = permute(temp,[2,3,1])';
-        else
-            Output.EMG.([nEMG{i},'_Signal']) = NaN(length(aRHS(1):aRHS(2)),1);
-        end  
-        temp = EMG.(nEMG{i}).envelop(:,:,mRHS(1):mRHS(2));
-        if sum(isnan(temp)) ~= size(isnan(temp),3)
-            Output.EMG.([nEMG{i},'_Envelop']) = interp1(R_k,permute(temp,[2,3,1]),R_ko,'spline');
-        else
-            Output.EMG.([nEMG{i},'_Envelop']) = NaN(101,1);
+if ~isempty(EMG)
+    nEMG = fieldnames(EMG);
+    for i = 1:size(nEMG,1)
+        % Right gait cycle
+        if strfind(nEMG{i},'R_')
+            temp = EMG.(nEMG{i}).signal(:,:,aRHS(1):aRHS(2));
+            if sum(isnan(temp)) ~= size(isnan(temp),3)
+                Output.EMG.([nEMG{i},'_Signal']) = permute(temp,[2,3,1])';
+            else
+                Output.EMG.([nEMG{i},'_Signal']) = NaN(length(aRHS(1):aRHS(2)),1);
+            end  
+            temp = EMG.(nEMG{i}).envelop(:,:,mRHS(1):mRHS(2));
+            if sum(isnan(temp)) ~= size(isnan(temp),3)
+                Output.EMG.([nEMG{i},'_Envelop']) = interp1(R_k,permute(temp,[2,3,1]),R_ko,'spline');
+            else
+                Output.EMG.([nEMG{i},'_Envelop']) = NaN(101,1);
+            end
         end
-    end
-    % Left gait cycle
-    if strfind(nEMG{i},'L_')
-        temp = EMG.(nEMG{i}).signal(:,:,aLHS(1):aLHS(2));
-        if sum(isnan(temp)) ~= size(isnan(temp),3)
-            Output.EMG.([nEMG{i},'_Signal']) = permute(temp,[2,3,1])';
-        else
-            Output.EMG.([nEMG{i},'_Signal']) = NaN(length(aLHS(1):aLHS(2)),1);
-        end     
-        temp = EMG.(nEMG{i}).envelop(:,:,mLHS(1):mLHS(2));
-        if sum(isnan(temp)) ~= size(isnan(temp),3)
-            Output.EMG.([nEMG{i},'_Envelop']) = interp1(L_k,permute(temp,[2,3,1]),L_ko,'spline');
-        else
-            Output.EMG.([nEMG{i},'_Envelop']) = NaN(101,1);
+        % Left gait cycle
+        if strfind(nEMG{i},'L_')
+            temp = EMG.(nEMG{i}).signal(:,:,aLHS(1):aLHS(2));
+            if sum(isnan(temp)) ~= size(isnan(temp),3)
+                Output.EMG.([nEMG{i},'_Signal']) = permute(temp,[2,3,1])';
+            else
+                Output.EMG.([nEMG{i},'_Signal']) = NaN(length(aLHS(1):aLHS(2)),1);
+            end     
+            temp = EMG.(nEMG{i}).envelop(:,:,mLHS(1):mLHS(2));
+            if sum(isnan(temp)) ~= size(isnan(temp),3)
+                Output.EMG.([nEMG{i},'_Envelop']) = interp1(L_k,permute(temp,[2,3,1]),L_ko,'spline');
+            else
+                Output.EMG.([nEMG{i},'_Envelop']) = NaN(101,1);
+            end
         end
     end
 end

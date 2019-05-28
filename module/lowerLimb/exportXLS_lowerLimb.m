@@ -299,315 +299,317 @@ xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_GRF_Z.std,sh
 % =========================================================================
 % Detect condition
 % -------------------------------------------------------------------------
-eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
-count_R = 0;
-count_L = 0;
-conditionEMG = 0;
-for i = 1:length(eFields)
-    if ~isempty(strfind(eFields{i}, 'Envelop'))
-        if ~isempty(strfind(eFields{i}, 'L_'))
-            count_L = count_L+1;
-        end
-        if ~isempty(strfind(eFields{i}, 'R_'))
-            count_R = count_R+1;
+if ~isempty(Condition(iCondition).Average.LowerLimb.EMG)
+    eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
+    count_R = 0;
+    count_L = 0;
+    conditionEMG = 0;
+    for i = 1:length(eFields)
+        if ~isempty(strfind(eFields{i}, 'Envelop'))
+            if ~isempty(strfind(eFields{i}, 'L_'))
+                count_L = count_L+1;
+            end
+            if ~isempty(strfind(eFields{i}, 'R_'))
+                count_R = count_R+1;
+            end
         end
     end
-end
-if (count_L <= 8) && (count_R <= 8)
-    conditionEMG = 1;
-elseif (count_L > 8) || (count_R > 8)
-    conditionEMG = 2;
-end
+    if (count_L <= 8) && (count_R <= 8)
+        conditionEMG = 1;
+    elseif (count_L > 8) || (count_R > 8)
+        conditionEMG = 2;
+    end
 
-% General prints
-% -------------------------------------------------------------------------
-sheet = 'Examen - data (4)';
-xlswrite1(fname,cellstr(['Condition ',num2str(iCondition)]),sheet,['A',num2str(nline3)]);
-xlswrite1(fname,cellstr('Temps'),sheet,['A',num2str(nline3+4)]);
-xlswrite1(fname,(0:1:100)',sheet,['A',num2str(nline3+5)]);
+    % General prints
+    % ---------------------------------------------------------------------
+    sheet = 'Examen - data (4)';
+    xlswrite1(fname,cellstr(['Condition ',num2str(iCondition)]),sheet,['A',num2str(nline3)]);
+    xlswrite1(fname,cellstr('Temps'),sheet,['A',num2str(nline3+4)]);
+    xlswrite1(fname,(0:1:100)',sheet,['A',num2str(nline3+5)]);
 
-% Condition 1: EMG_R and EMG_L <= 8
-% -------------------------------------------------------------------------
-if conditionEMG == 1
-    eNames = {};
-    k = 1;
-    eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'L_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:4
-                    eNames{k} = regexprep(eFields{i},'_Envelop','');
-                    k = k+1;
+    % Condition 1: EMG_R and EMG_L <= 8
+    % ---------------------------------------------------------------------
+    if conditionEMG == 1
+        eNames = {};
+        k = 1;
+        eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'L_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:4
+                        eNames{k} = regexprep(eFields{i},'_Envelop','');
+                        k = k+1;
+                    end
                 end
             end
         end
-    end
-    k = 33; % 8x4
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'R_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:4
-                    eNames{k} = regexprep(eFields{i},'_Envelop','');
-                    k = k+1;
+        k = 33; % 8x4
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'R_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:4
+                        eNames{k} = regexprep(eFields{i},'_Envelop','');
+                        k = k+1;
+                    end
                 end
             end
         end
-    end
-    xlswrite1(fname,eNames,sheet,['B',num2str(nline3+1)]);
-    % ---
-    eNames = {};
-    k = 1;
-    eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'L_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:2
-                    eNames{k} = 'Signal (V)';
-                    k = k+1;
-                end
-                for j = 3:4
-                    eNames{k} = 'Enveloppe (adim)';
-                    k = k+1;
-                end
-            end
-        end
-    end
-    k = 33; % 8x4
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'R_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:2
-                    eNames{k} = 'Signal (V)';
-                    k = k+1;
-                end
-                for j = 3:4
-                    eNames{k} = 'Enveloppe (adim)';
-                    k = k+1;
+        xlswrite1(fname,eNames,sheet,['B',num2str(nline3+1)]);
+        % ---
+        eNames = {};
+        k = 1;
+        eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'L_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:2
+                        eNames{k} = 'Signal (V)';
+                        k = k+1;
+                    end
+                    for j = 3:4
+                        eNames{k} = 'Enveloppe (adim)';
+                        k = k+1;
+                    end
                 end
             end
         end
-    end
-    xlswrite1(fname,eNames,sheet,['B',num2str(nline3+2)]);
-    % ---
-    eNames = {};
-    k = 1;
-    eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'L_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:4
-                    eNames{k} = 'Gauche';
-                    k = k+1;
+        k = 33; % 8x4
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'R_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:2
+                        eNames{k} = 'Signal (V)';
+                        k = k+1;
+                    end
+                    for j = 3:4
+                        eNames{k} = 'Enveloppe (adim)';
+                        k = k+1;
+                    end
                 end
             end
         end
-    end
-    k = 33; % 8x4
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'R_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:4
-                    eNames{k} = 'Droite';
-                    k = k+1;
+        xlswrite1(fname,eNames,sheet,['B',num2str(nline3+2)]);
+        % ---
+        eNames = {};
+        k = 1;
+        eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'L_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:4
+                        eNames{k} = 'Gauche';
+                        k = k+1;
+                    end
                 end
             end
         end
-    end
-    xlswrite1(fname,eNames,sheet,['B',num2str(nline3+3)]);
-    % ---
-    eNames = {};
-    k = 1;
-    eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'L_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                eNames{k} = 'Répétitions'; k = k+1;
-                eNames{k} = 'Signal'; k = k+1;
-                eNames{k} = 'Moyenne'; k = k+1;
-                eNames{k} = 'Ecart-type'; k = k+1;
+        k = 33; % 8x4
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'R_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:4
+                        eNames{k} = 'Droite';
+                        k = k+1;
+                    end
+                end
             end
         end
-    end
-    k = 33; % 8x4
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'R_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                eNames{k} = 'Répétitions'; k = k+1;
-                eNames{k} = 'Signal'; k = k+1;
-                eNames{k} = 'Moyenne'; k = k+1;
-                eNames{k} = 'Ecart-type'; k = k+1;
+        xlswrite1(fname,eNames,sheet,['B',num2str(nline3+3)]);
+        % ---
+        eNames = {};
+        k = 1;
+        eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'L_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    eNames{k} = 'Répétitions'; k = k+1;
+                    eNames{k} = 'Signal'; k = k+1;
+                    eNames{k} = 'Moyenne'; k = k+1;
+                    eNames{k} = 'Ecart-type'; k = k+1;
+                end
             end
         end
-    end
-    xlswrite1(fname,eNames,sheet,['B',num2str(nline3+4)]);
-    %---
-    columns = {'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' ...
-        'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z' 'AA' 'AB' 'AC' 'AD' 'AE' 'AF' ...
-        'AG' 'AH' 'AI' 'AJ' 'AK' 'AL' 'AM' 'AN' 'AO' 'AP' 'AQ' 'AR' 'AS' 'AT' ...
-        'AU' 'AV' 'AW' 'AX' 'AY' 'AZ' 'BA' 'BB' 'BC' 'BD' 'BE' 'BF' ...
-        'BG' 'BH' 'BI' 'BJ' 'BK' 'BL' 'BM' 'BN' 'BO' 'BP' 'BQ' 'BR' 'BS' 'BT' ...
-        'BU' 'BV' 'BW' 'BX' 'BY' 'BZ' 'CA' 'CB' 'CC' 'CD' 'CE' 'CF' ...
-        'CG' 'CH' 'CI' 'CJ' 'CK' 'CL' 'CM' 'CN' 'CO' 'CP' 'CQ' 'CR' 'CS' 'CT' ...
-        'CU' 'CV' 'CW' 'CX' 'CY' 'CZ'};
-    eNames = {};
-    k = 2;
-    eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'L_'))
-            if ~isempty(strfind(eFields{i}, '_Signal'))
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-            elseif ~isempty(strfind(eFields{i}, '_Envelop'))
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).std,sheet,[columns{k},num2str(nline3+5)]); k = k+1;            
+        k = 33; % 8x4
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'R_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    eNames{k} = 'Répétitions'; k = k+1;
+                    eNames{k} = 'Signal'; k = k+1;
+                    eNames{k} = 'Moyenne'; k = k+1;
+                    eNames{k} = 'Ecart-type'; k = k+1;
+                end
             end
         end
-    end
-    k = 34;
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'R_'))
-            if ~isempty(strfind(eFields{i}, '_Signal'))
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-            elseif ~isempty(strfind(eFields{i}, '_Envelop'))
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).std,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+        xlswrite1(fname,eNames,sheet,['B',num2str(nline3+4)]);
+        %---
+        columns = {'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' ...
+            'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z' 'AA' 'AB' 'AC' 'AD' 'AE' 'AF' ...
+            'AG' 'AH' 'AI' 'AJ' 'AK' 'AL' 'AM' 'AN' 'AO' 'AP' 'AQ' 'AR' 'AS' 'AT' ...
+            'AU' 'AV' 'AW' 'AX' 'AY' 'AZ' 'BA' 'BB' 'BC' 'BD' 'BE' 'BF' ...
+            'BG' 'BH' 'BI' 'BJ' 'BK' 'BL' 'BM' 'BN' 'BO' 'BP' 'BQ' 'BR' 'BS' 'BT' ...
+            'BU' 'BV' 'BW' 'BX' 'BY' 'BZ' 'CA' 'CB' 'CC' 'CD' 'CE' 'CF' ...
+            'CG' 'CH' 'CI' 'CJ' 'CK' 'CL' 'CM' 'CN' 'CO' 'CP' 'CQ' 'CR' 'CS' 'CT' ...
+            'CU' 'CV' 'CW' 'CX' 'CY' 'CZ'};
+        eNames = {};
+        k = 2;
+        eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'L_'))
+                if ~isempty(strfind(eFields{i}, '_Signal'))
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                elseif ~isempty(strfind(eFields{i}, '_Envelop'))
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).std,sheet,[columns{k},num2str(nline3+5)]); k = k+1;            
+                end
             end
         end
-    end 
-end
+        k = 34;
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'R_'))
+                if ~isempty(strfind(eFields{i}, '_Signal'))
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                elseif ~isempty(strfind(eFields{i}, '_Envelop'))
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).std,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                end
+            end
+        end 
+    end
 
-% Condition 2: EMG_R or EMG_L > 8
-% -------------------------------------------------------------------------
-if conditionEMG == 2
-    eNames = {};
-    k = 1;
-    eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'L_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:4
-                    eNames{k} = regexprep(eFields{i},'_Envelop','');
-                    k = k+1;
+    % Condition 2: EMG_R or EMG_L > 8
+    % ---------------------------------------------------------------------
+    if conditionEMG == 2
+        eNames = {};
+        k = 1;
+        eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'L_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:4
+                        eNames{k} = regexprep(eFields{i},'_Envelop','');
+                        k = k+1;
+                    end
+                end
+            end
+            if ~isempty(strfind(eFields{i}, 'R_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:4
+                        eNames{k} = regexprep(eFields{i},'_Envelop','');
+                        k = k+1;
+                    end
                 end
             end
         end
-        if ~isempty(strfind(eFields{i}, 'R_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:4
-                    eNames{k} = regexprep(eFields{i},'_Envelop','');
-                    k = k+1;
+        xlswrite1(fname,eNames,sheet,['B',num2str(nline3+1)]);
+        % ---
+        eNames = {};
+        k = 1;
+        eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'L_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:2
+                        eNames{k} = 'Signal (V)';
+                        k = k+1;
+                    end
+                    for j = 3:4
+                        eNames{k} = 'Enveloppe (adim)';
+                        k = k+1;
+                    end
+                end
+            end
+            if ~isempty(strfind(eFields{i}, 'R_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:2
+                        eNames{k} = 'Signal (V)';
+                        k = k+1;
+                    end
+                    for j = 3:4
+                        eNames{k} = 'Enveloppe (adim)';
+                        k = k+1;
+                    end
                 end
             end
         end
-    end
-    xlswrite1(fname,eNames,sheet,['B',num2str(nline3+1)]);
-    % ---
-    eNames = {};
-    k = 1;
-    eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'L_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:2
-                    eNames{k} = 'Signal (V)';
-                    k = k+1;
-                end
-                for j = 3:4
-                    eNames{k} = 'Enveloppe (adim)';
-                    k = k+1;
+        xlswrite1(fname,eNames,sheet,['B',num2str(nline3+2)]);
+        % ---
+        eNames = {};
+        k = 1;
+        eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'L_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:4
+                        eNames{k} = 'Gauche';
+                        k = k+1;
+                    end
                 end
             end
-        end
-        if ~isempty(strfind(eFields{i}, 'R_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:2
-                    eNames{k} = 'Signal (V)';
-                    k = k+1;
-                end
-                for j = 3:4
-                    eNames{k} = 'Enveloppe (adim)';
-                    k = k+1;
+            if ~isempty(strfind(eFields{i}, 'R_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    for j = 1:4
+                        eNames{k} = 'Droite';
+                        k = k+1;
+                    end
                 end
             end
         end
-    end
-    xlswrite1(fname,eNames,sheet,['B',num2str(nline3+2)]);
-    % ---
-    eNames = {};
-    k = 1;
-    eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'L_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:4
-                    eNames{k} = 'Gauche';
-                    k = k+1;
+        xlswrite1(fname,eNames,sheet,['B',num2str(nline3+3)]);
+        % ---
+        eNames = {};
+        k = 1;
+        eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'L_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    eNames{k} = 'Répétitions'; k = k+1;
+                    eNames{k} = 'Signal'; k = k+1;
+                    eNames{k} = 'Moyenne'; k = k+1;
+                    eNames{k} = 'Ecart-type'; k = k+1;
+                end
+            end
+            if ~isempty(strfind(eFields{i}, 'R_'))
+                if ~isempty(strfind(eFields{i}, 'Envelop'))
+                    eNames{k} = 'Répétitions'; k = k+1;
+                    eNames{k} = 'Signal'; k = k+1;
+                    eNames{k} = 'Moyenne'; k = k+1;
+                    eNames{k} = 'Ecart-type'; k = k+1;
                 end
             end
         end
-        if ~isempty(strfind(eFields{i}, 'R_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                for j = 1:4
-                    eNames{k} = 'Droite';
-                    k = k+1;
+        xlswrite1(fname,eNames,sheet,['B',num2str(nline3+4)]);
+        %---
+        columns = {'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' ...
+            'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z' 'AA' 'AB' 'AC' 'AD' 'AE' 'AF' ...
+            'AG' 'AH' 'AI' 'AJ' 'AK' 'AL' 'AM' 'AN' 'AO' 'AP' 'AQ' 'AR' 'AS' 'AT' ...
+            'AU' 'AV' 'AW' 'AX' 'AY' 'AZ' 'BA' 'BB' 'BC' 'BD' 'BE' 'BF' ...
+            'BG' 'BH' 'BI' 'BJ' 'BK' 'BL' 'BM' 'BN' 'BO' 'BP' 'BQ' 'BR' 'BS' 'BT' ...
+            'BU' 'BV' 'BW' 'BX' 'BY' 'BZ' 'CA' 'CB' 'CC' 'CD' 'CE' 'CF' ...
+            'CG' 'CH' 'CI' 'CJ' 'CK' 'CL' 'CM' 'CN' 'CO' 'CP' 'CQ' 'CR' 'CS' 'CT' ...
+            'CU' 'CV' 'CW' 'CX' 'CY' 'CZ'};
+        eNames = {};
+        k = 2;
+        eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
+        for i = 1:length(eFields)
+            if ~isempty(strfind(eFields{i}, 'L_'))
+                if ~isempty(strfind(eFields{i}, '_Signal'))
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                elseif ~isempty(strfind(eFields{i}, '_Envelop'))
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).std,sheet,[columns{k},num2str(nline3+5)]); k = k+1;            
                 end
             end
-        end
-    end
-    xlswrite1(fname,eNames,sheet,['B',num2str(nline3+3)]);
-    % ---
-    eNames = {};
-    k = 1;
-    eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'L_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                eNames{k} = 'Répétitions'; k = k+1;
-                eNames{k} = 'Signal'; k = k+1;
-                eNames{k} = 'Moyenne'; k = k+1;
-                eNames{k} = 'Ecart-type'; k = k+1;
-            end
-        end
-        if ~isempty(strfind(eFields{i}, 'R_'))
-            if ~isempty(strfind(eFields{i}, 'Envelop'))
-                eNames{k} = 'Répétitions'; k = k+1;
-                eNames{k} = 'Signal'; k = k+1;
-                eNames{k} = 'Moyenne'; k = k+1;
-                eNames{k} = 'Ecart-type'; k = k+1;
-            end
-        end
-    end
-    xlswrite1(fname,eNames,sheet,['B',num2str(nline3+4)]);
-    %---
-    columns = {'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' ...
-        'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z' 'AA' 'AB' 'AC' 'AD' 'AE' 'AF' ...
-        'AG' 'AH' 'AI' 'AJ' 'AK' 'AL' 'AM' 'AN' 'AO' 'AP' 'AQ' 'AR' 'AS' 'AT' ...
-        'AU' 'AV' 'AW' 'AX' 'AY' 'AZ' 'BA' 'BB' 'BC' 'BD' 'BE' 'BF' ...
-        'BG' 'BH' 'BI' 'BJ' 'BK' 'BL' 'BM' 'BN' 'BO' 'BP' 'BQ' 'BR' 'BS' 'BT' ...
-        'BU' 'BV' 'BW' 'BX' 'BY' 'BZ' 'CA' 'CB' 'CC' 'CD' 'CE' 'CF' ...
-        'CG' 'CH' 'CI' 'CJ' 'CK' 'CL' 'CM' 'CN' 'CO' 'CP' 'CQ' 'CR' 'CS' 'CT' ...
-        'CU' 'CV' 'CW' 'CX' 'CY' 'CZ'};
-    eNames = {};
-    k = 2;
-    eFields = fieldnames(Condition(iCondition).Average.LowerLimb.EMG);
-    for i = 1:length(eFields)
-        if ~isempty(strfind(eFields{i}, 'L_'))
-            if ~isempty(strfind(eFields{i}, '_Signal'))
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-            elseif ~isempty(strfind(eFields{i}, '_Envelop'))
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).std,sheet,[columns{k},num2str(nline3+5)]); k = k+1;            
-            end
-        end
-        if ~isempty(strfind(eFields{i}, 'R_'))
-            if ~isempty(strfind(eFields{i}, '_Signal'))
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-            elseif ~isempty(strfind(eFields{i}, '_Envelop'))
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
-                xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).std,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+            if ~isempty(strfind(eFields{i}, 'R_'))
+                if ~isempty(strfind(eFields{i}, '_Signal'))
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).repetition,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                elseif ~isempty(strfind(eFields{i}, '_Envelop'))
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).mean,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                    xlswrite1(fname,Condition(iCondition).Average.LowerLimb.EMG.(eFields{i}).std,sheet,[columns{k},num2str(nline3+5)]); k = k+1;
+                end
             end
         end
     end

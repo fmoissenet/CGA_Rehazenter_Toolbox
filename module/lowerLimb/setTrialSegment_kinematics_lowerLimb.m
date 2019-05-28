@@ -356,7 +356,7 @@ Segment(101).Q = [u101;rP101;rD101;w101];
 % =========================================================================
 % EXPORT GRF IN C3D
 % =========================================================================
-btkAppendForcePlatformType2(btk2,tGrf(1).F,...
-    tGrf(1).M,Forceplate(1).corners',[0,0,0],[0,0,0]);
-btkAppendForcePlatformType2(btk2,tGrf(2).F,...
-    tGrf(2).M,Forceplate(2).corners',[0,0,0],[0,0,0]);
+for i = 1:length(tGrf)
+    btkAppendForcePlatformType2(btk2,tGrf(i).F,...
+        tGrf(i).M,Forceplate(i).corners',[0,0,0],[0,0,0]);
+end

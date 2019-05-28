@@ -17,7 +17,11 @@ nSpatiotemporal = fieldnames(Condition(i).Trial(1).LowerLimb.Spatiotemporal);
 nJointkinematics = fieldnames(Condition(i).Trial(1).LowerLimb.Jointkinematics);
 nSegmentkinematics = fieldnames(Condition(i).Trial(1).LowerLimb.Segmentkinematics);
 nDynamics = fieldnames(Condition(i).Trial(1).LowerLimb.Dynamics);
-nEMG = fieldnames(Condition(i).Trial(1).LowerLimb.EMG);
+if ~isempty(Condition(i).Trial(1).LowerLimb.EMG)
+    nEMG = fieldnames(Condition(i).Trial(1).LowerLimb.EMG);
+else
+    nEMG = 0;
+end
 nEvents = fieldnames(Condition(i).Trial(1).LowerLimb.Events);
 % Merge data
 for nField = 1:length(nSpatiotemporal)
@@ -84,58 +88,61 @@ for nField = 1:length(nDynamics)
     Condition(i).Average.LowerLimb.Dynamics.(nDynamics{nField}).mean = nanmean(tDynamics,2);
     Condition(i).Average.LowerLimb.Dynamics.(nDynamics{nField}).std = nanstd(tDynamics,1,2);
 end
-for nField = 1:length(nEMG)
-    if strfind(nEMG{nField},'Envelop') % only for envelops normalised as % of gait cycle
-        tEMG = [];
-        for nTrial = size(Condition(i).Trial,2) % the last trial envelop is plotted
-            if isfield(Condition(i).Trial(nTrial),'LowerLimb')
-                if ~isempty(Condition(i).Trial(nTrial).LowerLimb)
-                    tEMG = [tEMG Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})];
+Condition(i).Average.LowerLimb.EMG = [];
+if nEMG > 0
+    for nField = 1:length(nEMG)
+        if strfind(nEMG{nField},'Envelop') % only for envelops normalised as % of gait cycle
+            tEMG = [];
+            for nTrial = size(Condition(i).Trial,2) % the last trial envelop is plotted
+                if isfield(Condition(i).Trial(nTrial),'LowerLimb')
+                    if ~isempty(Condition(i).Trial(nTrial).LowerLimb)
+                        tEMG = [tEMG Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})];
+                    else
+                        tEMG = [tEMG nan(size(tEMG),1)];
+                    end
                 else
                     tEMG = [tEMG nan(size(tEMG),1)];
                 end
-            else
-                tEMG = [tEMG nan(size(tEMG),1)];
             end
-        end
-        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).mean = nanmean(tEMG,2)/max(nanmean(tEMG,2));
-        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).std = nanstd(tEMG,1,2)/max(nanmean(tEMG,2));
-    elseif strfind(nEMG{nField},'Signal')
-        tEMG1 = [];
-        for nTrial = size(Condition(i).Trial,2) % the last trial signal is plotted
-            if isfield(Condition(i).Trial(nTrial),'LowerLimb')
-                if ~isempty(Condition(i).Trial(nTrial).LowerLimb)
-                    x = 1:length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}));
-                    xx = linspace(1,length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})),1000);
-                    tEMG1 = [tEMG1 (interp1(x,Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}),xx,'spline'))'];
+            Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).mean = nanmean(tEMG,2)/max(nanmean(tEMG,2));
+            Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).std = nanstd(tEMG,1,2)/max(nanmean(tEMG,2));
+        elseif strfind(nEMG{nField},'Signal')
+            tEMG1 = [];
+            for nTrial = size(Condition(i).Trial,2) % the last trial signal is plotted
+                if isfield(Condition(i).Trial(nTrial),'LowerLimb')
+                    if ~isempty(Condition(i).Trial(nTrial).LowerLimb)
+                        x = 1:length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}));
+                        xx = linspace(1,length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})),1000);
+                        tEMG1 = [tEMG1 (interp1(x,Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}),xx,'spline'))'];
+                    else
+                        tEMG1 = [tEMG1 nan(size(tEMG1,1),1)];
+                    end
                 else
                     tEMG1 = [tEMG1 nan(size(tEMG1,1),1)];
                 end
-            else
-                tEMG1 = [tEMG1 nan(size(tEMG1,1),1)];
             end
-        end
-        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).mean = nanmean(tEMG1,2)/max(nanmean(tEMG1,2));
-        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).std = nanstd(tEMG1,1,2)/max(nanmean(tEMG1,2));
-        tEMG2 = [];
-        for nTrial = 1:size(Condition(i).Trial,2)
-            if isfield(Condition(i).Trial(nTrial),'LowerLimb')
-                if ~isempty(Condition(i).Trial(nTrial).LowerLimb)
-                    x = 1:length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}));
-                    xx = linspace(1,length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})),1000);
-                    if sum(isnan(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}))) ~= size(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}),1)
-                        tEMG2 = [tEMG2; (interp1(x,Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}),xx,'spline'))'];
+            Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).mean = nanmean(tEMG1,2)/max(nanmean(tEMG1,2));
+            Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).std = nanstd(tEMG1,1,2)/max(nanmean(tEMG1,2));
+            tEMG2 = [];
+            for nTrial = 1:size(Condition(i).Trial,2)
+                if isfield(Condition(i).Trial(nTrial),'LowerLimb')
+                    if ~isempty(Condition(i).Trial(nTrial).LowerLimb)
+                        x = 1:length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}));
+                        xx = linspace(1,length(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})),1000);
+                        if sum(isnan(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}))) ~= size(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}),1)
+                            tEMG2 = [tEMG2; (interp1(x,Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField}),xx,'spline'))'];
+                        else
+                            tEMG2 = [tEMG2; zeros(size(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})))];
+                        end
                     else
-                        tEMG2 = [tEMG2; zeros(size(Condition(i).Trial(nTrial).LowerLimb.EMG.(nEMG{nField})))];
+                        tEMG2 = [tEMG2; nan(size(tEMG2,1),1)];
                     end
                 else
                     tEMG2 = [tEMG2; nan(size(tEMG2,1),1)];
                 end
-            else
-                tEMG2 = [tEMG2; nan(size(tEMG2,1),1)];
             end
+            Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).repetition = tEMG2*1e3; 
         end
-        Condition(i).Average.LowerLimb.EMG.(nEMG{nField}).repetition = tEMG2*1e3; 
     end
 end
 for nField = 1:length(nEvents)
