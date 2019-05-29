@@ -253,7 +253,6 @@ Excel.ActiveWorkbook.Save;
 Excel.Quit
 Excel.delete
 clear Excel 
-system('Taskkill /F /IM EXCEL.EXE');
 
 % =========================================================================
 % Extract conditions and details from Session.Trial

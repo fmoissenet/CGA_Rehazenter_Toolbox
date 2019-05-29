@@ -10,11 +10,10 @@
 % Version: 1
 % =========================================================================
 
-function exportXLS_lowerLimb(Patient,Session,Condition,iCondition,sessionFolder,toolboxFolder)
+function exportXLS_lowerLimb(Condition,iCondition,sessionFolder)
 
 cd(sessionFolder);
 xlsfile = dir('template.xls*');
-system('Taskkill /F /IM EXCEL.EXE');
 Excel = actxserver('Excel.Application');
 fname = fullfile(pwd,xlsfile(1).name);
 if ~exist(fname,'file')
@@ -33,6 +32,9 @@ nline3 = 5006*iCondition-5006+1; % Used for EMG (repetition is a 5000 frame vect
 % Spatiotemporal parameters
 % =========================================================================
 sheet = 'Examen - data (1)';
+if iCondition == 1 % before writing Condition 1 results, clear the sheet
+    xlswrite1(fname,' ',sheet,'A1:AM14');
+end
 xlswrite1(fname,cellstr(['Condition ',num2str(iCondition)]),sheet,['A',num2str(nline2)]);
 xlswrite1(fname,{'Phase d''appui (% cycle de marche)' 'Phase d''appui (% cycle de marche)' 'Phase d''appui (% cycle de marche)' 'Phase d''appui (% cycle de marche)' ...
     'Phase oscillante (% cycle de marche)' 'Phase oscillante (% cycle de marche)' 'Phase oscillante (% cycle de marche)' 'Phase oscillante (% cycle de marche)' ...
@@ -127,6 +129,9 @@ xlswrite1(fname,Condition(iCondition).Average.LowerLimb.Spatiotemporal.R_Stance_
 % Kinematics
 % =========================================================================
 sheet = 'Examen - data (2)';
+if iCondition == 1 % before writing Condition 1 results, clear the sheet
+    xlswrite1(fname,' ',sheet,'A1:BI213');
+end
 xlswrite1(fname,cellstr(['Condition ',num2str(iCondition)]),sheet,['A',num2str(nline)]);
 xlswrite1(fname,cellstr('Temps'),sheet,['A',num2str(nline+4)]);
 xlswrite1(fname,(0:1:100)',sheet,['A',num2str(nline+5)]);
@@ -220,6 +225,9 @@ xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Segmentkinematics.R_Foo
 % Kinetics
 % =========================================================================
 sheet = 'Examen - data (3)';
+if iCondition == 1 % before writing Condition 1 results, clear the sheet
+    xlswrite1(fname,' ',sheet,'A1:AK213');
+end
 xlswrite1(fname,cellstr(['Condition ',num2str(iCondition)]),sheet,['A',num2str(nline)]);
 xlswrite1(fname,cellstr('Temps'),sheet,['A',num2str(nline+4)]);
 xlswrite1(fname,(0:1:100)',sheet,['A',num2str(nline+5)]);
@@ -297,6 +305,16 @@ xlswrite1(fname,-Condition(iCondition).Average.LowerLimb.Dynamics.R_GRF_Z.std,sh
 % =========================================================================
 % EMG
 % =========================================================================
+% General prints
+% -------------------------------------------------------------------------
+sheet = 'Examen - data (4)';
+if iCondition == 1 % before writing Condition 1 results, clear the sheet
+    xlswrite1(fname,' ',sheet,'A1:BM10011');
+end
+xlswrite1(fname,cellstr(['Condition ',num2str(iCondition)]),sheet,['A',num2str(nline3)]);
+xlswrite1(fname,cellstr('Temps'),sheet,['A',num2str(nline3+4)]);
+xlswrite1(fname,(0:1:100)',sheet,['A',num2str(nline3+5)]);
+
 % Detect condition
 % -------------------------------------------------------------------------
 if ~isempty(Condition(iCondition).Average.LowerLimb.EMG)
@@ -319,13 +337,6 @@ if ~isempty(Condition(iCondition).Average.LowerLimb.EMG)
     elseif (count_L > 8) || (count_R > 8)
         conditionEMG = 2;
     end
-
-    % General prints
-    % ---------------------------------------------------------------------
-    sheet = 'Examen - data (4)';
-    xlswrite1(fname,cellstr(['Condition ',num2str(iCondition)]),sheet,['A',num2str(nline3)]);
-    xlswrite1(fname,cellstr('Temps'),sheet,['A',num2str(nline3+4)]);
-    xlswrite1(fname,(0:1:100)',sheet,['A',num2str(nline3+5)]);
 
     % Condition 1: EMG_R and EMG_L <= 8
     % ---------------------------------------------------------------------
@@ -620,4 +631,3 @@ Excel.ActiveWorkbook.Save
 Excel.Quit
 Excel.delete
 clear Excel
-system('Taskkill /F /IM EXCEL.EXE');

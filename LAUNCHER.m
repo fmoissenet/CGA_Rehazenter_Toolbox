@@ -15,7 +15,7 @@
 % Date of creation: 16/05/2018
 % Version: 1
 % =========================================================================
-tic
+
 % =========================================================================
 % Initialisation
 % =========================================================================
@@ -46,7 +46,7 @@ disp(' ');
 % =========================================================================
 % Set patient folder
 % =========================================================================
-sessionFolder = 'C:\Users\florent.moissenet\Desktop\test\2015040';
+sessionFolder = 'C:\Users\florent.moissenet\Desktop\test\2014023';
 patientFolder = sessionFolder;
 
 % =========================================================================
@@ -58,5 +58,3 @@ startCGA(toolboxFolder,sessionFolder,patientFolder);
 % Reporting tool
 % =========================================================================
 startReport_lowerLimb(toolboxFolder,sessionFolder,patientFolder)
-
-toc

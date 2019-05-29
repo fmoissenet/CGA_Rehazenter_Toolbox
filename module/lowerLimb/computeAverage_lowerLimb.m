@@ -20,7 +20,7 @@ nDynamics = fieldnames(Condition(i).Trial(1).LowerLimb.Dynamics);
 if ~isempty(Condition(i).Trial(1).LowerLimb.EMG)
     nEMG = fieldnames(Condition(i).Trial(1).LowerLimb.EMG);
 else
-    nEMG = 0;
+    nEMG = [];
 end
 nEvents = fieldnames(Condition(i).Trial(1).LowerLimb.Events);
 % Merge data
@@ -89,7 +89,7 @@ for nField = 1:length(nDynamics)
     Condition(i).Average.LowerLimb.Dynamics.(nDynamics{nField}).std = nanstd(tDynamics,1,2);
 end
 Condition(i).Average.LowerLimb.EMG = [];
-if nEMG > 0
+if ~isempty(nEMG)
     for nField = 1:length(nEMG)
         if strfind(nEMG{nField},'Envelop') % only for envelops normalised as % of gait cycle
             tEMG = [];

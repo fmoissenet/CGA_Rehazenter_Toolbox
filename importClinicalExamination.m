@@ -17,7 +17,6 @@ function Examination = importClinicalExamination(Examination,sessionFolder)
 % =========================================================================
 cd(sessionFolder);
 xlsfile = dir('template.xls*');
-system('Taskkill /F /IM EXCEL.EXE');
 Excel = actxserver('Excel.Application');
 fname = fullfile(pwd,xlsfile(1).name);
 if ~exist(fname,'file')
@@ -61,4 +60,3 @@ Excel.ActiveWorkbook.Save;
 Excel.Quit
 Excel.delete
 clear Excel 
-system('Taskkill /F /IM EXCEL.EXE');

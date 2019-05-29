@@ -17,7 +17,7 @@ function startReport_lowerLimb(toolboxFolder,sessionFolder,patientFolder)
 % =========================================================================
 cd(patientFolder);
 filename = uigetfile({'*.mat','MAT-files (*.mat)'}, ...
-    'Sélecter le fichier MAT de la condition 1 (diagnostic)', 'MultiSelect','off');
+    'Sélectionner le fichier MAT de la condition 1 (diagnostic)', 'MultiSelect','off');
 load(filename,'-mat','Condition','Patient','Session');
 tempC(1) = Condition;
 tempS(1) = Session;
@@ -30,7 +30,7 @@ if strcmp(temp,'O')
     clearvars -except tempC tempS Patient patientFolder sessionFolder toolboxFolder
     cd(patientFolder);
     filename = uigetfile({'*.mat','MAT-files (*.mat)'}, ...
-        'Sélecter le fichier MAT de la condition 2 (comparaison)', 'MultiSelect','off');
+        'Sélectionner le fichier MAT de la condition 2 (comparaison)', 'MultiSelect','off');
     load(filename,'-mat','Condition','Patient','Session');
     tempC(2) = Condition;
     tempS(2) = Session;
@@ -48,7 +48,8 @@ clear tempC tempS;
 % Generate diagnostic XLS report
 % =========================================================================
 for i = 1:length(Condition)
-    exportXLS_lowerLimb(Patient,Session,Condition,i,sessionFolder,toolboxFolder);
+    exportXLS_lowerLimb(Condition,i,sessionFolder);
 end
 system(['rename template.xlsx ',Patient.lastname,'_',Patient.firstname,'_',regexprep(Patient.birthdate,'/',''),'_AQM_',regexprep(Session(1).date,'/',''),'.xlsx']);
 cd(toolboxFolder);
+disp('Le rapport a été généré !');
