@@ -201,7 +201,7 @@ for i = 1:length(Session.conditions)
     % Export data in a MAT file
     % ---------------------------------------------------------------------    
     % Lower limb kinematic chain
-Condition = computeAverage_lowerLimb(Condition,i);
+    Condition = computeAverage_lowerLimb(Condition,i);
     % Export .MAT
     exportMAT(Patient,Pathology,Treatment,Examination,Session,Condition,...
               i,sessionFolder,toolboxFolder);
